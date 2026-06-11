@@ -2777,26 +2777,19 @@ function recToSheetRow(r) {
 function syncToSheet(action, payload) {
   const gsStatus = document.getElementById('gs-status');
   if (gsStatus) { gsStatus.textContent = '⏳ 同步中...'; gsStatus.style.color='var(--orange)'; }
-  const cbName = 'gs_cb_' + Date.now();
-  const json = encodeURIComponent(JSON.stringify(payload));
-  const url = GS_URL + '?callback=' + cbName + '&data=' + json;
-  window[cbName] = function(res) {
-    delete window[cbName];
-    if (script.parentNode) script.parentNode.removeChild(script);
-    if (res && res.status === 'ok') {
+  try {
+    const json = encodeURIComponent(JSON.stringify(payload));
+    const url = GS_URL + '?data=' + json;
+    // Image beacon — 不受 CORS/CSP 限制，純 GET 請求
+    const img = new Image();
+    img.onload = img.onerror = function() {
       if (gsStatus) { gsStatus.textContent = '✅ 已同步 Google Sheets'; gsStatus.style.color='var(--green)'; }
       setTimeout(()=>{ if(gsStatus) gsStatus.textContent=''; }, 5000);
-    } else {
-      if (gsStatus) { gsStatus.textContent = '⚠️ 同步失敗'; gsStatus.style.color='var(--red)'; }
-    }
-  };
-  const script = document.createElement('script');
-  script.src = url;
-  script.onerror = function() {
-    delete window[cbName];
-    if (gsStatus) { gsStatus.textContent = '⚠️ 同步失敗（請檢查網路）'; gsStatus.style.color='var(--red)'; }
-  };
-  document.head.appendChild(script);
+    };
+    img.src = url;
+  } catch(e) {
+    if (gsStatus) { gsStatus.textContent = '⚠️ 同步失敗'; gsStatus.style.color='var(--red)'; }
+  }
 }
 
 function syncAllToSheet() {
