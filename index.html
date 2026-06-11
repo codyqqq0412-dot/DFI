@@ -2777,41 +2777,24 @@ function recToSheetRow(r) {
 function syncToSheet(action, payload) {
   const gsStatus = document.getElementById('gs-status');
   if (gsStatus) { gsStatus.textContent = '⏳ 同步中...'; gsStatus.style.color='var(--orange)'; }
-
-  // 使用 no-cors fetch — Apps Script 會收到資料但無法回傳結果
-  // 因此改用 URL 參數 GET 方式傳送（小量資料）或 iframe trick
   const json = encodeURIComponent(JSON.stringify(payload));
   const url = GS_URL + '?data=' + json;
-
-  // 用隱藏 iframe 發送（繞過 CORS 限制）
-  const iframe = document.createElement('iframe');
-  iframe.style.display = 'none';
-  iframe.src = url;
-  document.body.appendChild(iframe);
-  setTimeout(() => {
-    document.body.removeChild(iframe);
-    if (gsStatus) { gsStatus.textContent = '✅ 已同步 Google Sheets'; gsStatus.style.color='var(--green)'; }
-    setTimeout(()=>{ if(gsStatus) gsStatus.textContent=''; }, 4000);
-  }, 3000);
+  // fetch with no-cors — GET request to Apps Script works without CORS issue
+  fetch(url, { method: 'GET', mode: 'no-cors' })
+    .then(() => {
+      if (gsStatus) { gsStatus.textContent = '✅ 已同步 Google Sheets'; gsStatus.style.color='var(--green)'; }
+      setTimeout(()=>{ if(gsStatus) gsStatus.textContent=''; }, 5000);
+    })
+    .catch(() => {
+      if (gsStatus) { gsStatus.textContent = '⚠️ 同步失敗（請檢查網路）'; gsStatus.style.color='var(--red)'; }
+    });
 }
 
 function syncAllToSheet() {
   if (!records.length) { alert('目前無記錄可同步'); return; }
   if (!confirm('確定將所有本機記錄（'+records.length+'筆）全量同步到 Google Sheets？\n（這會覆蓋 Google Sheets 現有資料）')) return;
-  const gsStatus = document.getElementById('gs-status');
-  if (gsStatus) { gsStatus.textContent = '⏳ 同步中...'; gsStatus.style.color='var(--orange)'; }
   const payload = { action: 'sync_all', records: records.map(recToSheetRow) };
-  const json = encodeURIComponent(JSON.stringify(payload));
-  const url = GS_URL + '?data=' + json;
-  const iframe = document.createElement('iframe');
-  iframe.style.display = 'none';
-  iframe.src = url;
-  document.body.appendChild(iframe);
-  setTimeout(() => {
-    document.body.removeChild(iframe);
-    if (gsStatus) { gsStatus.textContent = '✅ 已同步 Google Sheets'; gsStatus.style.color='var(--green)'; }
-    setTimeout(()=>{ if(gsStatus) gsStatus.textContent=''; }, 4000);
-  }, 3000);
+  syncToSheet('sync_all', payload);
 }
 
 function saveRec(mode){
