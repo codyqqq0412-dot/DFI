@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DFI 噴漆報價成本計算系統 v7</title>
+<title>DFI 噴漆報價成本計算系統 v3</title>
 <style>
 :root{
   --blue:#1a4f7a;--blue2:#2772aa;--blue3:#e6f2fb;--blue4:#cce0f5;
@@ -200,22 +200,21 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
 .login-role-tab.active{border-color:var(--blue);background:var(--blue3);color:var(--blue)}
 .login-field{margin-bottom:14px}
 .login-field label{display:block;font-size:11.5px;color:var(--muted);font-weight:700;margin-bottom:5px}
-.login-field input{width:100%;padding:10px 13px;border:1.5px solid var(--border);border-radius:8px;font-size:14px;background:#fafbfc;transition:.15s;letter-spacing:.05em}
+.login-field input{width:100%;padding:10px 13px;border:1.5px solid var(--border);border-radius:8px;font-size:14px;background:#fafbfc;transition:.15s;letter-spacing:.05em;box-sizing:border-box}
 .login-field input:focus{outline:none;border-color:var(--blue);background:#fff}
-.login-btn{width:100%;padding:12px;background:var(--blue);color:#fff;border:none;border-radius:9px;font-size:15px;font-weight:700;cursor:pointer;margin-top:4px;transition:.15s;display:flex;align-items:center;justify-content:center;gap:8px}
+.login-btn{width:100%;padding:12px;background:var(--blue);color:#fff;border:none;border-radius:9px;font-size:15px;font-weight:700;cursor:pointer;margin-top:4px;transition:.15s}
 .login-btn:hover{background:var(--blue2)}
 .login-err{color:var(--red);font-size:12px;font-weight:600;text-align:center;margin-top:10px;min-height:18px;background:var(--red2);padding:7px 12px;border-radius:6px;display:none}
 .login-err.show{display:block}
 .login-footer{text-align:center;font-size:10.5px;color:var(--light);margin-top:14px}
-
-/* ── ADMIN PANEL MODAL ── */
+/* ── ADMIN MODAL ── */
 #admin-modal{position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;align-items:center;justify-content:center;z-index:8888}
 #admin-modal.show{display:flex}
 .admin-box{background:#fff;border-radius:14px;padding:28px 30px;width:400px;max-width:94vw;box-shadow:0 16px 48px rgba(0,0,0,.25)}
 .admin-box h3{font-size:15px;font-weight:800;color:var(--blue);margin-bottom:18px;padding-bottom:10px;border-bottom:1px solid var(--border)}
 .admin-field{margin-bottom:14px}
 .admin-field label{display:block;font-size:11.5px;color:var(--muted);font-weight:700;margin-bottom:5px}
-.admin-field input{width:100%;padding:9px 12px;border:1.5px solid var(--border);border-radius:7px;font-size:13.5px;background:#fafbfc}
+.admin-field input{width:100%;padding:9px 12px;border:1.5px solid var(--border);border-radius:7px;font-size:13.5px;background:#fafbfc;box-sizing:border-box}
 .admin-field input:focus{outline:none;border-color:var(--blue)}
 .admin-btns{display:flex;gap:10px;margin-top:18px}
 .admin-save-btn{flex:1;padding:10px;background:var(--blue);color:#fff;border:none;border-radius:7px;font-size:13.5px;font-weight:700;cursor:pointer}
@@ -223,8 +222,6 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
 .admin-msg{font-size:12px;font-weight:600;text-align:center;margin-top:10px;min-height:18px;padding:6px 10px;border-radius:6px;display:none}
 .admin-msg.ok{display:block;color:var(--green);background:var(--green2)}
 .admin-msg.err{display:block;color:var(--red);background:var(--red2)}
-
-/* ── ROLE BADGE IN HEADER ── */
 .role-badge{display:inline-flex;align-items:center;gap:5px;padding:3px 11px;border-radius:20px;font-size:11px;font-weight:700;cursor:pointer;transition:.15s}
 .role-badge.sales{background:rgba(255,255,255,.18);color:#fff}
 .role-badge.admin{background:rgba(255,193,7,.9);color:#7a4500}
@@ -235,9 +232,7 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
 </head>
 <body>
 
-<!-- ════════════════════════════════════════
-     LOGIN OVERLAY
-════════════════════════════════════════ -->
+<!-- LOGIN OVERLAY -->
 <div id="login-overlay">
   <div class="login-box">
     <div class="login-logo">
@@ -255,18 +250,16 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
     </div>
     <button class="login-btn" onclick="doLogin()">🔓 登入 / Masuk</button>
     <div class="login-err" id="login-err">❌ 密碼錯誤，請重試 / Password salah</div>
-    <div class="login-footer">DFI — 報價及成本計算系統 v7 ·&nbsp;© 2026</div>
+    <div class="login-footer">DFI — 報價及成本計算系統 ·&nbsp;© 2026</div>
   </div>
 </div>
 
-<!-- ════════════════════════════════════════
-     ADMIN CHANGE-PASSWORD MODAL
-════════════════════════════════════════ -->
+<!-- ADMIN MODAL -->
 <div id="admin-modal">
   <div class="admin-box">
     <h3>🔑 管理員設定 — 修改密碼</h3>
     <div class="admin-field">
-      <label>新的業務員密碼 / Password Sales Baru</label>
+      <label>新的業務員密碼</label>
       <input type="password" id="adm-new-sales" placeholder="輸入新密碼">
     </div>
     <div class="admin-field">
@@ -275,12 +268,12 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
     </div>
     <hr style="border:none;border-top:1px solid var(--border);margin:14px 0">
     <div class="admin-field">
-      <label>新的管理員密碼 / Password Admin Baru</label>
-      <input type="password" id="adm-new-admin" placeholder="輸入新密碼（留空則不更改）">
+      <label>新的管理員密碼（留空則不更改）</label>
+      <input type="password" id="adm-new-admin" placeholder="輸入新密碼">
     </div>
     <div class="admin-field">
       <label>確認管理員密碼</label>
-      <input type="password" id="adm-confirm-admin" placeholder="再次確認密碼（留空則不更改）">
+      <input type="password" id="adm-confirm-admin" placeholder="再次確認密碼">
     </div>
     <div class="admin-btns">
       <button class="admin-save-btn" onclick="saveAdminPw()">💾 儲存變更</button>
@@ -289,7 +282,6 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
     <div class="admin-msg" id="adm-msg"></div>
   </div>
 </div>
-
 
 <div class="hdr">
   <div>
@@ -733,14 +725,21 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
               <div class="fg"><label>貨車油耗 (L / 100km)</label><input type="number" id="w_ship_fuel" value="15" step="0.5" oninput="calcWt();updateShipCalc()"></div>
             </div>
             <div class="g3">
-              <div class="fg"><label>貨車滿載重量 (kg)</label><input type="number" id="w_ship_load" value="3000" oninput="calcWt();updateShipCalc()"></div>
-              <div class="fg"><label>此訂單分攤重量 (kg)</label><input type="number" id="w_ship_share" value="200" oninput="calcWt();updateShipCalc()"></div>
+              <div class="fg"><label>貨車最大載重量 (kg)</label><input type="number" id="w_ship_load" value="3000" oninput="calcWt();updateShipCalc()"></div>
+              <div class="fg"><label>此批貨物實際重量 (kg)</label><input type="number" id="w_ship_share" value="200" oninput="calcWt();updateShipCalc()"></div>
               <div class="fg"><label>司機日薪 (Rp)</label><input type="number" id="w_ship_driver" value="300000" oninput="calcWt();updateShipCalc()"></div>
+            </div>
+            <div class="g3">
+              <div class="fg"><label>此批出貨台數 (台)</label><input type="number" id="w_ship_qty" value="1" min="1" oninput="calcWt();updateShipCalc()"></div>
+              <div class="fg" style="grid-column:span 2">
+                <label style="color:var(--muted);font-size:11px">💡 專車送貨時：「此批貨物實際重量」填貨物實際總重，不需填滿載重量；系統自動除以台數得每台運費</label>
+              </div>
             </div>
             <div class="formula-box" style="margin-top:8px">
               <div class="f-title">運費計算明細</div>
               <div class="f-line" id="ship_calc_line1">—</div>
               <div class="f-line" id="ship_calc_line2">—</div>
+              <div class="f-line" id="ship_calc_line3">—</div>
               <div class="f-result" id="ship_calc_result">—</div>
             </div>
           </div>
@@ -1475,11 +1474,58 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
             <input type="number" id="fp_labor12" value="9000" oninput="calcFinCost()">
           </div>
         </div>
-        <div class="g2">
+        <!-- 運費模式切換 -->
+        <div style="margin-bottom:8px">
+          <div style="font-size:11.5px;color:var(--muted);font-weight:600;margin-bottom:5px">運費計算方式 / Cara Hitung Ongkir</div>
+          <div style="display:flex;gap:0;border:1.5px solid var(--border);border-radius:7px;overflow:hidden;width:fit-content">
+            <button id="fp_ship_mode_auto" onclick="setFinShipMode('auto')"
+              style="padding:5px 14px;border:none;cursor:pointer;font-size:12px;font-weight:600;background:var(--blue);color:#fff;transition:.15s">
+              🚚 自動計算
+            </button>
+            <button id="fp_ship_mode_manual" onclick="setFinShipMode('manual')"
+              style="padding:5px 14px;border:none;cursor:pointer;font-size:12px;font-weight:600;background:#fff;color:var(--muted);transition:.15s">
+              ✏️ 手動輸入
+            </button>
+          </div>
+        </div>
+
+        <!-- 自動計算區塊 -->
+        <div id="fp_ship_auto_block">
+          <div class="g3">
+            <div class="fg"><label>汽油單價 (Rp / L)</label><input type="number" id="fp_ship_oil" value="10000" oninput="calcFinShipAuto()"></div>
+            <div class="fg"><label>廠商距離 (km, 單程)</label><input type="number" id="fp_ship_dist" value="50" oninput="calcFinShipAuto()"></div>
+            <div class="fg"><label>貨車油耗 (L / 100km)</label><input type="number" id="fp_ship_fuel" value="15" step="0.5" oninput="calcFinShipAuto()"></div>
+          </div>
+          <div class="g3">
+            <div class="fg"><label>貨車最大載重量 (kg)</label><input type="number" id="fp_ship_load" value="3000" oninput="calcFinShipAuto()"></div>
+            <div class="fg"><label>此批貨物實際重量 (kg)</label><input type="number" id="fp_ship_share" value="500" oninput="calcFinShipAuto()"></div>
+            <div class="fg"><label>司機日薪 (Rp)</label><input type="number" id="fp_ship_driver" value="300000" oninput="calcFinShipAuto()"></div>
+          </div>
+          <div class="formula-box" style="margin-top:6px;margin-bottom:8px">
+            <div class="f-title">運費計算明細 / Rincian Ongkir</div>
+            <div class="f-line" id="fp_ship_line1">—</div>
+            <div class="f-line" id="fp_ship_line2">—</div>
+            <div class="f-line" id="fp_ship_line3">—</div>
+            <div class="f-result" id="fp_ship_result">—</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+            <div style="font-size:11.5px;color:var(--muted)">自動帶入運費：</div>
+            <div style="font-size:14px;font-weight:700;color:var(--blue)" id="fp_ship_auto_kg">— Rp/kg</div>
+          </div>
+        </div>
+
+        <!-- 手動輸入區塊 -->
+        <div id="fp_ship_manual_block" style="display:none">
           <div class="fg">
             <label>運費 / Ongkir (Rp / kg)</label>
-            <input type="number" id="fp_ship" value="1500" oninput="calcFinCost()">
+            <input type="number" id="fp_ship_manual" value="1500" oninput="calcFinCost()">
           </div>
+        </div>
+
+        <!-- 隱藏欄位供計算用 -->
+        <input type="hidden" id="fp_ship" value="1500">
+
+        <div class="g2" style="margin-top:4px">
           <div class="fg">
             <label>利潤 / Laba (Rp / kg)</label>
             <input type="number" id="fp_profit" value="1000" oninput="calcFinCost()">
@@ -1602,15 +1648,47 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
 
   <!-- 散熱片報價記錄 -->
   <div class="card" style="margin-top:4px">
-    <div class="card-title">📋 散熱片報價記錄 / Riwayat Penawaran Radiator</div>
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid var(--border)">
+      <div class="card-title" style="margin:0;padding:0;border:none">📋 散熱片報價記錄 / Riwayat Penawaran Radiator</div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap">
+        <button class="btn btn-ghost btn-sm" onclick="exportFinCSV()" title="匯出 CSV">📥 匯出 CSV</button>
+        <button class="btn btn-ghost btn-sm" onclick="exportFinXLSX()" style="border-color:var(--green);color:var(--green)" title="匯出 Excel">📊 匯出 Excel</button>
+        <button class="btn btn-ghost btn-sm" onclick="syncFinToGSheet()" style="border-color:#0F9D58;color:#0F9D58" title="同步到 Google Sheets">
+          <svg width="13" height="13" viewBox="0 0 24 24" style="vertical-align:-2px;margin-right:3px" fill="currentColor"><path d="M19.188 2H8.062a.75.75 0 0 0-.53.22L2.22 7.53a.75.75 0 0 0-.22.53v13.94A.75.75 0 0 0 2.75 22.75h16.438a.75.75 0 0 0 .75-.75V2.75a.75.75 0 0 0-.75-.75zM7.312 4.06v2.94H4.37zm11.126 17.19H3.5V8.5h4.562a.75.75 0 0 0 .75-.75V3.5h9.626z"/></svg>
+          同步 Google Sheets
+        </button>
+        <button class="btn btn-sm btn-red" onclick="clearFinRecs()">🗑️ 清除</button>
+      </div>
+    </div>
+
+    <!-- Google Sheets 設定（摺疊） -->
+    <div id="fin_gs_panel" style="display:none;background:var(--green2);border:1px solid #a7d9b8;border-radius:8px;padding:10px 13px;margin-bottom:10px;font-size:12px">
+      <div style="font-weight:700;color:var(--green);margin-bottom:7px">🔗 Google Sheets 連接設定</div>
+      <div style="color:var(--muted);margin-bottom:8px;font-size:11px">
+        請先建立 Google Apps Script Webhook，將 URL 貼入下方。
+        <a href="#" onclick="showGSGuide();return false" style="color:var(--blue);text-decoration:underline">查看設定說明 ▶</a>
+      </div>
+      <div class="fg" style="margin-bottom:6px">
+        <label>Apps Script Webhook URL</label>
+        <input type="text" id="fin_gs_url" placeholder="https://script.google.com/macros/s/.../exec"
+          style="font-size:11px;font-family:monospace" oninput="localStorage.setItem('dfi_fin_gs_url',this.value)">
+      </div>
+      <div class="fg" style="margin-bottom:0">
+        <label>工作表名稱 (Sheet Name，留空預設「散熱片記錄」)</label>
+        <input type="text" id="fin_gs_sheet" placeholder="散熱片記錄"
+          style="font-size:11px" oninput="localStorage.setItem('dfi_fin_gs_sheet',this.value)">
+      </div>
+    </div>
+
     <div style="overflow-x:auto">
       <table>
-        <tr><th>日期</th><th>客戶</th><th>規格</th><th>重量(kg)</th><th>Rp/kg成本</th><th>Rp/kg報價</th><th>毛利率</th><th>一台成本</th><th>一台報價</th><th></th></tr>
+        <tr><th>日期</th><th>客戶</th><th>規格</th><th>組數</th><th>台數</th><th>一台重(kg)</th><th>Rp/kg成本</th><th>Rp/kg報價</th><th>毛利率</th><th>一台成本</th><th>一台報價</th><th></th></tr>
         <tbody id="fin_rec_tbody">
-          <tr><td colspan="10" style="text-align:center;color:var(--light);padding:14px">尚無記錄 / Belum ada data</td></tr>
+          <tr><td colspan="12" style="text-align:center;color:var(--light);padding:14px">尚無記錄 / Belum ada data</td></tr>
         </tbody>
       </table>
     </div>
+    <div id="fin_sync_status" style="font-size:11px;color:var(--muted);margin-top:6px;min-height:16px"></div>
   </div>
 </div>
 
@@ -1626,7 +1704,7 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
       </select>
       <button class="btn btn-ghost btn-sm" onclick="exportCSV()" title="匯出 CSV 格式">📥 匯出 CSV</button>
       <button class="btn btn-ghost btn-sm" onclick="exportXLSX()" style="border-color:var(--green);color:var(--green)" title="匯出 Excel 格式">📊 匯出 Excel</button>
-      <button class="btn btn-ghost btn-sm" onclick="syncAllToSheet()" style="border-color:#0f9d58;color:#0f9d58" title="全量同步到 Google Sheets">
+      <button class="btn btn-ghost btn-sm" onclick="syncAllToSheet()" style="border-color:#0f9d58;color:#0f9d58">
         <img src="https://www.gstatic.com/images/branding/product/1x/sheets_2020q4_32dp.png" style="width:14px;height:14px;vertical-align:middle;margin-right:3px">同步 Sheets
       </button>
       <button class="btn btn-sm btn-red" onclick="clearAllRec()">🗑️ 清除全部</button>
@@ -1862,105 +1940,8 @@ const WT_PRE={
   1250:{weight:633,fin:0,   pr_kg:0,   tc_kg:0,   lpg:35, hr:0,  ppl:4, fin_spec:'',fin_t:1.2,fin_L:900,fin_W:190,fin_P:27,fin_sets:4},
 };
 
-// ─────────────────────────────────────────────
-//  LOGIN / AUTH SYSTEM
-// ─────────────────────────────────────────────
-// Default passwords — stored in localStorage so admin can change them
-const PW_DEFAULTS = {
-  sales: 'TCMW2026',
-  admin: 'TCMW@cody202688'
-};
-let currentRole = null; // 'sales' | 'admin'
-let loginSelectedRole = 'sales';
-
-function getPw(role) {
-  return localStorage.getItem('dfi_pw_' + role) || PW_DEFAULTS[role];
-}
-
-function selectRole(role) {
-  loginSelectedRole = role;
-  document.getElementById('tab-sales').classList.toggle('active', role === 'sales');
-  document.getElementById('tab-admin').classList.toggle('active', role === 'admin');
-  document.getElementById('login-role-label').textContent =
-    role === 'admin' ? '管理員密碼 / Password Admin' : '業務員密碼 / Password Sales';
-  document.getElementById('login-pw').value = '';
-  document.getElementById('login-err').classList.remove('show');
-}
-
-function doLogin() {
-  const pw = document.getElementById('login-pw').value;
-  const errEl = document.getElementById('login-err');
-  if (pw === getPw(loginSelectedRole)) {
-    currentRole = loginSelectedRole;
-    sessionStorage.setItem('dfi_role', currentRole);
-    document.getElementById('login-overlay').classList.add('hidden');
-    const badge = document.getElementById('role-badge');
-    if (currentRole === 'admin') {
-      badge.textContent = '🔑 管理員';
-      badge.className = 'role-badge admin';
-    } else {
-      badge.textContent = '👤 業務員';
-      badge.className = 'role-badge sales';
-    }
-    errEl.classList.remove('show');
-  } else {
-    errEl.classList.add('show');
-    document.getElementById('login-pw').value = '';
-    document.getElementById('login-pw').focus();
-  }
-}
-
-function doLogout() {
-  if (!confirm('確定要登出嗎？')) return;
-  currentRole = null;
-  sessionStorage.removeItem('dfi_role');
-  document.getElementById('login-pw').value = '';
-  document.getElementById('login-err').classList.remove('show');
-  selectRole('sales');
-  document.getElementById('login-overlay').classList.remove('hidden');
-}
-
-function onRoleBadgeClick() {
-  if (currentRole === 'admin') openAdminModal();
-}
-
-function openAdminModal() {
-  document.getElementById('adm-new-sales').value = '';
-  document.getElementById('adm-confirm-sales').value = '';
-  document.getElementById('adm-new-admin').value = '';
-  document.getElementById('adm-confirm-admin').value = '';
-  document.getElementById('adm-msg').className = 'admin-msg';
-  document.getElementById('adm-msg').textContent = '';
-  document.getElementById('admin-modal').classList.add('show');
-}
-
-function closeAdminModal() {
-  document.getElementById('admin-modal').classList.remove('show');
-}
-
-function saveAdminPw() {
-  const msgEl = document.getElementById('adm-msg');
-  const ns = document.getElementById('adm-new-sales').value;
-  const cs = document.getElementById('adm-confirm-sales').value;
-  const na = document.getElementById('adm-new-admin').value;
-  const ca = document.getElementById('adm-confirm-admin').value;
-
-  if (!ns) { msgEl.textContent = '❌ 業務員新密碼不可空白'; msgEl.className='admin-msg err'; return; }
-  if (ns !== cs) { msgEl.textContent = '❌ 業務員兩次密碼不相符'; msgEl.className='admin-msg err'; return; }
-  if (na && na !== ca) { msgEl.textContent = '❌ 管理員兩次密碼不相符'; msgEl.className='admin-msg err'; return; }
-  if (ns.length < 6) { msgEl.textContent = '❌ 密碼至少需6個字元'; msgEl.className='admin-msg err'; return; }
-
-  localStorage.setItem('dfi_pw_sales', ns);
-  if (na) localStorage.setItem('dfi_pw_admin', na);
-
-  msgEl.textContent = '✅ 密碼已成功更新！';
-  msgEl.className = 'admin-msg ok';
-  setTimeout(closeAdminModal, 1500);
-}
-
-// ─────────────────────────────────────────────
 function init(){
-  // Clear session on every page load — force re-login each visit
+  // 每次開啟頁面都需重新登入
   sessionStorage.removeItem('dfi_role');
   currentRole = null;
   document.getElementById('login-overlay').classList.remove('hidden');
@@ -1981,7 +1962,7 @@ function init(){
   updateDerived(); renderCustDrops(); renderCust(); renderRec();
   initFinRows(); calcWt(); calcArea(); updatePaintExample();
   calcLpgAuto(); calcLaborAuto();
-  finPageRecs=JSON.parse(localStorage.getItem('dfi_fin_recs')||'[]'); renderFinRecs(); calcFinCost();
+  finPageRecs=JSON.parse(localStorage.getItem('dfi_fin_recs')||'[]'); renderFinRecs(); setFinShipMode('auto');
 }
 
 function showPg(id,btn){document.querySelectorAll('.pg').forEach(p=>p.classList.remove('on'));document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('on'));$(id).classList.add('on');if(btn)btn.classList.add('on');}
@@ -2132,13 +2113,22 @@ function recalcWeight(){
 }
 function updateShipCalc(){
   const oilRp=pf('w_ship_oil_rp'), dist=pf('w_ship_dist'), fuelL100=pf('w_ship_fuel');
-  const load=pf('w_ship_load')||1, share=pf('w_ship_share'), driver=pf('w_ship_driver');
-  const tripFuel=(dist*2/100)*fuelL100*oilRp, tripTotal=tripFuel+driver;
-  const perUnit=tripTotal*(share/load);
+  const load=pf('w_ship_load')||1, share=pf('w_ship_share')||1, driver=pf('w_ship_driver');
+  const qty=Math.max(1, pf('w_ship_qty')||1);
+  const tripFuel=(dist*2/100)*fuelL100*oilRp;
+  const tripTotal=tripFuel+driver;
+  const batchCost=tripTotal*(share/load);   // 此批貨分攤的運費
+  const perUnit=batchCost/qty;              // 每台運費
+  const ratio=(share/load*100).toFixed(1);
   const e=id=>document.getElementById(id);
-  e('ship_calc_line1').textContent=`燃油費：來回${dist*2}km × ${fuelL100}L/100km × Rp${Math.round(oilRp).toLocaleString('en-US')} = Rp ${Math.round(tripFuel).toLocaleString('en-US')}`;
-  e('ship_calc_line2').textContent=`一趟總費：Rp${Math.round(tripFuel).toLocaleString('en-US')} + 司機Rp${driver.toLocaleString('en-US')} = Rp ${Math.round(tripTotal).toLocaleString('en-US')}`;
-  e('ship_calc_result').textContent=`此訂單分攤：Rp${Math.round(tripTotal).toLocaleString('en-US')} × (${share}kg ÷ ${load}kg) = Rp ${Math.round(perUnit).toLocaleString('en-US')} / 台`;
+  e('ship_calc_line1').textContent=
+    `① 燃油費：來回 ${dist*2} km × ${fuelL100} L/100km × Rp ${Math.round(oilRp).toLocaleString('en-US')} /L = Rp ${Math.round(tripFuel).toLocaleString('en-US')}`;
+  e('ship_calc_line2').textContent=
+    `② 本趟總費：燃油 Rp ${Math.round(tripFuel).toLocaleString('en-US')} + 司機日薪 Rp ${Math.round(driver).toLocaleString('en-US')} = Rp ${Math.round(tripTotal).toLocaleString('en-US')}`;
+  e('ship_calc_line3').textContent=
+    `③ 此批分攤：Rp ${Math.round(tripTotal).toLocaleString('en-US')} × (${share} kg ÷ ${load} kg) = Rp ${Math.round(batchCost).toLocaleString('en-US')}　（佔車載 ${ratio}%）`;
+  e('ship_calc_result').textContent=
+    `④ 每台運費：Rp ${Math.round(batchCost).toLocaleString('en-US')} ÷ ${qty} 台 = Rp ${Math.round(perUnit).toLocaleString('en-US')} / 台`;
 }
 function calcWt(){
   const wt=pf('w_weight')||1, qty=pf('w_qty')||1;
@@ -2165,9 +2155,10 @@ function calcWt(){
   const c_ship  = get('ck_ship',  ()=>{
     const oilRp=pf('w_ship_oil_rp'), dist=pf('w_ship_dist'), fuelL100=pf('w_ship_fuel');
     const load=pf('w_ship_load')||1, share=pf('w_ship_share')||wt, driver=pf('w_ship_driver');
+    const shipQty=Math.max(1, pf('w_ship_qty')||1);
     const tripFuel = (dist*2/100)*fuelL100*oilRp;
     const tripTotal = tripFuel + driver;
-    return tripTotal * (share/load);
+    return (tripTotal * (share/load)) / shipQty;
   });
   const c_sp = c_clear + c_oil;
   const total = c_shell+c_fin+c_weld+c_pr+c_tc+c_sp+c_clamp+c_lpg+c_labor+c_pkg+c_ship;
@@ -2753,65 +2744,102 @@ function renderMulti(){
 
 function setPbar(id,pct){const el=$(id);el.style.width=Math.min(100,Math.max(0,pct))+'%';el.style.background=pct>=25?'#22c55e':pct>=15?'#f59e0b':'#ef4444';}
 
-// ── Google Sheets 同步 ──
-const GS_URL = 'https://script.google.com/macros/s/AKfycbzRLjgDywzsxuZW7xRbCVq9P88GugcalYR2atKIiXncR1Xwlr2ZuP2fIsbMx2OiUyLk/exec';
-
-function recToSheetRow(r) {
-  return {
-    date: r.date,
-    type: r.mode==='wt' ? '⚖️ 變壓器（按重量）' : '📐 鐵箱/充電殼（按面積）',
-    cust: r.cust||'',
-    model: r.model||'',
-    size: r.size||'',
-    qty: r.qty||1,
-    unit_cost: r.unit_cost!=null ? r.unit_cost : '',
-    unit_quote: r.unit_quote!=null ? r.unit_quote : '',
-    unit_label: r.unit_label||'',
-    cost: r.cost||0,
-    quote: r.quote||0,
-    margin: r.margin!=null ? r.margin : 0,
-    note: r.note||''
-  };
+// ── LOGIN SYSTEM ──
+const PW_DEFAULTS = { sales: 'TCMW2026', admin: 'TCMW@cody202688' };
+let currentRole = null;
+let loginSelectedRole = 'sales';
+function getPw(role){ return localStorage.getItem('dfi_pw_'+role)||PW_DEFAULTS[role]; }
+function selectRole(role){
+  loginSelectedRole=role;
+  document.getElementById('tab-sales').classList.toggle('active',role==='sales');
+  document.getElementById('tab-admin').classList.toggle('active',role==='admin');
+  document.getElementById('login-role-label').textContent=role==='admin'?'管理員密碼 / Password Admin':'業務員密碼 / Password Sales';
+  document.getElementById('login-pw').value='';
+  document.getElementById('login-err').classList.remove('show');
 }
-
-function syncToSheet(action, payload) {
-  const gsStatus = document.getElementById('gs-status');
-  if (gsStatus) { gsStatus.textContent = '⏳ 同步中...'; gsStatus.style.color='var(--orange)'; }
-  try {
-    const json = encodeURIComponent(JSON.stringify(payload));
-    const url = GS_URL + '?data=' + json;
-    // 用隱藏 form + iframe 提交，不受 CSP 限制
-    const iframeName = 'gs_iframe_' + Date.now();
-    const iframe = document.createElement('iframe');
-    iframe.name = iframeName;
-    iframe.style.display = 'none';
-    document.body.appendChild(iframe);
-    const form = document.createElement('form');
-    form.method = 'GET';
-    form.action = GS_URL;
-    form.target = iframeName;
-    form.style.display = 'none';
-    const input = document.createElement('input');
-    input.type = 'hidden';
-    input.name = 'data';
-    input.value = JSON.stringify(payload);
-    form.appendChild(input);
-    document.body.appendChild(form);
-    form.submit();
-    setTimeout(() => {
-      try { document.body.removeChild(form); document.body.removeChild(iframe); } catch(e) {}
-      if (gsStatus) { gsStatus.textContent = '✅ 已同步 Google Sheets'; gsStatus.style.color='var(--green)'; }
-      setTimeout(()=>{ if(gsStatus) gsStatus.textContent=''; }, 5000);
-    }, 3000);
-  } catch(e) {
-    if (gsStatus) { gsStatus.textContent = '⚠️ 同步失敗'; gsStatus.style.color='var(--red)'; }
+function doLogin(){
+  const pw=document.getElementById('login-pw').value;
+  const errEl=document.getElementById('login-err');
+  if(pw===getPw(loginSelectedRole)){
+    currentRole=loginSelectedRole;
+    sessionStorage.setItem('dfi_role',currentRole);
+    document.getElementById('login-overlay').classList.add('hidden');
+    const badge=document.getElementById('role-badge');
+    if(currentRole==='admin'){badge.textContent='🔑 管理員';badge.className='role-badge admin';}
+    else{badge.textContent='👤 業務員';badge.className='role-badge sales';}
+    errEl.classList.remove('show');
+  } else {
+    errEl.classList.add('show');
+    document.getElementById('login-pw').value='';
+    document.getElementById('login-pw').focus();
   }
 }
+function doLogout(){
+  if(!confirm('確定要登出嗎？'))return;
+  currentRole=null; sessionStorage.removeItem('dfi_role');
+  document.getElementById('login-pw').value='';
+  document.getElementById('login-err').classList.remove('show');
+  selectRole('sales');
+  document.getElementById('login-overlay').classList.remove('hidden');
+}
+function onRoleBadgeClick(){ if(currentRole==='admin') openAdminModal(); }
+function openAdminModal(){
+  document.getElementById('adm-new-sales').value='';
+  document.getElementById('adm-confirm-sales').value='';
+  document.getElementById('adm-new-admin').value='';
+  document.getElementById('adm-confirm-admin').value='';
+  document.getElementById('adm-msg').className='admin-msg';
+  document.getElementById('adm-msg').textContent='';
+  document.getElementById('admin-modal').classList.add('show');
+}
+function closeAdminModal(){ document.getElementById('admin-modal').classList.remove('show'); }
+function saveAdminPw(){
+  const msgEl=document.getElementById('adm-msg');
+  const ns=document.getElementById('adm-new-sales').value;
+  const cs=document.getElementById('adm-confirm-sales').value;
+  const na=document.getElementById('adm-new-admin').value;
+  const ca=document.getElementById('adm-confirm-admin').value;
+  if(!ns){msgEl.textContent='❌ 業務員新密碼不可空白';msgEl.className='admin-msg err';return;}
+  if(ns!==cs){msgEl.textContent='❌ 業務員兩次密碼不相符';msgEl.className='admin-msg err';return;}
+  if(na&&na!==ca){msgEl.textContent='❌ 管理員兩次密碼不相符';msgEl.className='admin-msg err';return;}
+  if(ns.length<6){msgEl.textContent='❌ 密碼至少需6個字元';msgEl.className='admin-msg err';return;}
+  localStorage.setItem('dfi_pw_sales',ns);
+  if(na) localStorage.setItem('dfi_pw_admin',na);
+  msgEl.textContent='✅ 密碼已成功更新！'; msgEl.className='admin-msg ok';
+  setTimeout(closeAdminModal,1500);
+}
 
-function syncAllToSheet() {
-  if (!records.length) { alert('目前無記錄可同步'); return; }
-  if (!confirm('確定將所有本機記錄（'+records.length+'筆）全量同步到 Google Sheets？\n（這會覆蓋 Google Sheets 現有資料）')) return;
-  syncToSheet('sync_all', { action: 'sync_all', records: records.map(recToSheetRow) });
+// ── GOOGLE SHEETS SYNC ──
+const GS_URL = 'https://script.google.com/macros/s/AKfycbzRLjgDywzsxuZW7xRbCVq9P88GugcalYR2atKIiXncR1Xwlr2ZuP2fIsbMx2OiUyLk/exec';
+function recToSheetRow(r){
+  return {date:r.date,type:r.mode==='wt'?'⚖️ 變壓器（按重量）':'📐 鐵箱/充電殼（按面積）',cust:r.cust||'',model:r.model||'',size:r.size||'',qty:r.qty||1,unit_cost:r.unit_cost!=null?r.unit_cost:'',unit_quote:r.unit_quote!=null?r.unit_quote:'',unit_label:r.unit_label||'',cost:r.cost||0,quote:r.quote||0,margin:r.margin!=null?r.margin:0,note:r.note||''};
+}
+function syncToSheet(action,payload){
+  const gsStatus=document.getElementById('gs-status');
+  if(gsStatus){gsStatus.textContent='⏳ 同步中...';gsStatus.style.color='var(--orange)';}
+  try{
+    const iframeName='gs_iframe_'+Date.now();
+    const iframe=document.createElement('iframe');
+    iframe.name=iframeName; iframe.style.display='none';
+    document.body.appendChild(iframe);
+    const form=document.createElement('form');
+    form.method='GET'; form.action=GS_URL; form.target=iframeName; form.style.display='none';
+    const input=document.createElement('input');
+    input.type='hidden'; input.name='data'; input.value=JSON.stringify(payload);
+    form.appendChild(input); document.body.appendChild(form); form.submit();
+    setTimeout(()=>{
+      try{document.body.removeChild(form);document.body.removeChild(iframe);}catch(e){}
+      if(gsStatus){gsStatus.textContent='✅ 已同步 Google Sheets';gsStatus.style.color='var(--green)';}
+      setTimeout(()=>{if(gsStatus)gsStatus.textContent='';},5000);
+    },3000);
+  }catch(e){
+    if(gsStatus){gsStatus.textContent='⚠️ 同步失敗';gsStatus.style.color='var(--red)';}
+  }
+}
+function syncAllToSheet(){
+  if(!records.length){alert('目前無記錄可同步');return;}
+  if(!confirm('確定將所有本機記錄（'+records.length+'筆）全量同步到 Google Sheets？\n（這會覆蓋 Google Sheets 現有資料）'))return;
+  syncToSheet('sync_all',{action:'sync_all',records:records.map(recToSheetRow)});
 }
 
 function saveRec(mode){
@@ -2827,10 +2855,8 @@ function saveRec(mode){
     const arUnitCost=+c_cm2.toFixed(4); const arUnitQuote=qcm2?+qcm2.toFixed(4):+(sq||0).toFixed(4);
     rec={mode:'ar',date:today(),cust:$('a_cust').value||'—',model:$('a_model').value||'—',size:area+'cm²',qty,cost:Math.round(fc),quote:Math.round(fq),unit_cost:arUnitCost,unit_quote:arUnitQuote,unit_label:'Rp/cm²',margin:+fm.toFixed(1),note:$('a_note').value};
   } else return;
-  records.unshift(rec);
-  localStorage.setItem('dfi_recs',JSON.stringify(records));
-  // 自動同步這一筆到 Google Sheets
-  syncToSheet('append', { action:'append', record: recToSheetRow(rec) });
+  records.unshift(rec); localStorage.setItem('dfi_recs',JSON.stringify(records));
+  syncToSheet('append',{action:'append',record:recToSheetRow(rec)});
   renderRec(); showPg('pg_rec',document.querySelectorAll('.nav button')[2]); alert('✅ 報價記錄已儲存！正在同步到 Google Sheets...');
 }
 function today(){return new Date().toLocaleDateString('zh-Hant',{year:'numeric',month:'2-digit',day:'2-digit'});}
@@ -3404,6 +3430,57 @@ function parseFinPageSpec() {
   }
 }
 
+// ── 散熱片運費模式切換 ──────────────────────────────────────
+let _finShipMode = 'auto';
+
+function setFinShipMode(mode) {
+  _finShipMode = mode;
+  const isAuto = mode === 'auto';
+  document.getElementById('fp_ship_auto_block').style.display   = isAuto ? '' : 'none';
+  document.getElementById('fp_ship_manual_block').style.display = isAuto ? 'none' : '';
+  const btnA = document.getElementById('fp_ship_mode_auto');
+  const btnM = document.getElementById('fp_ship_mode_manual');
+  btnA.style.background = isAuto ? 'var(--blue)' : '#fff';
+  btnA.style.color      = isAuto ? '#fff'         : 'var(--muted)';
+  btnM.style.background = isAuto ? '#fff'         : 'var(--blue)';
+  btnM.style.color      = isAuto ? 'var(--muted)' : '#fff';
+  if (isAuto) calcFinShipAuto(); else calcFinCost();
+}
+
+function calcFinShipAuto() {
+  const oil    = parseFloat(document.getElementById('fp_ship_oil')?.value)    || 0;
+  const dist   = parseFloat(document.getElementById('fp_ship_dist')?.value)   || 0;
+  const fuel   = parseFloat(document.getElementById('fp_ship_fuel')?.value)   || 15;
+  const load   = parseFloat(document.getElementById('fp_ship_load')?.value)   || 1;
+  const share  = parseFloat(document.getElementById('fp_ship_share')?.value)  || 0;
+  const driver = parseFloat(document.getElementById('fp_ship_driver')?.value) || 0;
+
+  const tripFuel  = (dist * 2 / 100) * fuel * oil;
+  const tripTotal = tripFuel + driver;
+  const batchCost = load > 0 ? tripTotal * (share / load) : 0;
+  const ratio     = load > 0 ? (share / load * 100).toFixed(1) : 0;
+
+  // 折算 Rp/kg（依此批貨物實際重量）
+  const shipKg = share > 0 ? batchCost / share : 0;
+
+  const sv = id => document.getElementById(id);
+  sv('fp_ship_line1').textContent =
+    `① 燃油費：來回 ${dist*2} km × ${fuel} L/100km × Rp ${Math.round(oil).toLocaleString('en-US')} /L = Rp ${Math.round(tripFuel).toLocaleString('en-US')}`;
+  sv('fp_ship_line2').textContent =
+    `② 本趟總費：燃油 Rp ${Math.round(tripFuel).toLocaleString('en-US')} + 司機日薪 Rp ${Math.round(driver).toLocaleString('en-US')} = Rp ${Math.round(tripTotal).toLocaleString('en-US')}`;
+  sv('fp_ship_line3').textContent =
+    `③ 此批分攤：Rp ${Math.round(tripTotal).toLocaleString('en-US')} × (${share} kg ÷ ${load} kg) = Rp ${Math.round(batchCost).toLocaleString('en-US')}　（佔車載 ${ratio}%）`;
+  sv('fp_ship_result').textContent =
+    `④ 折算運費：Rp ${Math.round(batchCost).toLocaleString('en-US')} ÷ ${share} kg = Rp ${shipKg.toFixed(1)} /kg`;
+  sv('fp_ship_auto_kg').textContent = `Rp ${shipKg.toFixed(1)} /kg`;
+
+  // 同步到隱藏欄位讓 calcFinCost 讀取
+  document.getElementById('fp_ship').value = shipKg.toFixed(2);
+  calcFinCost();
+}
+
+// ───────────────────────────────────────────────────────────────
+
 function calcFinCost() {
   const spccTax  = parseFloat(document.getElementById('fp_spcc_tax')?.value) || 16000;
   const lossPct  = (parseFloat(document.getElementById('fp_loss_pct')?.value) || 5) / 100;
@@ -3460,7 +3537,9 @@ function calcFinCost() {
   // Cost calculation
   const rodPriceNotax = getRodPriceNotax(d);
   const labor  = T <= 1 ? (parseFloat(document.getElementById('fp_labor10')?.value)||9500) : (parseFloat(document.getElementById('fp_labor12')?.value)||9000);
-  const ship   = parseFloat(document.getElementById('fp_ship')?.value) || 1500;
+  const ship   = _finShipMode === 'manual'
+    ? (parseFloat(document.getElementById('fp_ship_manual')?.value) || 0)
+    : (parseFloat(document.getElementById('fp_ship')?.value) || 0);
   const profit = parseFloat(document.getElementById('fp_profit')?.value) || 1000;
 
   // FINWALL cost: matCost (SPCC notax × 1.05) × weight
@@ -3535,10 +3614,13 @@ function saveFinRec() {
     (document.getElementById('fp_N1')?.value||'?') + 'P');
   const rec = {
     date: today(), cust: document.getElementById('fp_cust')?.value || '—',
-    spec, wt: +(wNSets||0).toFixed(3), cKg: +cKg.toFixed(0),
+    spec, sets: +sets, qty: +qty,
+    wt: +(wNSets||0).toFixed(3),   // 一台重量（N組合計）
+    cKg: +cKg.toFixed(0),
     qKg: +(sq_kg||cKg).toFixed(0),
     margin: sq_kg>0?+((sq_kg-cKg)/sq_kg*100).toFixed(1):0,
-    c1unit: Math.round(cTotal*sets), q1unit: Math.round((sq_kg||cKg)*(wNSets||0)),
+    c1unit: Math.round(cTotal*sets),
+    q1unit: Math.round((sq_kg||cKg)*(wNSets||0)),
   };
   finPageRecs.unshift(rec);
   localStorage.setItem('dfi_fin_recs', JSON.stringify(finPageRecs));
@@ -3550,13 +3632,15 @@ function renderFinRecs() {
   const el = document.getElementById('fin_rec_tbody');
   if (!el) return;
   if (!finPageRecs.length) {
-    el.innerHTML = '<tr><td colspan="10" style="text-align:center;color:var(--light);padding:14px">尚無記錄</td></tr>';
+    el.innerHTML = '<tr><td colspan="12" style="text-align:center;color:var(--light);padding:14px">尚無記錄 / Belum ada data</td></tr>';
     return;
   }
   el.innerHTML = finPageRecs.map((r,i) => `<tr>
     <td style="font-size:11px;white-space:nowrap">${r.date}</td>
     <td style="font-weight:600;font-size:12px">${r.cust}</td>
     <td style="font-family:monospace;font-size:12px">${r.spec}</td>
+    <td style="text-align:center">${r.sets||1}</td>
+    <td style="text-align:center">${r.qty||1}</td>
     <td>${r.wt} kg</td>
     <td style="color:var(--muted)">${Rp(r.cKg)}/kg</td>
     <td style="font-weight:700;color:var(--orange)">${Rp(r.qKg)}/kg</td>
@@ -3565,6 +3649,169 @@ function renderFinRecs() {
     <td style="font-weight:700;color:var(--blue)">${Rp(r.q1unit)}</td>
     <td><button class="btn btn-sm btn-red" onclick="finPageRecs.splice(${i},1);localStorage.setItem('dfi_fin_recs',JSON.stringify(finPageRecs));renderFinRecs()">🗑️</button></td>
   </tr>`).join('');
+}
+
+function clearFinRecs() {
+  if (!finPageRecs.length) return;
+  if (!confirm('確定要清除所有散熱片報價記錄嗎？')) return;
+  finPageRecs = [];
+  localStorage.setItem('dfi_fin_recs', JSON.stringify(finPageRecs));
+  renderFinRecs();
+}
+
+// ── 散熱片記錄匯出 CSV ──────────────────────────────────────
+function exportFinCSV() {
+  if (!finPageRecs.length) { alert('目前無散熱片報價記錄可匯出'); return; }
+  const headers = ['日期','客戶','規格','組數','台數','一台重量(kg)','成本Rp/kg','報價Rp/kg','毛利率%','一台成本(Rp)','一台報價(Rp)','整單報價(Rp)'];
+  const rows = finPageRecs.map(r => [
+    r.date, r.cust, r.spec, r.sets||1, r.qty||1, r.wt,
+    r.cKg, r.qKg, r.margin,
+    r.c1unit, r.q1unit,
+    Math.round(r.q1unit * (r.qty||1))
+  ]);
+  const csv = [headers, ...rows].map(row => row.map(v => `"${v}"`).join(',')).join('\n');
+  const a = document.createElement('a');
+  a.href = 'data:text/csv;charset=utf-8,\uFEFF' + encodeURIComponent(csv);
+  a.download = 'DFI_散熱片報價記錄_' + new Date().toISOString().slice(0,10) + '.csv';
+  a.click();
+}
+
+// ── 散熱片記錄匯出 Excel ────────────────────────────────────
+function exportFinXLSX() {
+  if (!finPageRecs.length) { alert('目前無散熱片報價記錄可匯出'); return; }
+  const wb = XLSX.utils.book_new();
+
+  // ── 記錄工作表 ──
+  const headers = ['日期','客戶','規格','組數(Set)','訂單台數','一台重量(kg)',
+    '成本 Rp/kg','報價 Rp/kg','毛利率(%)','一台成本(Rp)','一台報價(Rp)','整單報價(Rp)'];
+  const rows = finPageRecs.map(r => [
+    r.date, r.cust, r.spec, r.sets||1, r.qty||1, r.wt,
+    r.cKg, r.qKg, r.margin,
+    r.c1unit, r.q1unit,
+    Math.round(r.q1unit * (r.qty||1))
+  ]);
+  const wsData = [headers, ...rows];
+  const ws = XLSX.utils.aoa_to_sheet(wsData);
+  ws['!cols'] = [{wch:13},{wch:28},{wch:20},{wch:8},{wch:8},{wch:12},
+    {wch:14},{wch:14},{wch:10},{wch:16},{wch:16},{wch:16}];
+
+  // 標題列樣式
+  const rng = XLSX.utils.decode_range(ws['!ref']);
+  for (let c = rng.s.c; c <= rng.e.c; c++) {
+    const addr = XLSX.utils.encode_cell({r:0, c});
+    if (!ws[addr]) continue;
+    ws[addr].s = {
+      fill:{fgColor:{rgb:'1E6B3C'}}, font:{color:{rgb:'FFFFFF'},bold:true,sz:11},
+      alignment:{horizontal:'center',vertical:'center'}
+    };
+  }
+  // 資料列樣式
+  for (let r = 1; r < wsData.length; r++) {
+    const rec = finPageRecs[r-1];
+    for (let c = 0; c < headers.length; c++) {
+      const addr = XLSX.utils.encode_cell({r, c});
+      if (!ws[addr]) ws[addr] = {t:'s', v:''};
+      const bg = r%2===0 ? 'E8F5EE' : 'FFFFFF';
+      ws[addr].s = { fill:{fgColor:{rgb:bg}}, font:{sz:10}, alignment:{vertical:'center'} };
+      if ([3,4,5,6,7,8,9,10,11].includes(c))
+        ws[addr].s.alignment = {horizontal:'right',vertical:'center'};
+      if (c===8) { // 毛利率顏色
+        const m = rec?.margin||0;
+        ws[addr].s.font = {sz:10,bold:true,
+          color:{rgb: m>=20?'1E6B3C': m>=10?'D4770A':'B02828'}};
+      }
+    }
+  }
+  XLSX.utils.book_append_sheet(wb, ws, '散熱片報價記錄');
+
+  // ── 統計摘要工作表 ──
+  const n = finPageRecs.length;
+  const avgM = n ? (finPageRecs.reduce((s,r)=>s+(r.margin||0),0)/n) : 0;
+  const totRev  = finPageRecs.reduce((s,r)=>s+Math.round(r.q1unit*(r.qty||1)),0);
+  const totCost = finPageRecs.reduce((s,r)=>s+Math.round(r.c1unit*(r.qty||1)),0);
+  const wsSummary = XLSX.utils.aoa_to_sheet([
+    ['DFI 散熱片報價系統 — 統計摘要'],
+    ['匯出日期', new Date().toLocaleDateString('zh-Hant')],
+    [''],
+    ['項目','數值'],
+    ['總記錄筆數', n],
+    ['平均毛利率', avgM.toFixed(1)+'%'],
+    ['報價總金額 (Rp)', totRev],
+    ['成本總金額 (Rp)', totCost],
+    ['毛利總金額 (Rp)', totRev - totCost],
+  ]);
+  wsSummary['!cols'] = [{wch:28},{wch:22}];
+  XLSX.utils.book_append_sheet(wb, wsSummary, '統計摘要');
+
+  XLSX.writeFile(wb, 'DFI_散熱片報價記錄_' + new Date().toISOString().slice(0,10) + '.xlsx');
+}
+
+// ── Google Sheets 同步 ──────────────────────────────────────
+function syncFinToGSheet() {
+  const panel = document.getElementById('fin_gs_panel');
+  // 若尚未設定URL，先展開設定面板
+  const savedUrl = localStorage.getItem('dfi_fin_gs_url') || '';
+  if (document.getElementById('fin_gs_url'))
+    document.getElementById('fin_gs_url').value = savedUrl;
+  if (document.getElementById('fin_gs_sheet'))
+    document.getElementById('fin_gs_sheet').value = localStorage.getItem('dfi_fin_gs_sheet') || '';
+
+  if (!savedUrl) {
+    panel.style.display = panel.style.display === 'none' ? '' : 'none';
+    setFinSyncStatus('⚠️ 請先填入 Apps Script Webhook URL，再點擊「同步 Google Sheets」', 'var(--orange)');
+    return;
+  }
+  if (!finPageRecs.length) { alert('目前無散熱片報價記錄可同步'); return; }
+
+  const sheetName = (localStorage.getItem('dfi_fin_gs_sheet') || '散熱片記錄').trim() || '散熱片記錄';
+  const payload = {
+    sheet: sheetName,
+    headers: ['日期','客戶','規格','組數','訂單台數','一台重量(kg)',
+      '成本Rp/kg','報價Rp/kg','毛利率%','一台成本(Rp)','一台報價(Rp)','整單報價(Rp)'],
+    rows: finPageRecs.map(r => [
+      r.date, r.cust, r.spec, r.sets||1, r.qty||1, r.wt,
+      r.cKg, r.qKg, r.margin, r.c1unit, r.q1unit,
+      Math.round(r.q1unit*(r.qty||1))
+    ])
+  };
+
+  setFinSyncStatus('⏳ 同步中，請稍候…', 'var(--blue)');
+  fetch(savedUrl, {
+    method:'POST', mode:'no-cors',
+    headers:{'Content-Type':'application/json'},
+    body: JSON.stringify(payload)
+  }).then(() => {
+    setFinSyncStatus('✅ 已成功同步到 Google Sheets「' + sheetName + '」工作表！ — ' + new Date().toLocaleTimeString('zh-Hant'), 'var(--green)');
+  }).catch(err => {
+    setFinSyncStatus('❌ 同步失敗：' + err.message + '（請確認 Webhook URL 是否正確）', 'var(--red)');
+  });
+}
+
+function setFinSyncStatus(msg, color) {
+  const el = document.getElementById('fin_sync_status');
+  if (el) { el.textContent = msg; el.style.color = color; }
+}
+
+function showGSGuide() {
+  alert(`📋 Google Sheets 連接設定步驟：
+
+1. 開啟您的 Google Sheets
+2. 點選「擴充功能」→「Apps Script」
+3. 貼上以下程式碼並部署：
+
+function doPost(e) {
+  const data = JSON.parse(e.postData.contents);
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  let sh = ss.getSheetByName(data.sheet);
+  if (!sh) sh = ss.insertSheet(data.sheet);
+  if (sh.getLastRow() === 0) sh.appendRow(data.headers);
+  data.rows.forEach(row => sh.appendRow(row));
+  return ContentService.createTextOutput('OK');
+}
+
+4. 部署 → 新增部署 → 類型選「網頁應用程式」
+5. 執行身份：「我」/ 存取權限：「所有人」
+6. 複製部署 URL 貼回本系統`);
 }
 
 function resetFinPage() {
