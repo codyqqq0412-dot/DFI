@@ -250,6 +250,7 @@ body{font-family:"Segoe UI","Microsoft JhengHei",Arial,sans-serif;background:#f0
       <button class="subBtn" onclick="setSec('s5')">📐 點線圓</button>
       <button class="subBtn" onclick="setSec('s6')">🔍 追蹤功能</button>
       <button class="subBtn" onclick="setSec('s7')">🛠 保養維護</button>
+      <button class="subBtn" onclick="setSec('s8')">📝 現場筆記</button>
     </div>
     <div class="secContent" id="secContent"></div>
     <div class="footer">
@@ -309,16 +310,51 @@ body{font-family:"Segoe UI","Microsoft JhengHei",Arial,sans-serif;background:#f0
 <div id="adminModal">
   <div class="adminBox">
     <div class="adminTitle">⚙️ 管理員面板</div>
+
+    <!-- 系統資訊 -->
     <div class="adminInfo">
       <strong>系統名稱：</strong>FANUC 機器人完整培訓系統 V2.0<br>
       <strong>部署位置：</strong>DFI GitHub Pages<br>
       <strong>登入角色：</strong><span id="adminRoleInfo">—</span><br>
-      <strong>員工密碼：</strong>TCMW2026<br>
-      <strong>管理員密碼：</strong>TCMW@cody202688<br>
       <strong>資料語言：</strong>繁體中文 / Bahasa Indonesia<br>
       <strong>警報資料庫：</strong>309 代碼（SRVO系列）<br>
       <strong>版本：</strong>V2.0 雙語版
     </div>
+
+    <!-- 目前密碼顯示 -->
+    <div style="background:#f0f4ff;border-radius:10px;padding:14px;margin-bottom:14px;font-size:.84rem">
+      <div style="font-weight:800;color:#1a1a2e;margin-bottom:8px">🔐 目前登入密碼</div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
+        <span style="color:#555">員工密碼：</span>
+        <span id="showStaffPw" style="font-family:monospace;background:#fff;padding:3px 10px;border-radius:6px;border:1px solid #ddd;letter-spacing:2px">••••••••</span>
+        <button onclick="togglePw('staff')" style="background:none;border:1px solid #aaa;border-radius:6px;padding:2px 8px;font-size:.72rem;cursor:pointer;margin-left:6px">顯示</button>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between">
+        <span style="color:#555">管理員密碼：</span>
+        <span id="showAdminPw" style="font-family:monospace;background:#fff;padding:3px 10px;border-radius:6px;border:1px solid #ddd;letter-spacing:2px">••••••••</span>
+        <button onclick="togglePw('admin')" style="background:none;border:1px solid #aaa;border-radius:6px;padding:2px 8px;font-size:.72rem;cursor:pointer;margin-left:6px">顯示</button>
+      </div>
+    </div>
+
+    <!-- 更改密碼區塊 -->
+    <div style="background:#fff8e1;border:2px solid #FFD700;border-radius:10px;padding:14px;margin-bottom:14px">
+      <div style="font-weight:800;color:#1a1a2e;margin-bottom:10px">✏️ 更改密碼</div>
+
+      <div style="margin-bottom:8px">
+        <label style="font-size:.8rem;color:#555;display:block;margin-bottom:3px">員工新密碼</label>
+        <input id="newStaffPw" type="password" placeholder="輸入員工新密碼"
+          style="width:100%;padding:8px 12px;border:1px solid #ddd;border-radius:8px;font-size:.88rem;font-family:inherit"/>
+      </div>
+      <div style="margin-bottom:12px">
+        <label style="font-size:.8rem;color:#555;display:block;margin-bottom:3px">管理員新密碼</label>
+        <input id="newAdminPw" type="password" placeholder="輸入管理員新密碼"
+          style="width:100%;padding:8px 12px;border:1px solid #ddd;border-radius:8px;font-size:.88rem;font-family:inherit"/>
+      </div>
+      <button onclick="changePw()" style="width:100%;background:#FFD700;border:none;padding:9px;border-radius:8px;font-weight:800;cursor:pointer;font-size:.88rem;font-family:inherit">確認更改密碼</button>
+      <div id="pwChangeMsg" style="margin-top:8px;font-size:.8rem;min-height:16px;text-align:center"></div>
+      <div style="margin-top:8px;font-size:.74rem;color:#888;text-align:center">⚠️ 密碼僅儲存於本機瀏覽器，重新整理頁面後仍有效</div>
+    </div>
+
     <button class="adminClose" onclick="closeAdmin()">關閉</button>
   </div>
 </div>
@@ -332,18 +368,21 @@ const TRANS={"SRVO-065":{"name_tw":"BLAL — 電池電壓低警告！請立即�
 const MINI=[{"c":"SRVO-001","n":"操作面板紧急停止"},{"c":"SRVO-002","n":"示教器紧急停止"},{"c":"SRVO-003","n":"安全开关已释放"},{"c":"SRVO-004","n":"防护栅打开"},{"c":"SRVO-005","n":"机器人超行程"},{"c":"SRVO-006","n":"机械手断裂"},{"c":"SRVO-007","n":"外部紧急停止"},{"c":"SRVO-009","n":"气压报警"},{"c":"SRVO-010","n":"皮带破断"},{"c":"SRVO-012","n":"停电恢复"},{"c":"SRVO-014","n":"风扇电机异常"},{"c":"SRVO-015","n":"系统过热"},{"c":"SRVO-018","n":"制动器异常"},{"c":"SRVO-021","n":"SRDY 关闭"},{"c":"SRVO-022","n":"SRDY 开启"},{"c":"SRVO-023","n":"停止时误差过大"},{"c":"SRVO-024","n":"移动时误差过大"},{"c":"SRVO-025","n":"动作指令值溢出"},{"c":"SRVO-026","n":"电机速度极限"},{"c":"SRVO-027","n":"机器人未零点标定"},{"c":"SRVO-030","n":"制动器作用停止"},{"c":"SRVO-033","n":"机器人零点位置未标定"},{"c":"SRVO-034","n":"参考位置未设置"},{"c":"SRVO-035","n":"轴速度极限"},{"c":"SRVO-036","n":"定位超时"},{"c":"SRVO-037","n":"IMSTP 输入"},{"c":"SRVO-038","n":"脉冲值不匹配"},{"c":"SRVO-039","n":"电机速度过大"},{"c":"SRVO-041","n":"MOFAL 报警"},{"c":"SRVO-043","n":"DCAL 报警"},{"c":"SRVO-044","n":"DCHVAL 报警"},{"c":"SRVO-045","n":"HCAL 报警"},{"c":"SRVO-046","n":"OVC 报警"},{"c":"SRVO-047","n":"LVAL 报警"},{"c":"SRVO-049","n":"FSAL 报警"},{"c":"SRVO-050","n":"碰撞检测报警"},{"c":"SRVO-053","n":"CUER 报警"},{"c":"SRVO-055","n":"DVER 报警"},{"c":"SRVO-056","n":"FSSB 轴初始化失败"},{"c":"SRVO-057","n":"FSSB 线路断开"},{"c":"SRVO-058","n":"FSSB 错误"},{"c":"SRVO-059","n":"FSSB 通信错误"},{"c":"SRVO-060","n":"FSAL2 报警"},{"c":"SRVO-061","n":"CKAL 报警"},{"c":"SRVO-062","n":"BZAL 报警"},{"c":"SRVO-063","n":"RCAL 报警"},{"c":"SRVO-064","n":"PHAL 报警"},{"c":"SRVO-065","n":"BLAL 报警"},{"c":"SRVO-066","n":"CSAL 报警"},{"c":"SRVO-067","n":"OHAL2 报警"},{"c":"SRVO-068","n":"DTERR 报警"},{"c":"SRVO-069","n":"CRCERR 报警"},{"c":"SRVO-070","n":"STBERR 报警"},{"c":"SRVO-071","n":"SPHAL 报警"},{"c":"SRVO-072","n":"PMAL 报警"},{"c":"SRVO-073","n":"CMAL 报警"},{"c":"SRVO-075","n":"LDAL 报警"},{"c":"SRVO-095","n":"充电开始"},{"c":"SRVO-098","n":"重力补偿错误"},{"c":"SRVO-100","n":"SRV-100"},{"c":"SRVO-102","n":"伺服未就绪"},{"c":"SRVO-199","n":"控制停止"},{"c":"SRVO-200","n":"WARN"},{"c":"SRVO-201","n":"WARN"},{"c":"SRVO-202","n":"WARN"},{"c":"SRVO-213","n":"急停板FUSE2熔断"},{"c":"SRVO-214","n":"急停线路断开"}];
 
 // ════════════════ AUTH ════════════════
-const PASS_STAFF='TCMW2026';
-const PASS_ADMIN='TCMW@cody202688';
+const DEFAULT_STAFF='TCMW2026';
+const DEFAULT_ADMIN='TCMW@cody202688';
 let currentRole='';
+
+function getStaffPw(){ return localStorage.getItem('fanuc_staff_pw') || DEFAULT_STAFF; }
+function getAdminPw(){ return localStorage.getItem('fanuc_admin_pw') || DEFAULT_ADMIN; }
 
 function doLogin(){
   const pw=document.getElementById('pwInput').value;
   const err=document.getElementById('loginErr');
-  if(pw===PASS_ADMIN){
+  if(pw===getAdminPw()){
     currentRole='admin';
     sessionStorage.setItem('fanuc_role','admin');
     showApp();
-  } else if(pw===PASS_STAFF){
+  } else if(pw===getStaffPw()){
     currentRole='staff';
     sessionStorage.setItem('fanuc_role','staff');
     showApp();
@@ -375,7 +414,43 @@ function doLogout(){
   document.getElementById('loginErr').textContent='';
 }
 
-function openAdmin(){ document.getElementById('adminModal').classList.add('show'); }
+function openAdmin(){
+  document.getElementById('adminModal').classList.add('show');
+  // 重設顯示狀態
+  document.getElementById('showStaffPw').textContent='••••••••';
+  document.getElementById('showAdminPw').textContent='••••••••';
+  document.getElementById('newStaffPw').value='';
+  document.getElementById('newAdminPw').value='';
+  document.getElementById('pwChangeMsg').textContent='';
+}
+
+let pwVisible={staff:false,admin:false};
+function togglePw(role){
+  pwVisible[role]=!pwVisible[role];
+  const el=document.getElementById('show'+(role==='staff'?'Staff':'Admin')+'Pw');
+  el.textContent=pwVisible[role]?(role==='staff'?getStaffPw():getAdminPw()):'••••••••';
+  el.nextElementSibling.textContent=pwVisible[role]?'隱藏':'顯示';
+}
+
+function changePw(){
+  const ns=document.getElementById('newStaffPw').value.trim();
+  const na=document.getElementById('newAdminPw').value.trim();
+  const msg=document.getElementById('pwChangeMsg');
+  if(!ns && !na){ msg.style.color='#e53935'; msg.textContent='請至少輸入一個新密碼'; return; }
+  if(ns && ns.length<6){ msg.style.color='#e53935'; msg.textContent='員工密碼至少需要6個字元'; return; }
+  if(na && na.length<6){ msg.style.color='#e53935'; msg.textContent='管理員密碼至少需要6個字元'; return; }
+  if(ns===na && ns){ msg.style.color='#e53935'; msg.textContent='員工密碼與管理員密碼不可相同'; return; }
+  if(ns) localStorage.setItem('fanuc_staff_pw', ns);
+  if(na) localStorage.setItem('fanuc_admin_pw', na);
+  // 重設顯示
+  pwVisible={staff:false,admin:false};
+  document.getElementById('showStaffPw').textContent='••••••••';
+  document.getElementById('showAdminPw').textContent='••••••••';
+  document.getElementById('newStaffPw').value='';
+  document.getElementById('newAdminPw').value='';
+  msg.style.color='#2e7d32';
+  msg.textContent='✅ 密碼已更新！下次登入即生效';
+}
 function closeAdmin(){ document.getElementById('adminModal').classList.remove('show'); }
 
 // ════════════════ TAB SWITCH ════════════════
@@ -387,7 +462,7 @@ function switchTab(tab){
 }
 
 // ════════════════ TRAINING SECTIONS ════════════════
-const SECS=['s0','s1','s2','s3','s4','s5','s6','s7'];
+const SECS=['s0','s1','s2','s3','s4','s5','s6','s7','s8'];
 
 function setSec(id){
   SECS.forEach((s,i)=>{
@@ -420,6 +495,7 @@ function buildSec(id){
   if(id==='s5') return secMotion();
   if(id==='s6') return secTracking();
   if(id==='s7') return secMaintenance();
+  if(id==='s8') return secNotes();
   return '';
 }
 
@@ -572,6 +648,136 @@ function secMaintenance(){
     </div>
   </div>
   ${alert_('danger','禁止帶手套操作示教器、禁止在機器人動作範圍內進行調整、禁止未確認程式正確性前以100%速度自動運行','Dilarang: pakai sarung tangan saat operasi teach pendant, penyesuaian di area gerak robot, jalankan otomatis 100% sebelum konfirmasi program')}`;
+}
+
+
+function secNotes(){
+  function path_(t){return '<div style="background:#0d1117;border-radius:8px;padding:10px 16px;margin:4px 0 0;font-family:monospace;font-size:.82rem;color:#79c0ff;letter-spacing:.5px">'+t+'</div>';}
+  function tag_(bg,col,t){return '<span style="background:'+bg+';color:'+col+';padding:2px 9px;border-radius:12px;font-size:.72rem;font-weight:700;margin-right:4px;display:inline-block">'+t+'</span>';}
+
+  const coordRows=[['①路徑 PATH','G1 → 機器人手臂 (手)','G1 → Lengan Robot'],['②用戶 USER','G2 → 箱子/工件座標','G2 → Koordinat Benda Kerja/Kotak'],['③工具 TOOL','焊槍工具坐標系','Sistem Koordinat Alat Las'],['④世界 WORLD','機器人世界坐標系','Sistem Koordinat Dunia Robot'],['⑤手動 JG FRM','手動點動坐標（框架）','Koordinat Jog Manual (Frame)'],['⑥關節 JG JOINT','各軸關節坐標（J1~J6）','Koordinat Joint Sumbu (J1~J6)']];
+  const motionCards=[['J □','關節運動（點）','Gerak Joint (Titik)','過渡點使用，速度最快'],['L ─','直線運動（線）','Gerak Linear (Garis)','焊接直線焊縫必用'],['C ~','圓弧運動（弧）','Gerak Circular (Busur)','三點決定圓弧路徑']];
+  const laserCmds=[['12SR 12.56','程式編號記錄','Nomor program yang digunakan'],['KETA 02','激光搜尋條件編號 → 激光搜尋模式','Nomor kondisi pencarian laser'],['LASON','打開激光 / Nyalakan laser','Perintah aktifkan sensor laser'],['10 KE','10個關鍵點（標定用）','10 titik kunci (untuk kalibrasi)'],['PR[300] 0~300','位置暫存器範圍，搜尋結果存入此處','Range register posisi, hasil pencarian disimpan']];
+  const laserSteps=[['①','送料（進料方向）→ 測量','Arah pengiriman material → ukur'],['②','送標訂方法（標定法選擇）','Pilih metode kalibrasi'],['③','送 → 測（再次送入測量）','Kirim → Ukur (pengukuran ulang)'],['④','送 → 視法（XZ）','Kirim → Metode Visual (XZ)']];
+  const quickRef=[['🌐 換語言 / Ganti Bahasa','MENU → 6 → 5 → 2','MENU → 6 → 5 → 2'],['🗺 切坐標 / Ganti Koordinat','COORD 鍵循環','Tombol COORD'],['🔦 開激光 / Nyalakan Laser','LASON 指令','Perintah LASON'],['🔍 激光搜 / Cari Laser','KETA 02','KETA 02'],['🚨 槍撞歪 / Torch Terbentur','MENU→6系統→6配置→4末端→1','MENU→6→6→4→1'],['📐 TCP設定 / Pengaturan TCP','MENU→6→坐標系→F2詳細','MENU→6→Koordinat→F2 Detail']];
+
+  let html=`
+  <div class="secHeader"><div class="secHeaderIcon">📝</div>
+    <div><h2 class="secH2">現場操作筆記</h2><span style="font-size:.82rem;color:#2e7d32;font-style:italic">Catatan Operasi Lapangan · 操作員手寫記錄整理版</span></div>
+  </div>
+
+  <div style="background:#fff;border-radius:14px;box-shadow:0 4px 16px rgba(0,0,0,.1);margin-bottom:20px;overflow:hidden">
+    <div style="background:#1565c0;padding:12px 18px;color:#fff;display:flex;align-items:center;gap:10px">
+      <span style="font-size:1.3rem">📅</span>
+      <div><div style="font-weight:900;font-size:1rem">筆記一：程式介紹 · 快速鍵用法</div>
+      <div style="font-size:.78rem;opacity:.85">2025.7.11 · Catatan Program &amp; Shortcut Keys</div></div>
+    </div>
+    <div style="padding:16px 20px">
+      <div style="margin-bottom:16px">
+        <div style="font-weight:800;color:#1a1a2e;font-size:.9rem;margin-bottom:6px">🌐 更換語言 / Ganti Bahasa</div>
+        `+path_('MENU → 6 → 5 → 2')+`
+        <div style="font-size:.79rem;color:#2e7d32;font-style:italic;margin-top:4px">Tekan MENU → 6 → 5 → 2</div>
+      </div>
+      <div style="margin-bottom:16px">
+        <div style="font-weight:800;color:#1a1a2e;font-size:.9rem;margin-bottom:8px">🗺 坐標系切換（COORD鍵）/ Sistem Koordinat</div>
+        <div style="background:#f7f8fa;padding:8px 16px;font-size:.72rem;font-weight:800;color:#0f3460;display:grid;grid-template-columns:1fr 1fr;border-bottom:1px solid #eee"><span>🇹🇼 繁體中文</span><span>🇮🇩 Bahasa Indonesia</span></div>
+        `+coordRows.map(([k,zh,id])=>'<div style="display:grid;grid-template-columns:1fr 1fr;border-bottom:1px solid #f0f0f0"><div style="padding:11px 16px;font-size:.85rem;font-weight:700;color:#0f3460;border-right:1px solid #f0f0f0">'+k+'</div><div style="padding:11px 16px;font-size:.85rem;color:#222">'+zh+'<div style="font-size:.79rem;color:#2e7d32;font-style:italic">'+id+'</div></div></div>').join('')+`
+        <div style="background:#fff8e1;border-left:4px solid #FFD700;padding:10px 14px;font-size:.82rem;color:#7a5200;margin-top:10px;border-radius:6px">
+          💡 <strong>記憶技巧：</strong>按一下COORD切換，依 PATH→USER→TOOL→WORLD→JG FRM→JOINT 順序循環<br>
+          <em style="color:#2e7d32">Tips: Tekan COORD sekali untuk berganti, urutan PATH→USER→TOOL→WORLD→JG FRM→JOINT</em>
+        </div>
+      </div>
+      <div style="margin-bottom:16px">
+        <div style="font-weight:800;color:#c62828;font-size:.9rem;margin-bottom:8px">🚨 槍頭撞到如何處理 / Cara Mengatasi Tabrakan Torch</div>
+        `+path_('0 → ⑥系統 → ⑥配置 → ④末端執行器斷裂 → ①')+`
+        <div style="font-size:.79rem;color:#2e7d32;font-style:italic;margin-top:4px">0 → 6 Sistem → 6 Konfigurasi → 4 End Effector Terputus → 1 Reset</div>
+        <div style="background:#fce4ec;border-radius:8px;padding:10px 14px;font-size:.82rem;color:#880e4f;margin-top:8px;border-left:4px solid #e53935">
+          ⚠️ 發現槍頭撞歪後：先按急停→依上面路徑重設→然後重新做六點法TCP標定！<br>
+          <em style="color:#2d6a4f">Setelah torch terbentur: tekan E-STOP dulu → ikuti path di atas untuk reset → lalu kalibrasi ulang TCP metode 6 titik!</em>
+        </div>
+      </div>
+      <div style="margin-bottom:16px">
+        <div style="font-weight:800;color:#1a1a2e;font-size:.9rem;margin-bottom:8px">🎯 運動指令 &amp; 終止類型 / Perintah Gerak &amp; Jenis Terminasi</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px">
+          `+motionCards.map(([sym,zh,id,desc])=>'<div style="background:#1a1a2e;color:#fff;border-radius:10px;padding:14px;text-align:center"><div style="font-size:1.6rem;color:#FFD700;font-weight:900">'+sym+'</div><div style="font-weight:700;font-size:.82rem;margin-top:6px">'+zh+'</div><div style="font-size:.74rem;color:#a5d6a7;font-style:italic">'+id+'</div><div style="font-size:.72rem;color:rgba(255,255,255,.65);margin-top:6px">'+desc+'</div></div>').join('')+`
+        </div>
+        <div style="background:#f7f8fa;border-radius:8px;padding:10px 14px;font-size:.82rem;margin-top:10px">
+          <strong>終止類型 / Jenis Terminasi：</strong><br>
+          `+tag_('#e3f2fd','#1565c0','弧焊 Arc Weld')+` CNT（連續過渡）→ 焊接中間點使用 / <em style="color:#2e7d32">gunakan CNT untuk titik tengah las</em><br>
+          `+tag_('#e8f5e9','#2e7d32','FINE')+` 精確停止，起弧點/收弧點使用 / <em style="color:#2e7d32">berhenti presisi, untuk titik awal/akhir busur</em>
+        </div>
+      </div>
+      <div>
+        <div style="font-weight:800;color:#1a1a2e;font-size:.9rem;margin-bottom:8px">⚡ 弧焊電流電壓調整（2025/3/1）/ Penyesuaian Arus &amp; Tegangan Las</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+          <div style="background:#fff3e0;border-radius:9px;padding:12px 14px;text-align:center"><div style="font-size:1.4rem;font-weight:900;color:#e65100">電流 ±%</div><div style="font-size:.82rem;color:#555;margin-top:4px">焊接電流調整範圍</div><div style="font-size:.78rem;color:#2e7d32;font-style:italic">Penyesuaian arus pengelasan</div></div>
+          <div style="background:#e8f5e9;border-radius:9px;padding:12px 14px;text-align:center"><div style="font-size:1.4rem;font-weight:900;color:#2e7d32">電壓 ±30%</div><div style="font-size:.82rem;color:#555;margin-top:4px">焊接電壓調整上限</div><div style="font-size:.78rem;color:#2e7d32;font-style:italic">Batas penyesuaian tegangan las</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="background:#fff;border-radius:14px;box-shadow:0 4px 16px rgba(0,0,0,.1);margin-bottom:20px;overflow:hidden">
+    <div style="background:#4a148c;padding:12px 18px;color:#fff;display:flex;align-items:center;gap:10px">
+      <span style="font-size:1.3rem">📡</span>
+      <div><div style="font-weight:900;font-size:1rem">筆記二：標定紅外線（激光）</div>
+      <div style="font-size:.78rem;opacity:.85">2025/3/2 · Kalibrasi Inframerah (Laser)</div></div>
+    </div>
+    <div style="padding:16px 20px">
+      <div style="margin-bottom:16px">
+        <div style="font-weight:800;color:#1a1a2e;font-size:.9rem;margin-bottom:8px">🔑 基本指令 / Perintah Dasar</div>
+        <div style="display:grid;grid-template-columns:1fr;gap:8px">
+          `+laserCmds.map(([k,zh,id])=>'<div style="background:#f8f4ff;border-radius:8px;padding:10px 14px;display:flex;gap:14px;align-items:flex-start"><code style="background:#6a1b9a;color:#fff;padding:2px 9px;border-radius:6px;font-size:.82rem;font-weight:700;flex-shrink:0;white-space:nowrap">'+k+'</code><div><div style="font-size:.84rem;color:#222">'+zh+'</div><div style="font-size:.79rem;color:#2e7d32;font-style:italic">'+id+'</div></div></div>').join('')+`
+        </div>
+      </div>
+      <div style="margin-bottom:16px">
+        <div style="font-weight:800;color:#1a1a2e;font-size:.9rem;margin-bottom:6px">⚙️ 設定激光參數路徑 / Path Pengaturan Parameter Laser</div>
+        `+path_('DATA → TYPE（F1）→ TYPE2 → Sensor Sched')+`
+        <div style="font-size:.79rem;color:#2e7d32;font-style:italic;margin-top:4px">DATA → TYPE (F1) → TYPE2 → Sensor Sched（設定感應器排程）</div>
+      </div>
+      <div style="margin-bottom:16px">
+        <div style="font-weight:800;color:#1a1a2e;font-size:.9rem;margin-bottom:8px">📐 標定步驟 / Langkah Kalibrasi</div>
+        <div style="background:#fff;border:2px solid #6a1b9a;border-radius:10px;padding:14px 16px;margin-bottom:10px">
+          <div style="font-weight:800;color:#6a1b9a;font-size:.88rem;margin-bottom:8px">① 焊槍標定（TCP槍頭）/ Kalibrasi TCP Torch</div>
+          `+path_('按MENU → ⑥選 → ⑥坐標系 → F2詳細')+`
+          <div style="font-size:.79rem;color:#2e7d32;font-style:italic;margin-top:4px">Tekan MENU → 6 Pilih → 6 Sistem Koordinat → F2 Detail</div>
+          <div style="font-size:.82rem;color:#555;margin-top:8px">→ 完成後進行六點法（XZ）TCP標定</div>
+          <div style="font-size:.78rem;color:#2e7d32;font-style:italic">→ Setelah itu lakukan kalibrasi TCP metode 6 titik (XZ)</div>
+        </div>
+        <div style="background:#fff;border:2px solid #1565c0;border-radius:10px;padding:14px 16px;margin-bottom:10px">
+          <div style="font-weight:800;color:#1565c0;font-size:.88rem;margin-bottom:8px">② 激光標定（r = -90°）/ Kalibrasi Laser</div>
+          <div style="font-size:.82rem;color:#222;margin-bottom:8px">使用 <strong>300mm 長標定板</strong>，在左右兩端各做一次標定：<br><em style="color:#2e7d32;font-size:.79rem">Gunakan plat kalibrasi panjang 300mm, lakukan kalibrasi di kedua sisi kiri-kanan:</em></div>
+          `+laserSteps.map(([n,zh,id])=>'<div style="display:flex;gap:10px;align-items:flex-start;margin-bottom:6px"><span style="background:#1565c0;color:#fff;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:900;flex-shrink:0">'+n+'</span><div><div style="font-size:.83rem;color:#222">'+zh+'</div><div style="font-size:.78rem;color:#2e7d32;font-style:italic">'+id+'</div></div></div>').join('')+`
+        </div>
+        <div style="background:#e3f2fd;border-radius:9px;padding:12px 14px;border:1px solid #90caf9">
+          <div style="font-weight:800;color:#0d47a1;font-size:.86rem;margin-bottom:4px">📌 重要注意事項 / Catatan Penting</div>
+          <div style="font-size:.83rem;color:#1a1a2e">地端坐標 → 關節坐標，<strong>全超過 90°</strong></div>
+          <div style="font-size:.79rem;color:#2e7d32;font-style:italic;margin-top:3px">Koordinat dasar → Koordinat joint, <strong>semua harus melebihi 90°</strong></div>
+          <div style="font-size:.79rem;color:#1a1a2e;margin-top:6px">視法（XZ）= 六點法中的方向確認步驟，確保槍軸方向正確</div>
+          <div style="font-size:.76rem;color:#2e7d32;font-style:italic">Metode XZ = langkah konfirmasi arah dalam metode 6 titik, pastikan arah sumbu torch benar</div>
+        </div>
+      </div>
+      <div>
+        <div style="font-weight:800;color:#1a1a2e;font-size:.9rem;margin-bottom:8px">📏 標定板示意圖 / Diagram Plat Kalibrasi</div>
+        <div style="background:#f7f8fa;border-radius:10px;padding:16px;text-align:center;border:2px dashed #bbb">
+          <div style="display:inline-flex;align-items:center;font-family:monospace">
+            <span style="background:#1565c0;color:#fff;padding:18px 20px;border-radius:6px 0 0 6px;font-size:.85rem;font-weight:700">左端<br>Kiri</span>
+            <span style="background:#e0e0e0;padding:18px 40px;font-size:.82rem;color:#555">←────── 300mm ──────→</span>
+            <span style="background:#1565c0;color:#fff;padding:18px 20px;border-radius:0 6px 6px 0;font-size:.85rem;font-weight:700">右端<br>Kanan</span>
+          </div>
+          <div style="font-size:.76rem;color:#888;margin-top:8px">左右各標定一次，r = -90°，激光線需對齊標定板邊緣<br><em>Kalibrasi di kiri dan kanan, r = -90°, garis laser harus sejajar tepi plat kalibrasi</em></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="background:linear-gradient(135deg,#1a1a2e,#0f3460);border-radius:14px;padding:20px;color:#fff;margin-bottom:16px">
+    <div style="font-weight:900;font-size:1rem;color:#FFD700;margin-bottom:14px">⚡ 現場快速參考卡 / Kartu Referensi Cepat Lapangan</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+      `+quickRef.map(([title,zh,id])=>'<div style="background:rgba(255,255,255,.08);border-radius:9px;padding:10px 12px;border-left:3px solid #FFD700"><div style="font-size:.8rem;font-weight:800;color:#FFD700;margin-bottom:4px">'+title+'</div><code style="font-size:.76rem;color:#fff;display:block">'+zh+'</code><div style="font-size:.73rem;color:rgba(255,255,255,.6);font-style:italic;margin-top:2px">'+id+'</div></div>').join('')+`
+    </div>
+  </div>`;
+  return html;
 }
 
 // ════════════════ ALARM SYSTEM ════════════════
