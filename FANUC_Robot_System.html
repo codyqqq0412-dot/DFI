@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>FANUC 機器人完整培訓系統 | DFI</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"Segoe UI","Microsoft JhengHei",Arial,sans-serif;background:#f0f2f5;color:#333;min-height:100vh}
+
+/* ── LOGIN ── */
+#loginScreen{position:fixed;inset:0;background:linear-gradient(135deg,#1a1a2e,#0f3460);display:flex;align-items:center;justify-content:center;z-index:9999}
+.loginBox{background:#fff;border-radius:20px;padding:44px 38px;width:360px;max-width:90vw;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.4)}
+.loginLogo{width:64px;height:64px;background:#FFD700;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:32px;font-weight:900;color:#1a1a2e;margin:0 auto 16px}
+.loginTitle{font-size:1.25rem;font-weight:900;color:#1a1a2e;margin-bottom:4px}
+.loginSub{font-size:.78rem;color:#888;margin-bottom:28px}
+.loginInput{width:100%;padding:12px 16px;border:2px solid #e0e0e0;border-radius:10px;font-size:.95rem;font-family:inherit;margin-bottom:12px;transition:border .2s}
+.loginInput:focus{outline:none;border-color:#FFD700}
+.loginBtn{width:100%;padding:13px;background:linear-gradient(135deg,#FFD700,#f0c000);border:none;border-radius:10px;font-size:1rem;font-weight:800;cursor:pointer;color:#1a1a2e;transition:transform .1s}
+.loginBtn:active{transform:scale(.98)}
+.loginErr{color:#e53935;font-size:.82rem;margin-top:10px;min-height:18px}
+.loginRole{display:inline-block;background:#e3f2fd;color:#0d47a1;padding:3px 10px;border-radius:12px;font-size:.72rem;font-weight:700;margin-top:14px}
+
+/* ── HEADER ── */
+#app{display:none}
+.hdr{background:linear-gradient(135deg,#1a1a2e,#0f3460);color:#fff;position:sticky;top:0;z-index:100;box-shadow:0 2px 20px rgba(0,0,0,.4)}
+.hdrTop{display:flex;align-items:center;justify-content:space-between;padding:11px 20px;border-bottom:3px solid #FFD700}
+.logoBox{display:flex;align-items:center;gap:11px}
+.logoIcon{width:42px;height:42px;background:#FFD700;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:21px;font-weight:900;color:#1a1a2e;flex-shrink:0}
+.logoH1{font-size:1.05rem;font-weight:800;color:#fff}
+.logoP{font-size:.68rem;opacity:.7}
+.hdrRight{display:flex;align-items:center;gap:10px}
+.badge{background:#FFD700;color:#1a1a2e;padding:4px 12px;border-radius:20px;font-size:.67rem;font-weight:800}
+.logoutBtn{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);color:#fff;padding:4px 12px;border-radius:14px;font-size:.7rem;cursor:pointer;font-family:inherit}
+.appTabs{display:flex;background:rgba(0,0,0,.15)}
+.appTab{background:none;border:none;color:rgba(255,255,255,.65);padding:10px 20px;cursor:pointer;font-size:.84rem;font-weight:700;border-bottom:3px solid transparent;transition:all .2s;font-family:inherit}
+.appTab.on{color:#FFD700;border-bottom:3px solid #FFD700;background:rgba(255,215,0,.07)}
+
+/* ── ADMIN PANEL ── */
+#adminModal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:8888;align-items:center;justify-content:center}
+#adminModal.show{display:flex}
+.adminBox{background:#fff;border-radius:16px;padding:28px;width:420px;max-width:92vw;max-height:80vh;overflow-y:auto}
+.adminTitle{font-size:1.1rem;font-weight:900;color:#1a1a2e;margin-bottom:16px;border-bottom:3px solid #FFD700;padding-bottom:10px}
+.adminInfo{background:#f8f9fa;border-radius:10px;padding:14px;margin-bottom:12px;font-size:.83rem;line-height:1.8}
+.adminInfo strong{color:#1a1a2e}
+.adminClose{background:#FFD700;border:none;padding:9px 24px;border-radius:10px;font-weight:800;cursor:pointer;font-family:inherit;width:100%;margin-top:12px}
+.adminFloatBtn{position:fixed;bottom:28px;right:22px;background:#1a1a2e;color:#FFD700;border:2px solid #FFD700;border-radius:50%;width:48px;height:48px;font-size:20px;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,.3);z-index:500;display:none}
+
+/* ── TRAINING VIEW ── */
+.trainHero{background:linear-gradient(135deg,#0f3460,#16213e);color:#fff;padding:36px 20px 28px;text-align:center}
+.trainHero h2{font-size:1.8rem;font-weight:900;margin-bottom:6px}
+.heroYellow{color:#FFD700}
+.heroStats{display:flex;justify-content:center;gap:36px;margin-top:20px;flex-wrap:wrap}
+.statItem{text-align:center}
+.statNum{font-size:1.8rem;font-weight:900;color:#FFD700}
+.statLbl{font-size:.63rem;opacity:.7;margin-top:2px}
+.heroBtn{background:#FFD700;border:none;padding:9px 22px;border-radius:22px;font-weight:800;font-size:.86rem;cursor:pointer;color:#1a1a2e;margin-top:18px;font-family:inherit}
+.subNav{background:#1a1a2e;padding:0 14px;display:flex;gap:4px;overflow-x:auto;scrollbar-width:none}
+.subNav::-webkit-scrollbar{display:none}
+.subBtn{background:none;border:none;color:rgba(255,255,255,.7);padding:8px 12px;cursor:pointer;font-size:.76rem;white-space:nowrap;border-bottom:3px solid transparent;font-family:inherit;transition:all .2s}
+.subBtn.on{color:#FFD700;border-bottom:3px solid #FFD700}
+.secContent{max-width:900px;margin:0 auto;padding:20px 14px 50px}
+
+/* ── SECTION PARTS ── */
+.secHeader{display:flex;align-items:center;gap:12px;margin-bottom:20px;padding-bottom:12px;border-bottom:3px solid #FFD700}
+.secHeaderIcon{width:44px;height:44px;background:#FFD700;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+.secH2{font-size:1.3rem;color:#1a1a2e;font-weight:800}
+.secH2 em{font-size:.82rem;color:#2e7d32;font-weight:400}
+.infoCard{background:#fff;border-radius:14px;padding:20px 22px;box-shadow:0 4px 16px rgba(0,0,0,.1);margin-bottom:20px}
+.infoCard h3{font-size:.98rem;color:#1a1a2e;margin-bottom:12px}
+.alertBox{border-radius:10px;padding:13px 16px;margin-bottom:12px}
+.alertBox .zh{font-weight:700;font-size:.87rem}
+.alertBox .id{font-size:.81rem;font-style:italic;margin-top:4px;color:#2d6a4f}
+.alert-info{background:#e3f2fd;border:1px solid #90caf9;color:#0d47a1}
+.alert-warning{background:#fff8e1;border:1px solid #ffe082;color:#7a5200}
+.alert-danger{background:#fce4ec;border:1px solid #f48fb1;color:#880e4f}
+.alert-success{background:#e8f5e9;border:1px solid #a5d6a7;color:#1b5e20}
+.biTable{background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,.08);margin-bottom:16px}
+.biTable table{width:100%;border-collapse:collapse}
+.biTable th{padding:10px 14px;font-size:.72rem;font-weight:700;text-align:left}
+.biTable td{padding:11px 14px;font-size:.85rem;border-bottom:1px solid #f0f0f0}
+.biTable tr:last-child td{border-bottom:none}
+.th-dark{background:#1a1a2e;color:#fff;width:22%}
+.th-blue{background:#2c3e50;color:#FFD700}
+.th-green{background:#1a6b3c;color:#a8e6cf}
+.td-key{font-weight:800;color:#0f3460;background:#f8f9ff}
+.td-id{color:#2e7d32;font-style:italic}
+.step{background:#fff;border-radius:11px;padding:14px 18px;box-shadow:0 2px 10px rgba(0,0,0,.08);display:flex;gap:14px;align-items:flex-start;border-left:4px solid #FFD700;margin-bottom:12px}
+.step.green{border-left-color:#2ecc71}
+.stepNum{width:34px;height:34px;flex-shrink:0;background:#FFD700;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900;color:#1a1a2e;font-size:.9rem}
+.step.green .stepNum{background:#2ecc71}
+.stepZh{font-size:.88rem;color:#1a1a2e;font-weight:600}
+.stepId{font-size:.81rem;color:#2e7d32;margin-top:4px;font-style:italic}
+.stepNote{background:#fffbee;border:1px solid #ffe082;border-radius:6px;padding:6px 10px;font-size:.77rem;color:#7a5c00;margin-top:8px}
+.keyBtn{display:inline-flex;align-items:center;background:#1a1a2e;color:#FFD700;padding:2px 8px;border-radius:5px;font-size:.74rem;font-weight:700;margin:1px 2px;border:1px solid rgba(255,215,0,.3)}
+.codeBlock{background:#0d1117;border-radius:9px;padding:14px 18px;margin:10px 0;font-family:monospace;font-size:.81rem;overflow-x:auto;border:1px solid #30363d}
+.codeLine{display:flex;gap:12px;padding:2px 0}
+.codeNum{color:#484f58;min-width:26px}
+.codeInst{color:#79c0ff}
+.codeComment{color:#8b949e;font-style:italic}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:20px}
+.motionCard{background:#1a1a2e;color:#fff;border-radius:12px;padding:18px;text-align:center}
+.motionLetter{font-size:2.3rem;font-weight:900;color:#FFD700;line-height:1}
+.motionName{font-size:.88rem;margin:6px 0 3px;font-weight:700}
+.motionId{font-size:.76rem;color:#a5d6a7;font-style:italic}
+.motionDesc{font-size:.74rem;color:rgba(255,255,255,.65);margin-top:8px}
+
+/* ── ALARM VIEW ── */
+.xlBar{background:linear-gradient(90deg,#1a1a2e,#0f3460);color:#fff;padding:8px 20px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.xlBtn{background:#FFD700;border:none;padding:5px 14px;border-radius:14px;font-weight:800;font-size:.76rem;cursor:pointer;color:#1a1a2e;font-family:inherit}
+.searchPanel{background:linear-gradient(135deg,#0f3460,#16213e);padding:24px 20px}
+.searchPanel h2{color:#fff;text-align:center;font-size:1.2rem;font-weight:900;margin-bottom:4px}
+.searchPanel p{color:rgba(255,255,255,.65);text-align:center;font-size:.77rem;margin-bottom:14px}
+.searchRow{display:flex;gap:9px;max-width:640px;margin:0 auto 9px}
+.searchInput{flex:1;padding:11px 15px;border:none;border-radius:11px;font-size:.93rem;font-family:inherit}
+.searchBtn{padding:11px 18px;background:#FFD700;border:none;border-radius:11px;font-size:.9rem;font-weight:800;cursor:pointer;color:#1a1a2e;font-family:inherit}
+.quickBtns{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-top:9px}
+.qBtn{background:rgba(255,255,255,.12);border:1px solid rgba(255,215,0,.3);color:#fff;padding:4px 11px;border-radius:18px;font-size:.71rem;cursor:pointer;font-family:inherit}
+.qBtn.bat{background:rgba(255,235,59,.25);border-color:rgba(255,235,59,.6)}
+.alarmContent{max-width:860px;margin:0 auto;padding:18px 14px 50px}
+.welcomeBox{background:#fff;border-radius:14px;box-shadow:0 4px 16px rgba(0,0,0,.1);padding:26px;text-align:center;max-width:680px;margin:0 auto}
+.welcomeBox h3{font-size:1.05rem;color:#1a1a2e;margin-bottom:7px}
+.welcomeBox p{color:#666;font-size:.83rem;margin-bottom:16px}
+.quickCodes{display:flex;flex-wrap:wrap;gap:7px;justify-content:center}
+.qcBtn{background:#f0f0f0;border:none;border-radius:8px;padding:5px 13px;font-size:.79rem;cursor:pointer;color:#333;font-family:inherit}
+.loadingBox{text-align:center;padding:44px 20px;color:#888}
+.spinner{width:42px;height:42px;border:4px solid #eee;border-top-color:#FFD700;border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 14px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.alarmCard{background:#fff;border-radius:14px;box-shadow:0 4px 16px rgba(0,0,0,.1);margin-bottom:16px;overflow:hidden}
+.alarmHdr{padding:16px 20px;color:#fff;display:flex;align-items:flex-start;gap:12px}
+.alarmHdr.red{background:linear-gradient(135deg,#b71c1c,#c62828)}
+.alarmHdr.orange{background:linear-gradient(135deg,#f57f17,#e65100)}
+.alarmHdr.purple{background:linear-gradient(135deg,#6a1b9a,#4a148c)}
+.alarmIcon{width:48px;height:48px;background:rgba(255,255,255,.18);border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:23px;flex-shrink:0}
+.alarmCode{font-size:1.3rem;font-weight:900;letter-spacing:1px}
+.alarmName{font-size:.88rem;font-weight:700;margin-top:3px}
+.alarmId{font-size:.76rem;opacity:.82;font-style:italic}
+.batWarn{background:linear-gradient(135deg,#4a148c,#6a1b9a);margin:12px 16px;border-radius:9px;padding:12px 14px;color:#fff}
+.batTitle{font-weight:800;font-size:.85rem;color:#ffeb3b;margin-bottom:4px}
+.batBody{font-size:.78rem;line-height:1.8;opacity:.92}
+.rowLbl{display:flex;align-items:center;gap:6px;padding:7px 16px;background:#f8f9fa;border-bottom:1px solid #eee;font-size:.8rem;font-weight:800;color:#1a1a2e}
+.biHdrRow{display:grid;grid-template-columns:1fr 1fr;background:#f7f8fa;border-bottom:1px solid #eee}
+.biHdr{padding:6px 16px;font-size:.67rem;font-weight:800;text-transform:uppercase;letter-spacing:.8px}
+.biGrid{display:grid;grid-template-columns:1fr 1fr}
+.biCell{padding:12px 16px;font-size:.84rem;line-height:1.7}
+.biCell.zh{border-right:1px solid #f0f0f0;color:#222}
+.biCell.id{color:#1b5e20;font-style:italic}
+.biCell pre{white-space:pre-wrap;font-family:inherit;font-size:.84rem}
+.noteRow{background:#fff8e1;border-top:2px solid #ffcc02;display:grid;grid-template-columns:1fr 1fr}
+.noteCell{padding:11px 16px;font-size:.79rem;line-height:1.6}
+.noteCell.zh{border-right:1px solid #ffe082;color:#7a5200}
+.noteCell.id{color:#2e7d32;font-style:italic}
+.noteCell pre{white-space:pre-wrap;font-family:inherit;font-size:.79rem}
+.apiTag{background:#e3f2fd;padding:8px 16px;font-size:.74rem;color:#1565c0}
+.pdfTag{background:#e8f5e9;padding:8px 16px;font-size:.74rem;color:#2e7d32}
+.alarmList{display:flex;flex-direction:column;gap:6px}
+.alarmItem{background:#fff;border-radius:9px;padding:11px 14px;box-shadow:0 2px 8px rgba(0,0,0,.08);cursor:pointer;display:flex;align-items:center;gap:11px}
+.alarmItemCode{font-weight:800;color:#0f3460;min-width:90px;font-size:.86rem}
+.alarmItemCode.bat{color:#6a1b9a}
+.alarmItemName{flex:1;font-size:.82rem;color:#333}
+.alarmItemArr{color:#bbb}
+.notFound{text-align:center;padding:44px 20px;color:#888}
+
+/* ── FOOTER ── */
+.footer{background:#1a1a2e;color:rgba(255,255,255,.6);text-align:center;padding:22px;font-size:.78rem}
+.footer strong{color:#FFD700}
+
+/* ── BATTERY SECTION ── */
+.batAlertBox{background:#fff;border-radius:14px;box-shadow:0 4px 16px rgba(0,0,0,.15);border:3px solid #e53935;margin-bottom:20px;overflow:hidden}
+.batAlertHdr{background:#e53935;padding:12px 18px;color:#fff;display:flex;align-items:center;gap:10px}
+.batAlertHdrIcon{font-size:1.5rem}
+.batAlertTitle{font-weight:900;font-size:1rem}
+.batAlertSub{font-size:.78rem;opacity:.9}
+
+@media(max-width:600px){
+  .grid2{grid-template-columns:1fr}
+  .grid3{grid-template-columns:1fr}
+  .biGrid{grid-template-columns:1fr}
+  .biHdrRow{grid-template-columns:1fr}
+  .noteRow{grid-template-columns:1fr}
+  .biCell.zh{border-right:none;border-bottom:1px solid #f0f0f0}
+  .noteCell.zh{border-right:none;border-bottom:1px solid #ffe082}
+  .heroStats{gap:20px}
+}
+</style>
+</head>
+<body>
+
+<!-- ════════════════ LOGIN SCREEN ════════════════ -->
+<div id="loginScreen">
+  <div class="loginBox">
+    <div class="loginLogo">F</div>
+    <div class="loginTitle">FANUC 機器人系統</div>
+    <div class="loginSub">Sistem Robot FANUC · 請輸入密碼登入</div>
+    <input class="loginInput" type="password" id="pwInput" placeholder="請輸入密碼 / Masukkan password" onkeydown="if(event.key==='Enter')doLogin()"/>
+    <button class="loginBtn" onclick="doLogin()">登入 / Masuk</button>
+    <div class="loginErr" id="loginErr"></div>
+    <div id="loginRoleTag"></div>
+  </div>
+</div>
+
+<!-- ════════════════ MAIN APP ════════════════ -->
+<div id="app">
+  <!-- Header -->
+  <header class="hdr">
+    <div class="hdrTop">
+      <div class="logoBox">
+        <div class="logoIcon">F</div>
+        <div>
+          <div class="logoH1">FANUC 機器人完整培訓系統</div>
+          <div class="logoP">Sistem Pelatihan Robot FANUC Lengkap · 中文 / Bahasa Indonesia</div>
+        </div>
+      </div>
+      <div class="hdrRight">
+        <span class="badge">V2.0 雙語</span>
+        <button class="logoutBtn" onclick="doLogout()">登出</button>
+      </div>
+    </div>
+    <div class="appTabs">
+      <button class="appTab on" id="tabTrain" onclick="switchTab('train')">
+        📚 操作培訓手冊 <small style="font-size:.62rem;opacity:.7;font-weight:400">· 7章節</small>
+      </button>
+      <button class="appTab" id="tabAlarm" onclick="switchTab('alarm')">
+        ⚠️ 警報查詢系統 <small style="font-size:.62rem;opacity:.7;font-weight:400">· 309代碼</small>
+      </button>
+    </div>
+  </header>
+
+  <!-- ── TRAINING VIEW ── -->
+  <div id="trainView">
+    <div class="trainHero">
+      <h2>FANUC 弧焊機器人 <span class="heroYellow">操作培訓</span></h2>
+      <p style="opacity:.8;font-size:.9rem">Panduan Operasi Robot Las Busur FANUC</p>
+      <p style="opacity:.6;font-size:.8rem;font-style:italic">專為印尼操作員設計 · Dirancang Khusus untuk Operator Indonesia</p>
+      <div class="heroStats">
+        <div class="statItem"><div class="statNum">7</div><div class="statLbl">培訓章節<br>Bab Pelatihan</div></div>
+        <div class="statItem"><div class="statNum">6</div><div class="statLbl">六點定位法<br>Metode 6 Titik</div></div>
+        <div class="statItem"><div class="statNum">309</div><div class="statLbl">警報代碼<br>Kode Alarm</div></div>
+        <div class="statItem"><div class="statNum">2</div><div class="statLbl">語言對照<br>Bahasa</div></div>
+      </div>
+      <button class="heroBtn" onclick="switchTab('alarm')">⚠️ 前往警報查詢 →</button>
+    </div>
+    <div class="subNav" id="trainNav">
+      <button class="subBtn on" onclick="setSec('s0')">🏠 首頁</button>
+      <button class="subBtn" onclick="setSec('s1')">🎮 面板介紹</button>
+      <button class="subBtn" onclick="setSec('s2')">🔧 TCP六點法</button>
+      <button class="subBtn" onclick="setSec('s3')">📡 紅外線掃描</button>
+      <button class="subBtn" onclick="setSec('s4')">🔄 換槍頭</button>
+      <button class="subBtn" onclick="setSec('s5')">📐 點線圓</button>
+      <button class="subBtn" onclick="setSec('s6')">🔍 追蹤功能</button>
+      <button class="subBtn" onclick="setSec('s7')">🛠 保養維護</button>
+    </div>
+    <div class="secContent" id="secContent"></div>
+    <div class="footer">
+      <strong>FANUC 機器人完整培訓系統 V2.0</strong><br>
+      <span>中文 / Bahasa Indonesia · 僅供內部培訓使用 / Hanya untuk pelatihan internal</span><br>
+      <button onclick="switchTab('alarm')" style="margin-top:10px;background:#FFD700;border:none;padding:6px 18px;border-radius:16px;font-weight:800;font-size:.78rem;cursor:pointer;color:#1a1a2e">⚠️ 前往警報查詢 →</button>
+    </div>
+  </div>
+
+  <!-- ── ALARM VIEW ── -->
+  <div id="alarmView" style="display:none">
+    <div class="xlBar">
+      <span style="font-size:.79rem;opacity:.82">🔗 培訓手冊 + 警報查詢已整合</span>
+      <button class="xlBtn" onclick="switchTab('train')">← 培訓手冊</button>
+    </div>
+    <div class="searchPanel">
+      <h2>輸入警報代碼 <span style="color:#FFD700">立即查詢</span></h2>
+      <p>Masukkan kode alarm — penyebab &amp; solusi 繁體中文 + Bahasa Indonesia</p>
+      <div class="searchRow">
+        <input class="searchInput" id="alarmInput" placeholder="例如：SRVO-065 或只輸入數字 65" onkeydown="if(event.key==='Enter')doSearch()"/>
+        <button class="searchBtn" onclick="doSearch()">查詢</button>
+      </div>
+      <div class="quickBtns">
+        <button class="qBtn bat" onclick="quickLookup('SRVO-065')">065 BLAL電池</button>
+        <button class="qBtn bat" onclick="quickLookup('SRVO-062')">062 BZAL電池</button>
+        <button class="qBtn" onclick="quickLookup('SRVO-001')">001 急停</button>
+        <button class="qBtn" onclick="quickLookup('SRVO-005')">005 超行程</button>
+        <button class="qBtn" onclick="quickLookup('SRVO-023')">023 誤差</button>
+        <button class="qBtn" onclick="quickLookup('SRVO-038')">038 脈衝</button>
+        <button class="qBtn" onclick="quickLookup('SRVO-068')">068 通訊</button>
+        <button class="qBtn" onclick="quickLookup('SRVO-213')">213 保險絲</button>
+      </div>
+    </div>
+    <div style="background:#1a1a2e">
+      <div class="subNav">
+        <button class="subBtn on" id="aTab-search" onclick="setAlarmTab('search')">🔍 查詢警報</button>
+        <button class="subBtn" id="aTab-list" onclick="setAlarmTab('list')">📋 完整列表</button>
+        <button class="subBtn" id="aTab-battery" onclick="setAlarmTab('battery')">🔋 電池警報</button>
+      </div>
+    </div>
+    <div class="alarmContent">
+      <div id="alarmSearch"></div>
+      <div id="alarmList" style="display:none"></div>
+      <div id="alarmBattery" style="display:none"></div>
+    </div>
+    <div class="footer">
+      <strong>FANUC 機器人完整培訓系統 V2.0</strong><br>
+      <span>警報資料來源：官方手冊 B-83284CM · AI即時翻譯補充</span>
+    </div>
+  </div>
+</div>
+
+<!-- Admin Float Button -->
+<button class="adminFloatBtn" id="adminBtn" onclick="openAdmin()" title="管理員面板">⚙️</button>
+
+<!-- Admin Modal -->
+<div id="adminModal">
+  <div class="adminBox">
+    <div class="adminTitle">⚙️ 管理員面板</div>
+    <div class="adminInfo">
+      <strong>系統名稱：</strong>FANUC 機器人完整培訓系統 V2.0<br>
+      <strong>部署位置：</strong>DFI GitHub Pages<br>
+      <strong>登入角色：</strong><span id="adminRoleInfo">—</span><br>
+      <strong>員工密碼：</strong>TCMW2026<br>
+      <strong>管理員密碼：</strong>TCMW@cody202688<br>
+      <strong>資料語言：</strong>繁體中文 / Bahasa Indonesia<br>
+      <strong>警報資料庫：</strong>309 代碼（SRVO系列）<br>
+      <strong>版本：</strong>V2.0 雙語版
+    </div>
+    <button class="adminClose" onclick="closeAdmin()">關閉</button>
+  </div>
+</div>
+
+<script>
+// ════════════════ DATA ════════════════
+const DB={"SRVO-001":{"name":"操作面板紧急停止","cause":"按下了操作面板的急停按扭。","solution":"1. 沿着顺时针方向转动操作面板的急停按钮解除报警后，按下 RESET 按钮。 2. 无法解除该报警的情况下，可能是由于相关部件的故障所致。","note":"同时发生 SRVO-213 时，可能是急停板的保险丝（FUSE2）已经熔断。"},"SRVO-002":{"name":"示教器紧急停止","cause":"按下了示教器的急停按扭。","solution":"1. 沿着顺时针方向转动示教器的急停按钮解除报警后，按下 RESET 按钮。 2. 无法解除报警时，更换示教器。","note":""},"SRVO-003":{"name":"安全开关已释放","cause":"在示教器有效的状态下，尚未按下安全开关。或者，用力按下了安全开关。","solution":"按下安全开关到中间位置，再按下 RESET 按钮。无法解除时：1. 确认安全开关中立位置 2. 确认模式选择开关 3. 更换示教器","note":""},"SRVO-004":{"name":"防护栅打开","cause":"安全栅栏打开。","solution":"1. 确认作业人员不在安全栅栏内侧后，关闭安全栅栏，按下RESET。 2. 无法解除时检查相关部件。","note":"同时发生SRVO-213时，可能是急停板保险丝熔断。"},"SRVO-005":{"name":"机器人超行程","cause":"越出了机器人的关节和各方向的硬件的极限开关。","solution":"1. 按住SHIFT键同时按下RESET解除报警。 2. 继续按住SHIFT，点动进给使超行程轴移动到可动范围内。","note":"超行程后无法向发生报警时轴正在动作的方向进行点动进给。"},"SRVO-006":{"name":"机械手断裂","cause":"检测出了机械手断裂。使用安全接头的情况下，接头折断。","solution":"1. 按住SHIFT键同时按下RESET。 2. 点动进给使工具移动到作业位置，更换接头。","note":""},"SRVO-007":{"name":"外部紧急停止","cause":"输入了外部紧急停止信号。","solution":"1. 解除外部紧急停止信号，并按下RESET。 2. 无法解除时检查相关部件。","note":"同时发生SRVO-213时，可能是急停板保险丝熔断。"},"SRVO-009":{"name":"气压报警","cause":"在使用了气压异常信号的系统中，检测出了气压异常。","solution":"1. 使气压异常信号复原为正常状态，按下RESET。 2. 可在系统设定画面将气压异常检测设定为禁用。","note":""},"SRVO-023":{"name":"停止时误差过大 (G:i A:j)","cause":"停止时伺服装置的位置偏差超出了规定值。可能原因：动作条件超额定、外部过载、电机电源线未连接、电压下降、制动器故障、放大器故障、电机故障、电缆故障","solution":"1. 确认负载、重量、惯量是否超额定。 2. 确认机器人是否受外力。 3. 确认电机电源线连接器是否松动。 4. 确认输入电压是否正确。 5. 必要时更换放大器或电机。","note":""},"SRVO-024":{"name":"移动时误差过大 (G:i A:j)","cause":"移动时伺服装置位置偏差超出规定值。","solution":"参阅SRVO-023的对策。","note":""},"SRVO-027":{"name":"机器人未零点标定 (Group:i)","cause":"试图进行校准，但机器人尚未完成零点标定。","solution":"在零点标定/校准画面进行零点标定。","note":""},"SRVO-038":{"name":"脉冲值不匹配 (G:i A:j)","cause":"电源断开时的脉冲值和电源接通时的脉冲值不同。可能：更换了编码器或电池、轴位置改变。","solution":"1. 在系统变量画面将$MCR.$SPC_RESET按F4设为有效，按RESET进行脉冲复位。 2. 或在零点标定画面按F3 RES_PCA→F4是→RESET。 3. 脉冲复位后位置不正确时，进行零点标定。","note":"零点标定画面需由有操作资格的人员进行。"},"SRVO-062":{"name":"BZAL 报警 (G:i A:j)","cause":"脉冲编码器的绝对位置后备用电池尚未连接，或者电池耗尽。","solution":"1. 更换机器人基座的电池盒内的电池（通电状态下！）。 2. 确认机器人内部电池电缆没有断线。 3. 若换电池后仍有报警，更换脉冲编码器。 4. 更换后需重新通电、脉冲复位、零点标定。","note":"要解除该报警，需要重新通电。更换后必须进行脉冲复位及零点标定！"},"SRVO-065":{"name":"BLAL 报警 (G:i A:j)","cause":"脉冲编码器的电池电压低于基准值。","solution":"更换电池。必须在机台通电状态下换电池！30秒内完成热插拔。","note":"当发生此报警时，应尽快在通电状态下更换电池。如果没有及时更换且有BZAL报警发生，会导致位置数据丢失，需要进行零点标定。"},"SRVO-068":{"name":"DTERR 报警(G:i A:j)","cause":"即使向串行脉冲编码器发送请求信号，也没有串行数据反馈回来。","solution":"1. 确认脉冲编码器和伺服放大器之间连接电缆及连接器。 2. 确认连接电缆屏蔽已接地。 3. 更换脉冲编码器（需零点标定）。 4. 更换伺服放大器。","note":"要解除该报警，需要重新通电。"},"SRVO-069":{"name":"CRCERR 报警(G:i A:j)","cause":"串行数据在通信过程中错乱。","solution":"参阅SRVO-068的对策。","note":"要解除该报警，需要重新通电。"},"SRVO-070":{"name":"STBERR 报警(G:i A:j)","cause":"串行数据的开始位和停止位异常。","solution":"参阅SRVO-068的对策。","note":"要解除该报警，需要重新通电。"},"SRVO-213":{"name":"急停板保险丝FUSE2熔断","cause":"急停电路板保险丝FUSE2熔断。","solution":"1. 关闭电源，找到控制箱内急停板。 2. 更换相同规格保险丝FUSE2。 3. 重新通电确认报警消除。","note":"同时发生SRVO-001/004/007时，此为根本原因。"}};
+
+const TRANS={"SRVO-065":{"name_tw":"BLAL — 電池電壓低警告！請立即更換！","name_id":"BLAL — Tegangan Baterai Rendah! Segera Ganti!","cause_tw":"脈衝編碼器的電池電壓低於基準值。電池快沒電，需立即更換！","cause_id":"Tegangan baterai pulse encoder di bawah nilai referensi. Baterai hampir habis, perlu segera diganti!","sol_tw":"立即在機台通電狀態下更換電池！\n⚠️ 絕對不能斷電換電池！\n步驟：1. 確認控制器電源ON\n2. 按E-STOP讓機器人停止（不斷電）\n3. 30秒內換上新電池\n4. 確認警報消除後重置E-STOP\n5. 低速試運行確認定位正常","sol_id":"Segera ganti baterai saat mesin TETAP MENYALA!\n⚠️ Jangan ganti saat mati daya!\nLangkah:\n1. Pastikan daya controller ON\n2. Tekan E-STOP (daya tetap ON)\n3. Ganti baterai baru dalam 30 detik\n4. Konfirmasi alarm hilang, reset E-STOP\n5. Jalankan program kecepatan rendah","note_tw":"若未及時換電池且BZAL發生，位置數據全失！需找FANUC工程師重新Mastering。","note_id":"Jika tidak segera diganti dan BZAL terjadi, semua data posisi hilang! Perlu engineer FANUC untuk Mastering."},"SRVO-062":{"name_tw":"BZAL — 電池電量耗盡！緊急！","name_id":"BZAL — Baterai Habis! Darurat!","cause_tw":"脈衝編碼器的絕對位置備份電池已耗盡或未連接！位置數據面臨丟失風險！","cause_id":"Baterai backup posisi absolut pulse encoder sudah habis atau tidak terhubung! Data posisi berisiko hilang!","sol_tw":"1. 立即更換機器人底座電池盒內的電池（通電狀態下！）\n2. 確認機器人內部電池電纜無斷線\n3. 換後需重新通電、脈衝復位、零點標定","sol_id":"1. Segera ganti baterai di kotak baterai alas robot (daya TETAP ON!)\n2. Pastikan kabel baterai internal robot tidak putus\n3. Setelah ganti: restart, pulse reset, zero point mastering","note_tw":"解除此警報需重新通電。更換後必須脈衝復位及零點標定！","note_id":"Untuk hapus alarm ini perlu restart. Wajib pulse reset dan zero mastering setelah ganti!"},"SRVO-001":{"name_tw":"操作面板緊急停止","name_id":"Emergency Stop Panel Operasi","cause_tw":"操作面板的急停按鈕被按下。","cause_id":"Tombol emergency stop pada panel operasi ditekan.","sol_tw":"1. 順時針旋轉急停按鈕解除鎖定，再按RESET。\n2. 無法解除時，檢查控制裝置相關零件。","sol_id":"1. Putar tombol E-Stop searah jarum jam, lalu tekan RESET.\n2. Jika tidak bisa, periksa komponen unit kontrol.","note_tw":"同時發生SRVO-213時，可能是急停板保險絲熔斷。","note_id":"Jika SRVO-213 bersamaan, kemungkinan fuse E-stop board putus."},"SRVO-005":{"name_tw":"機器人超行程（軸超限）","name_id":"Robot Melewati Batas Gerak","cause_tw":"機器人關節超出硬體極限開關範圍。","cause_id":"Sumbu robot melewati batas hardware limit switch.","sol_tw":"1. 按住SHIFT鍵同時按RESET解除警報。\n2. 繼續按住SHIFT，點動進給將超程軸移回可動範圍。","sol_id":"1. Tahan SHIFT sambil tekan RESET untuk hapus alarm.\n2. Tetap tahan SHIFT, jog axis yang overtravel kembali ke range.","note_tw":"超行程後無法向發生警報時軸動作方向進行點動。","note_id":"Setelah overtravel, tidak bisa jog ke arah yang sama saat alarm."},"SRVO-038":{"name_tw":"脈衝值不匹配","name_id":"Nilai Pulse Tidak Cocok","cause_tw":"電源斷開時與接通時的脈衝值不同。常見原因：更換了電池/編碼器、斷電中軸位移。","cause_id":"Nilai pulse saat mati daya berbeda dengan saat daya ON. Penyebab: ganti baterai/encoder, sumbu bergeser.","sol_tw":"1. 在系統變數畫面將$MCR.$SPC_RESET按F4設為有效（瞬間），再按RESET進行脈衝復位。\n2. 脈衝復位後位置不正確時，需進行零點標定。","sol_id":"1. Di menu sistem variabel, set $MCR.$SPC_RESET jadi aktif dengan F4 (sesaat), lalu RESET pulse reset.\n2. Jika posisi masih tidak tepat, lakukan zero point mastering.","note_tw":"零點標定畫面需由有操作資格人員進行。","note_id":"Menu zero mastering hanya untuk personel berwenang."},"SRVO-023":{"name_tw":"停止時位置誤差過大","name_id":"Error Posisi Berlebih Saat Berhenti","cause_tw":"停止時伺服裝置位置偏差超出規定值。可能：負載超額定、電纜鬆動、放大器/電機故障。","cause_id":"Deviasi posisi servo saat berhenti melebihi nilai. Kemungkinan: beban berlebih, kabel longgar, amplifier/motor rusak.","sol_tw":"1. 確認負載是否超額定值。\n2. 確認電機電源線連接器是否鬆動。\n3. 確認輸入電壓是否正確。\n4. 必要時更換放大器或電機。","sol_id":"1. Periksa apakah beban melebihi rating.\n2. Periksa konektor kabel daya motor.\n3. Periksa tegangan input.\n4. Jika perlu, ganti amplifier atau motor.","note_tw":"","note_id":""},"SRVO-068":{"name_tw":"DTERR — 脈衝編碼器通訊錯誤","name_id":"DTERR — Error Komunikasi Pulse Encoder","cause_tw":"向串行脈衝編碼器發送請求信號後，沒有收到串行數據反饋。","cause_id":"Sinyal permintaan dikirim ke pulse encoder tetapi tidak ada data serial yang kembali.","sol_tw":"1. 確認脈衝編碼器和伺服放大器之間的連接電纜及連接器。\n2. 確認連接電纜屏蔽已接地。\n3. 更換脈衝編碼器（需零點標定）。\n4. 更換伺服放大器。","sol_id":"1. Periksa kabel dan konektor antara pulse encoder dan servo amplifier.\n2. Pastikan shielding kabel sudah di-ground.\n3. Ganti pulse encoder (perlu zero mastering).\n4. Ganti servo amplifier.","note_tw":"解除此警報需重新通電。","note_id":"Untuk hapus alarm ini perlu restart daya."},"SRVO-213":{"name_tw":"急停板保險絲（FUSE2）熔斷","name_id":"Fuse E-stop Board (FUSE2) Putus","cause_tw":"急停電路板上的保險絲FUSE2已熔斷。","cause_id":"Fuse FUSE2 pada board E-stop sudah putus.","sol_tw":"1. 關閉電源，找到控制箱內急停板。\n2. 更換相同規格保險絲FUSE2。\n3. 重新通電確認警報消除。","sol_id":"1. Matikan daya, temukan E-Stop Board di kabinet kontrol.\n2. Ganti fuse FUSE2 spesifikasi yang sama.\n3. Nyalakan kembali, konfirmasi alarm hilang.","note_tw":"同時發生SRVO-001/004/007時，此為根本原因。","note_id":"Jika bersamaan dengan SRVO-001/004/007, ini adalah penyebab utamanya."}};
+
+const MINI=[{"c":"SRVO-001","n":"操作面板紧急停止"},{"c":"SRVO-002","n":"示教器紧急停止"},{"c":"SRVO-003","n":"安全开关已释放"},{"c":"SRVO-004","n":"防护栅打开"},{"c":"SRVO-005","n":"机器人超行程"},{"c":"SRVO-006","n":"机械手断裂"},{"c":"SRVO-007","n":"外部紧急停止"},{"c":"SRVO-009","n":"气压报警"},{"c":"SRVO-010","n":"皮带破断"},{"c":"SRVO-012","n":"停电恢复"},{"c":"SRVO-014","n":"风扇电机异常"},{"c":"SRVO-015","n":"系统过热"},{"c":"SRVO-018","n":"制动器异常"},{"c":"SRVO-021","n":"SRDY 关闭"},{"c":"SRVO-022","n":"SRDY 开启"},{"c":"SRVO-023","n":"停止时误差过大"},{"c":"SRVO-024","n":"移动时误差过大"},{"c":"SRVO-025","n":"动作指令值溢出"},{"c":"SRVO-026","n":"电机速度极限"},{"c":"SRVO-027","n":"机器人未零点标定"},{"c":"SRVO-030","n":"制动器作用停止"},{"c":"SRVO-033","n":"机器人零点位置未标定"},{"c":"SRVO-034","n":"参考位置未设置"},{"c":"SRVO-035","n":"轴速度极限"},{"c":"SRVO-036","n":"定位超时"},{"c":"SRVO-037","n":"IMSTP 输入"},{"c":"SRVO-038","n":"脉冲值不匹配"},{"c":"SRVO-039","n":"电机速度过大"},{"c":"SRVO-041","n":"MOFAL 报警"},{"c":"SRVO-043","n":"DCAL 报警"},{"c":"SRVO-044","n":"DCHVAL 报警"},{"c":"SRVO-045","n":"HCAL 报警"},{"c":"SRVO-046","n":"OVC 报警"},{"c":"SRVO-047","n":"LVAL 报警"},{"c":"SRVO-049","n":"FSAL 报警"},{"c":"SRVO-050","n":"碰撞检测报警"},{"c":"SRVO-053","n":"CUER 报警"},{"c":"SRVO-055","n":"DVER 报警"},{"c":"SRVO-056","n":"FSSB 轴初始化失败"},{"c":"SRVO-057","n":"FSSB 线路断开"},{"c":"SRVO-058","n":"FSSB 错误"},{"c":"SRVO-059","n":"FSSB 通信错误"},{"c":"SRVO-060","n":"FSAL2 报警"},{"c":"SRVO-061","n":"CKAL 报警"},{"c":"SRVO-062","n":"BZAL 报警"},{"c":"SRVO-063","n":"RCAL 报警"},{"c":"SRVO-064","n":"PHAL 报警"},{"c":"SRVO-065","n":"BLAL 报警"},{"c":"SRVO-066","n":"CSAL 报警"},{"c":"SRVO-067","n":"OHAL2 报警"},{"c":"SRVO-068","n":"DTERR 报警"},{"c":"SRVO-069","n":"CRCERR 报警"},{"c":"SRVO-070","n":"STBERR 报警"},{"c":"SRVO-071","n":"SPHAL 报警"},{"c":"SRVO-072","n":"PMAL 报警"},{"c":"SRVO-073","n":"CMAL 报警"},{"c":"SRVO-075","n":"LDAL 报警"},{"c":"SRVO-095","n":"充电开始"},{"c":"SRVO-098","n":"重力补偿错误"},{"c":"SRVO-100","n":"SRV-100"},{"c":"SRVO-102","n":"伺服未就绪"},{"c":"SRVO-199","n":"控制停止"},{"c":"SRVO-200","n":"WARN"},{"c":"SRVO-201","n":"WARN"},{"c":"SRVO-202","n":"WARN"},{"c":"SRVO-213","n":"急停板FUSE2熔断"},{"c":"SRVO-214","n":"急停线路断开"}];
+
+// ════════════════ AUTH ════════════════
+const PASS_STAFF='TCMW2026';
+const PASS_ADMIN='TCMW@cody202688';
+let currentRole='';
+
+function doLogin(){
+  const pw=document.getElementById('pwInput').value;
+  const err=document.getElementById('loginErr');
+  if(pw===PASS_ADMIN){
+    currentRole='admin';
+    sessionStorage.setItem('fanuc_role','admin');
+    showApp();
+  } else if(pw===PASS_STAFF){
+    currentRole='staff';
+    sessionStorage.setItem('fanuc_role','staff');
+    showApp();
+  } else {
+    err.textContent='密碼錯誤，請重試 / Password salah, coba lagi';
+    document.getElementById('pwInput').value='';
+  }
+}
+
+function showApp(){
+  document.getElementById('loginScreen').style.display='none';
+  document.getElementById('app').style.display='block';
+  if(currentRole==='admin'){
+    document.getElementById('adminBtn').style.display='flex';
+    document.getElementById('adminRoleInfo').textContent='管理員 (Admin)';
+  }
+  setSec('s0');
+  renderAlarmSearch();
+  renderAlarmList();
+  renderAlarmBattery();
+}
+
+function doLogout(){
+  sessionStorage.removeItem('fanuc_role');
+  currentRole='';
+  document.getElementById('loginScreen').style.display='flex';
+  document.getElementById('app').style.display='none';
+  document.getElementById('pwInput').value='';
+  document.getElementById('loginErr').textContent='';
+}
+
+function openAdmin(){ document.getElementById('adminModal').classList.add('show'); }
+function closeAdmin(){ document.getElementById('adminModal').classList.remove('show'); }
+
+// ════════════════ TAB SWITCH ════════════════
+function switchTab(tab){
+  document.getElementById('trainView').style.display=tab==='train'?'block':'none';
+  document.getElementById('alarmView').style.display=tab==='alarm'?'block':'none';
+  document.getElementById('tabTrain').classList.toggle('on',tab==='train');
+  document.getElementById('tabAlarm').classList.toggle('on',tab==='alarm');
+}
+
+// ════════════════ TRAINING SECTIONS ════════════════
+const SECS=['s0','s1','s2','s3','s4','s5','s6','s7'];
+
+function setSec(id){
+  SECS.forEach((s,i)=>{
+    document.querySelectorAll('#trainNav .subBtn')[i].classList.toggle('on',s===id);
+  });
+  document.getElementById('secContent').innerHTML=buildSec(id);
+}
+
+function alert_(type,zh,id){
+  return`<div class="alertBox alert-${type}"><div class="zh">${zh}</div><div class="id">${id}</div></div>`;
+}
+function step_(n,zh,id,note,green){
+  return`<div class="step${green?' green':''}"><div class="stepNum">${n}</div><div><div class="stepZh">${zh}</div><div class="stepId">${id}</div>${note?`<div class="stepNote">${note}</div>`:''}</div></div>`;
+}
+function biTable(rows){
+  let r=rows.map(([k,zh,id])=>`<tr><td class="td-key">${k}</td><td>${zh}</td><td class="td-id">${id}</td></tr>`).join('');
+  return`<div class="biTable"><table><thead><tr><th class="th-dark">項目 / Item</th><th class="th-blue">🇹🇼 繁體中文</th><th class="th-green">🇮🇩 Bahasa Indonesia</th></tr></thead><tbody>${r}</tbody></table></div>`;
+}
+function codeBlock(lines){
+  let r=lines.map(([n,i,c])=>`<div class="codeLine"><span class="codeNum">${n}</span><span class="codeInst">${i}</span>${c?`<span class="codeComment">${c}</span>`:''}</div>`).join('');
+  return`<div class="codeBlock">${r}</div>`;
+}
+
+function buildSec(id){
+  if(id==='s0') return secHome();
+  if(id==='s1') return secPanel();
+  if(id==='s2') return secTCP();
+  if(id==='s3') return secLaser();
+  if(id==='s4') return secTorch();
+  if(id==='s5') return secMotion();
+  if(id==='s6') return secTracking();
+  if(id==='s7') return secMaintenance();
+  return '';
+}
+
+function secHome(){
+  return`
+  <div class="secHeader"><div class="secHeaderIcon">🏠</div><h2 class="secH2">培訓手冊使用說明 <em>Panduan Penggunaan Manual</em></h2></div>
+  ${alert_('info','本手冊適用於 FANUC ARC Mate 系列弧焊機器人，配合紅外線（激光）視覺傳感器使用。請依序閱讀各章節。','Manual ini untuk robot las busur FANUC ARC Mate dengan sensor visual laser. Harap baca setiap bagian secara berurutan.')}
+  <div class="grid2">
+    <div class="infoCard">
+      <h3>📋 手冊章節一覽 <em style="font-size:.8rem;color:#2e7d32;font-weight:400">Daftar Isi</em></h3>
+      ${biTable([['第一章','示教器面板按鍵說明','Panel Kontrol Teach Pendant'],['第二章','TCP六點法設定','Pengaturan TCP Metode 6 Titik'],['第三章','紅外線掃描定位設置','Pengaturan Pemindai Inframerah'],['第四章','換槍頭後重新定位','Penggantian Torch & Kalibrasi Ulang'],['第五章','點、線、圓程式設置','Program Titik, Garis, Lingkaran'],['第六章','紅外線搜尋與追蹤','Pencarian & Pelacakan Laser'],['第七章','機台保養與注意事項','Perawatan & Catatan Keselamatan']])}
+    </div>
+    <div class="infoCard">
+      <h3>⚠️ 安全操作基本原則 <em style="font-size:.8rem;color:#2e7d32;font-weight:400">Prinsip Keselamatan</em></h3>
+      ${alert_('danger','操作機器人前必須確認安全門已關閉，作業員不得進入機器人動作範圍！','Sebelum mengoperasikan robot, pastikan pintu pengaman tertutup. Operator dilarang memasuki area gerak robot!')}
+      ${alert_('warning','手動點動機器人時，速度不超過 25%，靠近工件時不超過 10%。','Saat jog manual, kecepatan tidak boleh melebihi 25%, dekat benda kerja tidak lebih dari 10%.')}
+      ${alert_('success','遇到異常立即按下紅色急停按鈕（E-STOP），排查後再重置。','Jika ada kejanggalan, segera tekan tombol merah E-STOP, periksa penyebabnya sebelum mereset.')}
+      <button onclick="switchTab('alarm')" style="width:100%;background:#FFD700;border:none;padding:10px;border-radius:10px;font-weight:800;cursor:pointer;color:#1a1a2e;margin-top:10px;font-size:.88rem;font-family:inherit">⚠️ 前往警報查詢系統 →</button>
+    </div>
+  </div>`;
+}
+
+function secPanel(){
+  return`
+  <div class="secHeader"><div class="secHeaderIcon">🎮</div><h2 class="secH2">示教器（TP）面板按鍵說明 <em>Penjelasan Panel Teach Pendant</em></h2></div>
+  ${biTable([['MENU','顯示屏幕主選單，選擇各功能','Menampilkan menu utama, pilih berbagai fungsi'],['SELECT','列出和創建程式','Daftar dan buat program'],['EDIT','編輯和執行程式','Edit dan jalankan program'],['DATA','顯示各暫存器內容','Tampilkan isi register'],['FCTN','顯示附加功能選單','Menampilkan menu fungsi tambahan'],['SHIFT','組合鍵，配合其他鍵執行特殊功能（如SHIFT+F5記錄位置）','Tombol kombinasi untuk fungsi khusus (mis. SHIFT+F5 rekam posisi)'],['COORD','切換點動坐標系：JOINT→WORLD→TOOL→USER','Ganti koordinat jog: JOINT→WORLD→TOOL→USER'],['+% / -%','調整示教速度：VFINE→FINE→1%→5%→50%→100%','Atur kecepatan pengajaran'],['FWD','從前至後地運行程式','Jalankan program maju'],['BWD','從後向前地運行程式','Jalankan program mundur'],['HOLD','暫停機器人動作','Tahan/hentikan gerak robot'],['STEP','在單步執行和循環執行之間切換','Toggle antara langkah tunggal dan loop'],['RESET','清除警報','Hapus alarm'],['WELD ENBL','焊接啟用/禁用切換','Toggle aktifkan/nonaktifkan pengelasan'],['WIRE +/−','送絲/退絲','Kirim/tarik kawat las'],['POSN','顯示機器人目前位置（X,Y,Z,W,P,R）','Tampilkan posisi robot saat ini (X,Y,Z,W,P,R)']])}
+  ${alert_('warning','示教器背面的 DEAD MAN 開關必須按到「中間位置」機器人才能動作；放開或按死都會立即停止！','Tombol DEAD MAN di belakang teach pendant harus ditekan di "posisi tengah" agar robot bisa bergerak; lepas atau tekan penuh akan langsung berhenti!')}`;
+}
+
+function secTCP(){
+  return`
+  <div class="secHeader"><div class="secHeaderIcon">🔧</div><h2 class="secH2">焊槍 TCP 六點法設定 <em>Pengaturan TCP Metode 6 Titik</em></h2></div>
+  <div class="infoCard">
+    <h3>📌 什麼是 TCP？ <em style="color:#2e7d32;font-size:.82rem;font-weight:400">Apa itu TCP?</em></h3>
+    ${alert_('info','TCP（工具中心點）是焊槍尖端的精確坐標。六點法同時設定 TCP 位置（X,Y,Z）和工具姿態（W,P,R），比三點法更準確，弧焊必用。','TCP (Tool Center Point) adalah koordinat tepat ujung torch. Metode 6 titik mengatur posisi dan orientasi alat, lebih akurat, wajib untuk las busur.')}
+    ${alert_('info','驗證標準：TCP點對準固定尖點，繞X/Y/Z旋轉，偏差須在 1mm 以內。','Standar verifikasi: TCP ke titik tetap, putar X/Y/Z, deviasi harus dalam 1mm.')}
+  </div>
+  ${step_(1,'將焊槍姿態調整至垂直向下，按COORD切換至「WORLD世界坐標」','Sesuaikan torch menjadi vertikal ke bawah, tekan COORD pilih "WORLD"')}
+  ${step_(2,'按 MENU → 設置 → 坐標系 → F3坐標 → 工具坐標系','Tekan MENU → Pengaturan → Sistem Koordinat → F3 Koordinat → Koordinat Alat')}
+  ${step_(3,'移動光標至目標工具坐標系編號，按F2詳細 → F2方法 → 選擇「六點法（XZ）」','Pindah kursor ke nomor koordinat alat, tekan F2 Detail → F2 Metode → pilih "Enam Titik (XZ)"')}
+  ${step_(4,'將槍尖對準固定尖點，光標移至「接近點1」和「坐標原點」，按住 SHIFT+F5 記錄','Arahkan ujung torch ke titik tetap, pindah kursor ke "Titik Pendekatan 1" dan "Titik Asal", tahan SHIFT+F5','接近點1、2、3之間各差約90°，且不可在同一平面上！ / Titik 1,2,3 harus berbeda 90° dan tidak boleh sejajar!')}
+  ${step_(5,'依同樣方式記錄「接近點2」和「接近點3」（槍尖始終對準固定尖點，只改變姿態）','Rekam "Titik Pendekatan 2" dan 3 dengan cara sama (ujung torch selalu ke titik tetap, ubah orientasi)')}
+  ${step_(6,'切換至WORLD坐標，沿+X方向移動超過250mm，記錄「X方向點」','Ganti ke WORLD, gerak &gt;250mm ke arah +X, rekam "Titik Arah X"')}
+  ${step_(7,'光標移至「坐標原點」按SHIFT+F4移至 → 回原點後沿+Z方向移動超過250mm → 記錄「Z方向點」','Kursor ke Titik Asal tekan SHIFT+F4 MoveTo → balik ke asal, gerak &gt;250mm ke +Z → rekam Titik Arah Z')}
+  ${step_(8,'六點全部記錄完成，按F5切換啟用對應編號。狀態從「UNINIT」變為「USED」即表示成功！','6 titik terekam, tekan F5 untuk aktifkan. Status berubah "UNINIT" → "USED" berarti berhasil!','',true)}`;
+}
+
+function secLaser(){
+  return`
+  <div class="secHeader"><div class="secHeaderIcon">📡</div><h2 class="secH2">紅外線掃描定位設置 <em>Pengaturan Pemindai Laser</em></h2></div>
+  ${alert_('info','紅外線/激光傳感器可自動偵測焊縫位置，補償工件偏移，實現精確焊接。','Sensor laser dapat mendeteksi posisi jalur las otomatis, mengkompensasi pergeseran benda kerja untuk pengelasan presisi.')}
+  <div class="infoCard">
+    <h3>🔌 硬體安裝前提 <em style="color:#2e7d32;font-size:.8rem;font-weight:400">Prasyarat Hardware</em></h3>
+    ${biTable([['傳感器安裝','激光傳感器固定於焊槍側面，確保激光線能照射到焊縫','Sensor laser dipasang di samping torch, pastikan garis laser bisa menyinari jalur las'],['通訊設定','按 MENU → 設置 → 主機通訊 → TCP/IP，設置激光器IP地址','Tekan MENU → Pengaturan → Komunikasi → TCP/IP, atur IP sensor laser'],['手眼標定','需進行5點標定（焊絲點+激光點），建立激光與機器人的相對位置','Diperlukan kalibrasi 5 titik untuk membangun posisi relatif laser-robot'],['焊縫識別','在激光軟體99號任務中設定焊縫識別參數（接頭類型、板厚等）','Atur parameter deteksi jalur las di tugas no.99 pada software laser']])}
+  </div>
+  ${step_(1,'準備兩塊平板（厚度3~5mm），搭接放置，上板表面劃一條直線作為標定基準','Siapkan dua pelat (tebal 3~5mm) posisi tumpang tindih, buat garis di permukaan pelat atas')}
+  ${step_(2,'在激光軟體99號任務中確認能穩定識別到焊縫後，開始標定','Di tugas no.99 software laser, konfirmasi deteksi jalur las stabil, baru mulai kalibrasi')}
+  ${step_(3,'第1點（焊絲點）：用焊絲尖端對準劃線端點，焊絲伸出量與TCP標定時一致','Titik 1 (Titik Kawat): arahkan ujung kawat las ke ujung garis, panjang kawat sama saat kalibrasi TCP')}
+  ${step_(4,'第2點（激光點）：移動使激光線與劃線重合，識別點位於識別界面正上方','Titik 2 (Titik Laser): gerakkan hingga garis laser bertepatan dengan garis referensi')}
+  ${step_(5,'完成第3~5點標定，軟體自動計算手眼關係矩陣並保存','Selesaikan titik 3~5, software otomatis menghitung matriks hand-eye dan menyimpannya','',true)}`;
+}
+
+function secTorch(){
+  return`
+  <div class="secHeader"><div class="secHeaderIcon">🔄</div><h2 class="secH2">槍頭碰歪後更換及重新定位 <em>Ganti Torch &amp; Kalibrasi Ulang</em></h2></div>
+  ${alert_('danger','焊槍碰歪代表TCP數據已失效！更換槍頭後必須重新做六點法，否則機器人焊接軌跡將全部偏移！','Torch bengkok berarti data TCP sudah tidak valid! Setelah ganti torch WAJIB ulangi metode 6 titik, jika tidak robot akan bergerak meleset!')}
+  <div class="grid2">
+    <div>
+      <h3 style="color:#1a1a2e;font-size:.95rem;margin-bottom:10px">🔩 更換槍頭步驟 <em style="color:#2e7d32;font-size:.8rem;font-weight:400">Langkah Ganti Torch</em></h3>
+      ${step_(1,'關閉機器人電源，按下急停按鈕','Matikan daya robot, tekan tombol E-STOP')}
+      ${step_(2,'關閉保護氣體和焊機電源','Matikan gas pelindung dan sumber daya mesin las')}
+      ${step_(3,'拆下碰歪的槍頭，確認連接法蘭盤無損傷','Lepas torch yang bengkok, periksa flange sambungan tidak rusak')}
+      ${step_(4,'安裝同規格新槍頭，旋緊至相同扭力規格','Pasang torch baru spesifikasi sama, kencangkan sesuai torsi standar')}
+      ${step_(5,'確認焊絲伸出長度與TCP標定時相同（通常15mm）','Pastikan panjang kawat keluar sama dengan saat kalibrasi TCP (biasanya 15mm)')}
+    </div>
+    <div>
+      <h3 style="color:#1a1a2e;font-size:.95rem;margin-bottom:10px">📌 重新TCP定位 <em style="color:#2e7d32;font-size:.8rem;font-weight:400">Kalibrasi TCP Ulang</em></h3>
+      ${step_('A','重新開機，進入工具坐標系設定，選擇原先使用的工具坐標系編號','Hidupkan ulang, masuk menu koordinat alat, pilih nomor koordinat yang digunakan sebelumnya')}
+      ${step_('B','按F2方法選擇「六點法（XZ）」，依照第二章步驟重新進行6點記錄','Tekan F2 Metode pilih "6 Titik (XZ)", ikuti langkah Bab 2 untuk rekam 6 titik ulang')}
+      ${step_('C','驗證：槍尖對準固定尖點，繞各軸旋轉偏差 &lt;1mm','Verifikasi: arahkan ujung torch ke titik tetap, putar setiap sumbu, deviasi &lt;1mm')}
+      ${step_('D','若有激光傳感器，須重新進行手眼標定（5點法）','Jika ada sensor laser, ulangi kalibrasi hand-eye (metode 5 titik)')}
+      ${step_('E','以低速（10%）試運行焊接程式，確認軌跡正確後正式生產','Jalankan program las dengan kecepatan rendah (10%), konfirmasi jalur benar sebelum produksi','',true)}
+    </div>
+  </div>`;
+}
+
+function secMotion(){
+  return`
+  <div class="secHeader"><div class="secHeaderIcon">📐</div><h2 class="secH2">點、線、圓程式設置原理 <em>Program Titik, Garis, Lingkaran</em></h2></div>
+  <div class="grid3">
+    ${[['J','關節運動（點）','Gerakan Joint (Titik)','各軸獨立旋轉，路徑不固定，速度快，用於過渡點','Setiap sumbu bergerak bebas, cepat, untuk titik transisi'],['L','直線運動（線）','Gerakan Linear (Garis)','工具沿直線移動，路徑精確，用於焊接直線焊縫','Alat bergerak lurus, presisi, untuk jalur las lurus'],['C','圓弧運動（圓）','Gerakan Circular (Lingkaran)','三點決定圓弧路徑，用於焊接弧形/圓形焊縫','3 titik menentukan jalur busur, untuk jalur las busur/lingkaran']].map(([l,n,nid,d,did])=>`<div class="motionCard"><div class="motionLetter">${l}</div><div class="motionName">${n}</div><div class="motionId">${nid}</div><div class="motionDesc">${d}</div></div>`).join('')}
+  </div>
+  <div class="infoCard">
+    <h3>🔥 弧焊程式結構 <em style="color:#2e7d32;font-size:.8rem;font-weight:400">Struktur Program Las Busur</em></h3>
+    ${codeBlock([['1:','J P[1] 100% CNT50','← 安全點（過渡）/ Titik aman'],['2:','J P[2] 100% CNT10','← 起弧接近點（距起弧點≤30mm）'],['3:','L P[3] 50mm/sec FINE','← 起弧點 / Titik mulai busur'],['  ','Weld Start[1,1]','← 起弧指令 / Perintah nyala busur'],['4:','L P[4] 100mm/sec CNT100','← 焊接中間點（直線）'],['5:','L P[5] 100mm/sec FINE','← 收弧點 / Titik akhir busur'],['  ','Weld End[1,2]','← 收弧指令 / Perintah padam busur'],['6:','J P[1] 100% FINE','← 回安全點 / Kembali titik aman']])}
+  </div>
+  ${alert_('warning','焊接路徑點不可使用 Joint 關節運動（J），必須用 L 直線或 C 圓弧指令，否則路徑不可預測！','Titik jalur las TIDAK BOLEH menggunakan gerak Joint (J), harus gunakan L lurus atau C busur!')}`;
+}
+
+function secTracking(){
+  return`
+  <div class="secHeader"><div class="secHeaderIcon">🔍</div><h2 class="secH2">紅外線搜尋與追蹤功能 <em>Fungsi Pencarian &amp; Pelacakan Laser</em></h2></div>
+  <div class="grid2" style="margin-bottom:16px">
+    <div class="infoCard" style="margin:0">
+      <h3 style="color:#1a1a2e;font-size:.92rem;margin-bottom:8px">🔎 搜尋（SEARCH）原理</h3>
+      <p style="font-size:.84rem">當工件因夾具誤差而偏離原示教位置時，機器人移到準備點，打開激光，搜尋焊縫實際位置，將結果存入位置暫存器PR[n]，再依此位置進行焊接，實現自動補偏。</p>
+      <p style="font-size:.81rem;color:#2e7d32;font-style:italic;margin-top:6px">Ketika benda kerja bergeser dari posisi pengajaran, robot bergerak ke titik persiapan, nyalakan laser, cari posisi jalur las aktual, simpan di PR[n], lalu las di posisi tersebut untuk kompensasi otomatis.</p>
+    </div>
+    <div class="infoCard" style="margin:0">
+      <h3 style="color:#1a1a2e;font-size:.92rem;margin-bottom:8px">📡 追蹤（TRACK）原理</h3>
+      <p style="font-size:.84rem">焊接過程中激光持續掃描焊縫，即時計算偏差並修正機器人路徑，使焊槍始終準確沿焊縫焊接，適用於彎曲或不規則焊縫。</p>
+      <p style="font-size:.81rem;color:#2e7d32;font-style:italic;margin-top:6px">Saat pengelasan, laser terus memindai jalur las, menghitung deviasi real-time dan mengoreksi jalur robot, sehingga torch selalu tepat mengikuti jalur las.</p>
+    </div>
+  </div>
+  <div class="infoCard">
+    <h3>📋 搜尋+追蹤程式結構 <em style="color:#2e7d32;font-size:.8rem;font-weight:400">Struktur Program Pencarian + Pelacakan</em></h3>
+    ${codeBlock([['1:','J P[1] 200mm/sec FINE','← 到達準備點 / Ke titik persiapan'],['2:','SENSOR ON[1]','← 打開激光 / Nyalakan laser'],['3:','SENSOR SEARCH START PR[1]','← 搜尋結果存入PR[1]'],['4:','SENSOR SEARCH POINT[3]','← 調用3號焊縫文件'],['5:','SENSOR SEARCH END','← 搜尋結束 / Selesai pencarian'],['6:','L PR[1] 100mm/sec FINE','← 走到搜尋到的起始點'],['7:','SENSOR ON[1]','← 打開激光 / Nyalakan laser'],['8:','Track SENSOR[3]','← 開始追蹤，調用3號追蹤條件'],['9:','Weld Start[1,1]','← 起弧 / Nyala busur'],['10:','L PR[2] 100mm/sec FINE','← 焊接終點（追蹤中）'],['11:','Track End','← 追蹤結束 / Selesai pelacakan'],['12:','Weld End[1,2]','← 收弧 / Padam busur']])}
+  </div>`;
+}
+
+function secMaintenance(){
+  return`
+  <div class="secHeader"><div class="secHeaderIcon">🛠</div><h2 class="secH2">機台保養維護與注意事項 <em>Perawatan &amp; Catatan Penting</em></h2></div>
+  <div class="infoCard">
+    <h3>📅 保養週期表 <em style="color:#2e7d32;font-size:.8rem;font-weight:400">Jadwal Perawatan</em></h3>
+    ${biTable([['每日/Harian','清潔焊槍噴嘴、確認焊絲伸出量（15mm）、確認氣體壓力正常','Bersihkan nozzle, periksa panjang kawat (15mm), periksa tekanan gas normal'],['每日/Harian','機器人外觀檢查：各軸電纜無磨損或打結，無異常聲音','Periksa kabel setiap sumbu, tidak ada yang aus atau kusut, tidak ada suara aneh'],['每週/Mingguan','清潔激光傳感器鏡頭（無塵布擦拭），確認送絲輪無磨損','Lap lensa sensor laser dengan kain bebas debu, periksa roda pengirim kawat'],['每月/Bulanan','各軸加注規定潤滑脂，清潔控制箱散熱口濾網','Tambahkan grease pada sumbu sesuai manual, bersihkan filter ventilasi'],['每月/Bulanan','TCP精度驗證：偏差須在1mm以內，超差需重新標定','Verifikasi TCP: deviasi dalam 1mm, jika melebihi perlu kalibrasi ulang'],['每年/Tahunan','機器人零點校正（Mastering）—委託FANUC售後進行','Zero point mastering — hubungi after-sales FANUC']])}
+  </div>
+  <div class="batAlertBox">
+    <div class="batAlertHdr">
+      <span class="batAlertHdrIcon">🔋</span>
+      <div>
+        <div class="batAlertTitle">SRVO-065 BLAL 電池警報 — 最重要注意事項</div>
+        <div class="batAlertSub">Alarm Baterai SRVO-065 BLAL — Perhatian Terpenting</div>
+      </div>
+    </div>
+    <div style="padding:16px 20px">
+      <div class="grid2" style="gap:12px;margin-bottom:14px">
+        <div style="background:#fce4ec;border-radius:9px;padding:14px">
+          <div style="font-weight:800;color:#880e4f;margin-bottom:6px">📍 位置①：手臂座編碼器電池</div>
+          <div style="font-size:.83rem;color:#555">機器人本體手臂底座側面的電池盒，保存J1~J6各軸零點定位數據</div>
+          <div style="font-size:.79rem;color:#2e7d32;font-style:italic;margin-top:4px">Kotak baterai di alas lengan robot, menyimpan data zero point sumbu J1~J6</div>
+        </div>
+        <div style="background:#e3f2fd;border-radius:9px;padding:14px">
+          <div style="font-weight:800;color:#0d47a1;margin-bottom:6px">📍 位置②：變壓器轉盤定位電池</div>
+          <div style="font-size:.83rem;color:#555">外部軸（變壓器轉盤）控制盒內的電池槽，保存轉盤絕對轉向位置</div>
+          <div style="font-size:.79rem;color:#2e7d32;font-style:italic;margin-top:4px">Slot baterai dalam kotak kontrol turntable trafo, menyimpan posisi orientasi absolut</div>
+        </div>
+      </div>
+      ${alert_('warning','更換電池時，機台絕對不能斷電！必須在控制器電源保持開啟的狀態下熱插拔電池，整個過程須在30秒內完成！斷電換電池 = 位置數據全失 = 需找FANUC工程師Mastering（費用和停機時間都很高）！','Saat mengganti baterai, daya mesin HARUS TETAP MENYALA! Ganti baterai secara hot-swap dalam 30 detik! Ganti saat mati daya = data posisi hilang = panggil engineer FANUC untuk Mastering (biaya dan downtime besar)!')}
+    </div>
+  </div>
+  ${alert_('danger','禁止帶手套操作示教器、禁止在機器人動作範圍內進行調整、禁止未確認程式正確性前以100%速度自動運行','Dilarang: pakai sarung tangan saat operasi teach pendant, penyesuaian di area gerak robot, jalankan otomatis 100% sebelum konfirmasi program')}`;
+}
+
+// ════════════════ ALARM SYSTEM ════════════════
+let currentAlarmTab='search';
+
+function setAlarmTab(tab){
+  currentAlarmTab=tab;
+  ['search','list','battery'].forEach(t=>{
+    document.getElementById('aTab-'+t).classList.toggle('on',t===tab);
+    document.getElementById('alarm'+cap(t)).style.display=t===tab?'block':'none';
+  });
+}
+function cap(s){return s.charAt(0).toUpperCase()+s.slice(1)}
+
+function parseCode(v){
+  v=v.trim().toUpperCase();
+  if(v.startsWith('SRVO-')) return v;
+  const n=v.replace(/\D/g,'');
+  if(!n) return null;
+  return 'SRVO-'+n.padStart(3,'0');
+}
+
+function doSearch(){
+  const v=document.getElementById('alarmInput').value;
+  const code=parseCode(v);
+  if(!code) return;
+  lookupAlarm(code);
+}
+
+function quickLookup(code){
+  document.getElementById('alarmInput').value=code;
+  lookupAlarm(code);
+  setAlarmTab('search');
+}
+
+async function lookupAlarm(code){
+  setAlarmTab('search');
+  const box=document.getElementById('alarmSearch');
+  if(TRANS[code]){renderAlarmCard(box,code,TRANS[code],false,false);return;}
+  if(DB[code]){renderAlarmCard(box,code,DB[code],false,true);return;}
+  const found=MINI.find(a=>a.c===code);
+  if(!found){
+    const q=code.toLowerCase().replace('srvo-','');
+    const ms=MINI.filter(a=>a.c.toLowerCase().includes(q)||a.n.toLowerCase().includes(q)).slice(0,8);
+    if(ms.length){
+      box.innerHTML='<div style="padding:10px 0 12px;color:#666;font-size:.83rem">找到 '+ms.length+' 個相關 / Ditemukan '+ms.length+' alarm</div>'+ms.map(a=>`<div class="alarmItem" onclick="quickLookup('${a.c}')"><div class="alarmItemCode${(a.c==='SRVO-065'||a.c==='SRVO-062')?' bat':''}">${a.c}</div><div class="alarmItemName">${a.n}</div><div class="alarmItemArr">›</div></div>`).join('');
+    } else {
+      box.innerHTML='<div class="notFound"><div style="font-size:2.8rem;margin-bottom:10px">🔍</div><p>查無此代碼 / Kode tidak ditemukan<br><small>請確認格式如 SRVO-065</small></p></div>';
+    }
+    return;
+  }
+  box.innerHTML='<div class="loadingBox"><div class="spinner"></div><p>🤖 正在查詢 '+code+'... Sedang mencari informasi...</p></div>';
+  try{
+    const resp=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:800,system:'You are a FANUC robot alarm expert. Reply ONLY with JSON (no markdown): {"name_tw":"","name_id":"","cause_tw":"","cause_id":"","sol_tw":"","sol_id":"","note_tw":"","note_id":""}. Traditional Chinese + Bahasa Indonesia. Based on FANUC R-30iB alarm manual.',messages:[{role:'user',content:`FANUC alarm ${code} (${found.n}). Provide bilingual cause and solution.`}]})});
+    const d=await resp.json();
+    const txt=d.content?.[0]?.text||'';
+    const info=JSON.parse(txt.trim());
+    renderAlarmCard(box,code,info,true,false);
+  }catch(e){
+    renderAlarmCard(box,code,{name:found.n,cause:'請參閱FANUC官方手冊 B-83284CM',solution:'請聯繫FANUC售後工程師',note:''},false,true);
+  }
+}
+
+function renderAlarmCard(box,code,data,isAI,isPDF){
+  const isBat=code==='SRVO-065'||code==='SRVO-062';
+  const num=parseInt(code.replace('SRVO-',''));
+  const cls=isBat?'purple':(num<=7||num===213?'red':'orange');
+  const ico=isBat?'🔋':(num<=7?'🛑':'⚠️');
+  const ntw=data.name_tw||data.name||code;
+  const nid=data.name_id||'';
+  const ctw=data.cause_tw||data.cause||'';
+  const cid=data.cause_id||'(Lihat panduan resmi FANUC)';
+  const stw=data.sol_tw||data.solution||'';
+  const sid=data.sol_id||'(Lihat panduan resmi FANUC)';
+  const nttw=data.note_tw||data.note||'';
+  const ntid=data.note_id||'';
+
+  let html=`<div class="alarmCard">
+    <div class="alarmHdr ${cls}"><div class="alarmIcon">${ico}</div><div><div class="alarmCode">${code}</div><div class="alarmName">${ntw}</div>${nid?`<div class="alarmId">${nid}</div>`:''}</div></div>`;
+  if(isBat) html+=`<div class="batWarn"><div class="batTitle">⚡ 換電池重要提醒 / Pengingat Ganti Baterai</div><div class="batBody">🇹🇼 機台必須保持通電（電源ON），30秒內完成熱插拔！<br>🇮🇩 Mesin harus tetap MENYALA, hot-swap dalam 30 detik!<br>🇹🇼 斷電換電池 = 位置數據全失 = 需找FANUC工程師Mastering！<br>🇮🇩 Ganti saat mati daya = data posisi hilang = panggil engineer FANUC!</div></div>`;
+  html+=`<div class="rowLbl">🔴 原因 / Penyebab</div>
+    <div class="biHdrRow"><div class="biHdr" style="color:#0f3460">🇹🇼 繁體中文</div><div class="biHdr" style="color:#2e7d32">🇮🇩 Bahasa Indonesia</div></div>
+    <div class="biGrid"><div class="biCell zh"><pre>${ctw||'（見官方手冊）'}</pre></div><div class="biCell id"><pre>${cid}</pre></div></div>
+    <div class="rowLbl">✅ 對策 / Cara Mengatasi</div>
+    <div class="biHdrRow"><div class="biHdr" style="color:#0f3460">🇹🇼 繁體中文</div><div class="biHdr" style="color:#2e7d32">🇮🇩 Bahasa Indonesia</div></div>
+    <div class="biGrid"><div class="biCell zh"><pre>${stw||'（見官方手冊）'}</pre></div><div class="biCell id"><pre>${sid}</pre></div></div>`;
+  if(nttw||ntid) html+=`<div class="noteRow"><div class="noteCell zh"><b style="display:block;margin-bottom:2px">📌 注意</b><pre>${nttw}</pre></div><div class="noteCell id"><b style="display:block;margin-bottom:2px">📌 Catatan</b><pre>${ntid}</pre></div></div>`;
+  html+=`</div>`;
+  if(isAI) html+=`<div class="apiTag">🤖 由AI即時翻譯 · Diterjemahkan AI real-time</div>`;
+  if(isPDF) html+=`<div class="pdfTag">✅ 資料來自官方手冊 B-83284CM</div>`;
+  box.innerHTML=html;
+}
+
+function renderAlarmSearch(){
+  const box=document.getElementById('alarmSearch');
+  box.innerHTML=`<div class="welcomeBox"><h3>🔍 輸入警報代碼開始查詢</h3><p>Masukkan kode alarm SRVO (mis. SRVO-065 atau cukup angka 65)</p><div class="quickCodes">${Object.keys(TRANS).map(c=>`<button class="qcBtn" onclick="quickLookup('${c}')">${c}</button>`).join('')}</div></div>`;
+}
+
+function renderAlarmList(){
+  const box=document.getElementById('alarmList');
+  box.innerHTML=`<input id="listFilter" placeholder="🔍 篩選代碼或名稱..." oninput="filterList()" style="width:100%;padding:8px 13px;border:1px solid #ddd;border-radius:8px;font-size:.84rem;margin-bottom:10px;font-family:inherit"><div class="alarmList" id="alarmListItems">${MINI.map(a=>`<div class="alarmItem" onclick="quickLookup('${a.c}');setAlarmTab('search')"><div class="alarmItemCode${(a.c==='SRVO-065'||a.c==='SRVO-062')?' bat':''}">${a.c}</div><div class="alarmItemName">${a.n}</div><div class="alarmItemArr">›</div></div>`).join('')}</div>`;
+}
+
+function filterList(){
+  const f=document.getElementById('listFilter').value.toUpperCase();
+  document.getElementById('alarmListItems').innerHTML=MINI.filter(a=>!f||a.c.includes(f)||a.n.includes(f)).map(a=>`<div class="alarmItem" onclick="quickLookup('${a.c}');setAlarmTab('search')"><div class="alarmItemCode${(a.c==='SRVO-065'||a.c==='SRVO-062')?' bat':''}">${a.c}</div><div class="alarmItemName">${a.n}</div><div class="alarmItemArr">›</div></div>`).join('');
+}
+
+function renderAlarmBattery(){
+  const box=document.getElementById('alarmBattery');
+  let html='';
+  ['SRVO-065','SRVO-062','SRVO-038'].forEach(code=>{
+    if(TRANS[code]){
+      const d=TRANS[code];
+      html+=buildAlarmCardHtml(code,d);
+    }
+  });
+  box.innerHTML=html;
+}
+
+function buildAlarmCardHtml(code,data){
+  const isBat=code==='SRVO-065'||code==='SRVO-062';
+  const num=parseInt(code.replace('SRVO-',''));
+  const cls=isBat?'purple':(num<=7||num===213?'red':'orange');
+  const ico=isBat?'🔋':'⚠️';
+  const ntw=data.name_tw||data.name||code;
+  const nid=data.name_id||'';
+  const ctw=data.cause_tw||data.cause||'';
+  const cid=data.cause_id||'';
+  const stw=data.sol_tw||data.solution||'';
+  const sid=data.sol_id||'';
+  const nttw=data.note_tw||data.note||'';
+  const ntid=data.note_id||'';
+  let h=`<div class="alarmCard"><div class="alarmHdr ${cls}"><div class="alarmIcon">${ico}</div><div><div class="alarmCode">${code}</div><div class="alarmName">${ntw}</div>${nid?`<div class="alarmId">${nid}</div>`:''}</div></div>`;
+  if(isBat) h+=`<div class="batWarn"><div class="batTitle">⚡ 換電池重要提醒 / Pengingat Ganti Baterai</div><div class="batBody">🇹🇼 機台必須保持通電（電源ON），30秒內完成熱插拔！<br>🇮🇩 Mesin harus tetap MENYALA, hot-swap dalam 30 detik!<br>🇹🇼 斷電換電池 = 位置數據全失！<br>🇮🇩 Ganti saat mati daya = data posisi hilang!</div></div>`;
+  h+=`<div class="rowLbl">🔴 原因 / Penyebab</div><div class="biHdrRow"><div class="biHdr" style="color:#0f3460">🇹🇼 繁體中文</div><div class="biHdr" style="color:#2e7d32">🇮🇩 Bahasa Indonesia</div></div><div class="biGrid"><div class="biCell zh"><pre>${ctw||'（見官方手冊）'}</pre></div><div class="biCell id"><pre>${cid||''}</pre></div></div><div class="rowLbl">✅ 對策 / Cara Mengatasi</div><div class="biHdrRow"><div class="biHdr" style="color:#0f3460">🇹🇼 繁體中文</div><div class="biHdr" style="color:#2e7d32">🇮🇩 Bahasa Indonesia</div></div><div class="biGrid"><div class="biCell zh"><pre>${stw||'（見官方手冊）'}</pre></div><div class="biCell id"><pre>${sid||''}</pre></div></div>`;
+  if(nttw||ntid) h+=`<div class="noteRow"><div class="noteCell zh"><b style="display:block;margin-bottom:2px">📌 注意</b><pre>${nttw}</pre></div><div class="noteCell id"><b style="display:block;margin-bottom:2px">📌 Catatan</b><pre>${ntid}</pre></div></div>`;
+  h+=`</div>`;
+  return h;
+}
+</script>
+</body>
+</html>
