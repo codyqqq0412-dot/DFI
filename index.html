@@ -127,6 +127,48 @@ body{font-family:'Segoe UI','Microsoft JhengHei',sans-serif;background:var(--gra
 .formula-box .f-title{font-weight:700;color:var(--blue);margin-bottom:5px}
 .formula-box .f-line{color:var(--blue2);font-family:'Courier New',monospace;font-size:11.5px;line-height:1.8}
 .formula-box .f-result{font-weight:700;color:var(--blue);margin-top:4px;font-size:12px}
+/* ── AR 3-column layout ── */
+.ar-layout{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;align-items:start}
+.ar-bottom{margin-top:12px}
+/* Rp/kg strip */
+.kgbar-wrap{background:var(--gray);border-radius:10px;padding:13px 15px;margin-bottom:10px}
+.kgbar-title{font-size:12.5px;font-weight:700;color:var(--blue);margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--gray3)}
+.kgbar-row{display:flex;align-items:center;gap:8px;margin-bottom:7px}
+.kgbar-lbl{min-width:105px;color:var(--muted);flex-shrink:0;font-size:11.5px}
+.kgbar-bar{flex:1;background:var(--gray2);border-radius:4px;height:15px;overflow:hidden}
+.kgbar-fill{height:100%;border-radius:4px;transition:width .4s}
+.kgbar-val{min-width:115px;text-align:right;font-weight:600;color:var(--text);font-size:11.5px}
+.kgbar-pct{min-width:36px;text-align:right;font-size:11px;color:var(--light)}
+.kgbar-total-row{display:flex;justify-content:space-between;align-items:center;padding-top:9px;border-top:1.5px solid var(--gray3);margin-top:5px}
+.kgbar-total-lbl{font-size:12px;font-weight:700;color:var(--blue)}
+.kgbar-total-val{font-size:19px;font-weight:800;color:var(--blue)}
+/* bilingual label */
+.bilbl{display:block;font-size:11.5px;color:var(--muted);margin-bottom:3px;font-weight:600}
+.bilbl .id{font-weight:400;color:var(--light);font-size:10.5px}
+/* print btn */
+.print-btn{background:var(--green);color:#fff;border:none;padding:7px 15px;border-radius:7px;font-size:12.5px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:5px}
+.print-btn:hover{opacity:.88}
+@media print{
+  .hdr,.nav,.mode-bar,.alert.alert-orange,.btn-row,.attach-zone,.attach-previews,
+  #ar_pricing_rationale,#ar_margin_health,.cost-item-toggle-icon,
+  .cost-item-header input[type=checkbox],button,.pbar,.pbar-label,
+  .sl-row input[type=range],.sl-val,#ar_cost_visual_wrap,
+  .multi-list-section,#ai_cc,#ai_pkg,#ai_ship{display:none!important}
+  body{background:#fff;font-size:10pt}
+  .pg.on{display:block!important;padding:4mm}
+  .card{box-shadow:none;border:0.5pt solid #ccc;page-break-inside:avoid;margin-bottom:5pt;padding:8pt 10pt}
+  .ar-layout{grid-template-columns:1fr 1fr 1fr;gap:6pt}
+  .ar-bottom{margin-top:8pt}
+  .cost-item-body{display:block!important}
+  .cost-item-header{background:#f0f4f8!important;padding:4pt 8pt}
+  .cost-item-label{font-size:10pt}
+  .result-hero{background:#1a4f7a!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .kgbar-fill{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  input,select{border:0.4pt solid #bbb!important;font-size:9.5pt!important;padding:2pt 4pt!important}
+  .metric .v{font-size:13pt}
+  .rh-block .val{font-size:17pt}
+  @page{margin:8mm 7mm;size:A4 landscape}
+}
 
 /* Example box */
 .example-box{background:#fffbea;border:1px solid #f0d060;border-radius:8px;padding:10px 13px;margin-top:8px;font-size:12px}
@@ -186,13 +228,11 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
 .attach-item .pdf-thumb span{font-size:9px;color:var(--red);font-weight:700;margin-top:2px}
 .attach-item .fname{font-size:9.5px;color:var(--muted);text-align:center;margin-top:3px;word-break:break-all;line-height:1.3;max-width:90px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .attach-del{position:absolute;top:-5px;right:-5px;width:18px;height:18px;background:var(--red);color:#fff;border-radius:50%;border:none;cursor:pointer;font-size:11px;line-height:18px;text-align:center;display:flex;align-items:center;justify-content:center;padding:0;z-index:2}
-
-/* ── LOGIN OVERLAY ── */
-#login-overlay{position:fixed;inset:0;background:linear-gradient(135deg,#0f2a45 0%,#1a4f7a 60%,#0f2a45 100%);display:flex;align-items:center;justify-content:center;z-index:9999;flex-direction:column}
+#login-overlay{position:fixed;inset:0;background:linear-gradient(135deg,#0f2a45 0%,#1a4f7a 60%,#0f2a45 100%);display:flex;align-items:center;justify-content:center;z-index:9999}
 #login-overlay.hidden{display:none}
 .login-box{background:#fff;border-radius:16px;padding:36px 40px 32px;width:360px;max-width:94vw;box-shadow:0 20px 60px rgba(0,0,0,.35)}
 .login-logo{text-align:center;margin-bottom:18px}
-.login-logo .logo-icon{font-size:40px;line-height:1}
+.login-logo .logo-icon{font-size:40px}
 .login-logo h2{font-size:17px;font-weight:800;color:var(--blue);margin-top:7px}
 .login-logo p{font-size:11.5px;color:var(--muted);margin-top:3px}
 .login-role-tabs{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:20px}
@@ -200,14 +240,12 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
 .login-role-tab.active{border-color:var(--blue);background:var(--blue3);color:var(--blue)}
 .login-field{margin-bottom:14px}
 .login-field label{display:block;font-size:11.5px;color:var(--muted);font-weight:700;margin-bottom:5px}
-.login-field input{width:100%;padding:10px 13px;border:1.5px solid var(--border);border-radius:8px;font-size:14px;background:#fafbfc;transition:.15s;letter-spacing:.05em;box-sizing:border-box}
-.login-field input:focus{outline:none;border-color:var(--blue);background:#fff}
-.login-btn{width:100%;padding:12px;background:var(--blue);color:#fff;border:none;border-radius:9px;font-size:15px;font-weight:700;cursor:pointer;margin-top:4px;transition:.15s}
-.login-btn:hover{background:var(--blue2)}
-.login-err{color:var(--red);font-size:12px;font-weight:600;text-align:center;margin-top:10px;min-height:18px;background:var(--red2);padding:7px 12px;border-radius:6px;display:none}
+.login-field input{width:100%;padding:10px 13px;border:1.5px solid var(--border);border-radius:8px;font-size:14px;background:#fafbfc;box-sizing:border-box}
+.login-field input:focus{outline:none;border-color:var(--blue)}
+.login-btn{width:100%;padding:12px;background:var(--blue);color:#fff;border:none;border-radius:9px;font-size:15px;font-weight:700;cursor:pointer;margin-top:4px}
+.login-err{color:var(--red);font-size:12px;font-weight:600;text-align:center;margin-top:10px;background:var(--red2);padding:7px 12px;border-radius:6px;display:none}
 .login-err.show{display:block}
 .login-footer{text-align:center;font-size:10.5px;color:var(--light);margin-top:14px}
-/* ── ADMIN MODAL ── */
 #admin-modal{position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;align-items:center;justify-content:center;z-index:8888}
 #admin-modal.show{display:flex}
 .admin-box{background:#fff;border-radius:14px;padding:28px 30px;width:400px;max-width:94vw;box-shadow:0 16px 48px rgba(0,0,0,.25)}
@@ -215,17 +253,15 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
 .admin-field{margin-bottom:14px}
 .admin-field label{display:block;font-size:11.5px;color:var(--muted);font-weight:700;margin-bottom:5px}
 .admin-field input{width:100%;padding:9px 12px;border:1.5px solid var(--border);border-radius:7px;font-size:13.5px;background:#fafbfc;box-sizing:border-box}
-.admin-field input:focus{outline:none;border-color:var(--blue)}
 .admin-btns{display:flex;gap:10px;margin-top:18px}
 .admin-save-btn{flex:1;padding:10px;background:var(--blue);color:#fff;border:none;border-radius:7px;font-size:13.5px;font-weight:700;cursor:pointer}
 .admin-close-btn{padding:10px 18px;background:var(--gray2);color:var(--text);border:none;border-radius:7px;font-size:13.5px;font-weight:600;cursor:pointer}
-.admin-msg{font-size:12px;font-weight:600;text-align:center;margin-top:10px;min-height:18px;padding:6px 10px;border-radius:6px;display:none}
+.admin-msg{font-size:12px;font-weight:600;text-align:center;margin-top:10px;padding:6px 10px;border-radius:6px;display:none}
 .admin-msg.ok{display:block;color:var(--green);background:var(--green2)}
 .admin-msg.err{display:block;color:var(--red);background:var(--red2)}
-.role-badge{display:inline-flex;align-items:center;gap:5px;padding:3px 11px;border-radius:20px;font-size:11px;font-weight:700;cursor:pointer;transition:.15s}
+.role-badge{display:inline-flex;align-items:center;gap:5px;padding:3px 11px;border-radius:20px;font-size:11px;font-weight:700;cursor:pointer}
 .role-badge.sales{background:rgba(255,255,255,.18);color:#fff}
 .role-badge.admin{background:rgba(255,193,7,.9);color:#7a4500}
-.role-badge:hover{opacity:.85}
 </style>
 <!-- SheetJS for Excel export -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
@@ -258,23 +294,11 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
 <div id="admin-modal">
   <div class="admin-box">
     <h3>🔑 管理員設定 — 修改密碼</h3>
-    <div class="admin-field">
-      <label>新的業務員密碼</label>
-      <input type="password" id="adm-new-sales" placeholder="輸入新密碼">
-    </div>
-    <div class="admin-field">
-      <label>確認業務員密碼</label>
-      <input type="password" id="adm-confirm-sales" placeholder="再次確認密碼">
-    </div>
+    <div class="admin-field"><label>新的業務員密碼</label><input type="password" id="adm-new-sales" placeholder="輸入新密碼"></div>
+    <div class="admin-field"><label>確認業務員密碼</label><input type="password" id="adm-confirm-sales" placeholder="再次確認密碼"></div>
     <hr style="border:none;border-top:1px solid var(--border);margin:14px 0">
-    <div class="admin-field">
-      <label>新的管理員密碼（留空則不更改）</label>
-      <input type="password" id="adm-new-admin" placeholder="輸入新密碼">
-    </div>
-    <div class="admin-field">
-      <label>確認管理員密碼</label>
-      <input type="password" id="adm-confirm-admin" placeholder="再次確認密碼">
-    </div>
+    <div class="admin-field"><label>新的管理員密碼（留空則不更改）</label><input type="password" id="adm-new-admin" placeholder="輸入新密碼"></div>
+    <div class="admin-field"><label>確認管理員密碼</label><input type="password" id="adm-confirm-admin" placeholder="再次確認密碼"></div>
     <div class="admin-btns">
       <button class="admin-save-btn" onclick="saveAdminPw()">💾 儲存變更</button>
       <button class="admin-close-btn" onclick="closeAdminModal()">✕ 關閉</button>
@@ -290,7 +314,7 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
   </div>
   <div style="display:flex;align-items:center;gap:10px">
     <div class="hdr-badge" id="hdr_date"></div>
-    <span class="role-badge sales" id="role-badge" onclick="onRoleBadgeClick()" title="管理員可點此開啟設定">👤 業務員</span>
+    <span class="role-badge sales" id="role-badge" onclick="onRoleBadgeClick()">👤 業務員</span>
     <button onclick="doLogout()" style="background:rgba(255,255,255,.18);color:#fff;border:1px solid rgba(255,255,255,.35);border-radius:20px;padding:3px 13px;font-size:11px;cursor:pointer;font-weight:600">⏏ 登出</button>
   </div>
 </div>
@@ -402,6 +426,16 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
             <span class="cost-item-toggle-icon">▼</span>
           </div>
           <div class="cost-item-body">
+            <div class="fg">
+              <label>外包供應商名稱 / Nama Vendor Outsourcing</label>
+              <input type="text" id="w_shell_vendor" placeholder="例：PT. Kharisma、PT. Dharma..." list="shell_vendor_list" oninput="calcWt()">
+              <datalist id="shell_vendor_list">
+                <option value="PT. Kharisma">
+                <option value="PT. Dharma Controlcable Ind.">
+                <option value="PT. Global Mega Indonesia">
+              </datalist>
+              <div class="hint">輸入供應商名稱，會顯示在報價記錄及摘要中 / Nama vendor akan muncul di ringkasan & catatan.</div>
+            </div>
             <div class="g2">
               <div class="fg">
                 <label>外殼供應商報價 (Rp / kg)</label>
@@ -725,21 +759,14 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
               <div class="fg"><label>貨車油耗 (L / 100km)</label><input type="number" id="w_ship_fuel" value="15" step="0.5" oninput="calcWt();updateShipCalc()"></div>
             </div>
             <div class="g3">
-              <div class="fg"><label>貨車最大載重量 (kg)</label><input type="number" id="w_ship_load" value="3000" oninput="calcWt();updateShipCalc()"></div>
-              <div class="fg"><label>此批貨物實際重量 (kg)</label><input type="number" id="w_ship_share" value="200" oninput="calcWt();updateShipCalc()"></div>
+              <div class="fg"><label>貨車滿載重量 (kg)</label><input type="number" id="w_ship_load" value="3000" oninput="calcWt();updateShipCalc()"></div>
+              <div class="fg"><label>此訂單分攤重量 (kg)</label><input type="number" id="w_ship_share" value="200" oninput="calcWt();updateShipCalc()"></div>
               <div class="fg"><label>司機日薪 (Rp)</label><input type="number" id="w_ship_driver" value="300000" oninput="calcWt();updateShipCalc()"></div>
-            </div>
-            <div class="g3">
-              <div class="fg"><label>此批出貨台數 (台)</label><input type="number" id="w_ship_qty" value="1" min="1" oninput="calcWt();updateShipCalc()"></div>
-              <div class="fg" style="grid-column:span 2">
-                <label style="color:var(--muted);font-size:11px">💡 專車送貨時：「此批貨物實際重量」填貨物實際總重，不需填滿載重量；系統自動除以台數得每台運費</label>
-              </div>
             </div>
             <div class="formula-box" style="margin-top:8px">
               <div class="f-title">運費計算明細</div>
               <div class="f-line" id="ship_calc_line1">—</div>
               <div class="f-line" id="ship_calc_line2">—</div>
-              <div class="f-line" id="ship_calc_line3">—</div>
               <div class="f-result" id="ship_calc_result">—</div>
             </div>
           </div>
@@ -812,33 +839,40 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
 
   <!-- ══ MODE AR ══ -->
   <div id="mode_ar" style="display:none">
-    <div class="alert alert-orange">📐 <span>各成本項目可 <strong>勾選啟用或停用</strong>。面積支援尺寸自動計算或直接填寫。</span></div>
-    <div class="g2">
-      <!-- Left -->
-      <div>
+    <!-- 操作列（列印時隱藏） -->
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;flex-wrap:wrap;gap:8px">
+      <div class="alert alert-orange" style="margin:0;flex:1">📐 <span>各成本項目可 <strong>勾選啟用或停用</strong> / Setiap item biaya bisa <strong>diaktifkan atau dinonaktifkan</strong>。</span></div>
+      <button class="print-btn" onclick="window.print()">🖨️ 列印 / Cetak</button>
+    </div>
+
+    <!-- 三欄主要區域 -->
+    <div class="ar-layout">
+
+      <!-- ══ 欄1：基本資訊 + 尺寸 + 漆粉用量 ══ -->
+      <div class="ar-col">
         <!-- 基本資訊 -->
         <div class="card">
-          <div class="card-title">🗂️ 基本資訊</div>
+          <div class="card-title">🗂️ 基本資訊 <span style="font-weight:400;font-size:11px;color:var(--light)">/ Informasi Dasar</span></div>
           <div class="g2">
-            <div class="fg"><label>客戶名稱</label><select id="a_cust"><option value="">-- 選擇客戶 --</option></select></div>
-            <div class="fg"><label>物件名稱 / 型號</label><input type="text" id="a_model" placeholder="例：Warna Box 5kW"></div>
+            <div class="fg"><label class="bilbl">客戶名稱 <span class="id">Nama Pelanggan</span></label><select id="a_cust"><option value="">-- 選擇客戶 / Pilih --</option></select></div>
+            <div class="fg"><label class="bilbl">物件名稱 / 型號 <span class="id">Nama / Tipe Barang</span></label><input type="text" id="a_model" placeholder="例：Warna Box 5kW"></div>
           </div>
           <div class="g2">
             <div class="fg">
-              <label>物件種類</label>
+              <label class="bilbl">物件種類 <span class="id">Jenis Barang</span></label>
               <select id="a_otype" onchange="calcArea()">
-                <option value="box10">鐵箱 Box（內+外 10面，標準）</option>
-                <option value="box10_nobot">鐵箱 Box（內+外 8面，無頂底）</option>
-                <option value="box5ext">鐵箱 Box（僅外 5面，舊款）</option>
-                <option value="cover">蓋子 Cover（含四邊側面）</option>
+                <option value="box10">鐵箱（內+外 10面，標準）/ Box Besi 10 Sisi</option>
+                <option value="box10_nobot">鐵箱（內+外 8面，無頂底）/ Box 8 Sisi</option>
+                <option value="box5ext">鐵箱（僅外 5面，舊款）/ Box 5 Sisi Luar</option>
+                <option value="cover">蓋子（含四邊側面）/ Cover + Sisi</option>
                 <option value="clamp">Core Clamp 繞線芯夾</option>
-                <option value="panel">平面板件（單面）</option>
-                <option value="manual">✏️ 直接填寫面積</option>
+                <option value="panel">平面板件（單面）/ Plat Datar</option>
+                <option value="manual">✏️ 直接填寫面積 / Input Manual</option>
               </select>
             </div>
-            <div class="fg"><label>數量 (pcs)</label><input type="number" id="a_qty" value="1" min="1" oninput="calcArea()"></div>
+            <div class="fg"><label class="bilbl">數量 (pcs) <span class="id">Jumlah</span></label><input type="number" id="a_qty" value="1" min="1" oninput="calcArea()"></div>
           </div>
-          <div class="fg"><label>備註</label><input type="text" id="a_note" placeholder="選填"></div>
+          <div class="fg"><label class="bilbl">備註 <span class="id">Catatan</span></label><input type="text" id="a_note" placeholder="選填 / Opsional"></div>
         </div>
 
 
@@ -861,36 +895,29 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
 
         <!-- 尺寸 & 面積 -->
         <div class="card">
-          <div class="card-title">📐 物件尺寸 &amp; 噴漆面積</div>
-
-          <!-- 自動計算尺寸輸入 -->
+          <div class="card-title">📐 物件尺寸 &amp; 噴漆面積 <span style="font-weight:400;font-size:11px;color:var(--light)">/ Dimensi &amp; Luas Cat</span></div>
           <div id="a_dim_auto">
             <div class="g3">
-              <div class="fg"><label>長 (mm)</label><input type="number" id="a_L" value="420" oninput="calcArea()"></div>
-              <div class="fg"><label>寬 (mm)</label><input type="number" id="a_W" value="650" oninput="calcArea()"></div>
-              <div class="fg"><label>高 (mm)</label><input type="number" id="a_H" value="195" oninput="calcArea()"></div>
+              <div class="fg"><label class="bilbl">長 (mm) <span class="id">Panjang</span></label><input type="number" id="a_L" value="420" oninput="calcArea()"></div>
+              <div class="fg"><label class="bilbl">寬 (mm) <span class="id">Lebar</span></label><input type="number" id="a_W" value="650" oninput="calcArea()"></div>
+              <div class="fg"><label class="bilbl">高 (mm) <span class="id">Tinggi</span></label><input type="number" id="a_H" value="195" oninput="calcArea()"></div>
             </div>
           </div>
-
-          <!-- 手動填寫 -->
           <div id="a_dim_manual" style="display:none">
             <div class="fg">
-              <label>噴漆面積 (cm²)</label>
-              <input type="number" id="a_area_in" value="" placeholder="直接填入噴漆面積" oninput="calcArea()">
+              <label class="bilbl">噴漆面積 (cm²) <span class="id">Luas Pengecatan</span></label>
+              <input type="number" id="a_area_in" value="" placeholder="直接填入 / Input langsung" oninput="calcArea()">
             </div>
           </div>
-
-          <!-- 面積公式說明框 -->
           <div id="a_formula_box" class="formula-box" style="margin-top:8px">
-            <div class="f-title" id="a_formula_title">📐 計算公式</div>
+            <div class="f-title" id="a_formula_title">📐 計算公式 / Rumus</div>
             <div class="f-line" id="a_formula_detail">—</div>
             <div class="f-result" id="a_formula_result">—</div>
           </div>
-
           <div class="g3" style="margin-top:10px">
-            <div class="metric bl"><div class="v" id="am_area">—</div><div class="l">單件噴漆面積 (cm²)</div></div>
+            <div class="metric bl"><div class="v" id="am_area">—</div><div class="l">單件面積 (cm²) / Luas/pcs</div></div>
             <div class="metric bl"><div class="v" id="am_m2">—</div><div class="l">單件面積 (m²)</div></div>
-            <div class="metric"><div class="v" id="am_ntot">—</div><div class="l">N件合計 (cm²)</div></div>
+            <div class="metric"><div class="v" id="am_ntot">—</div><div class="l">N件合計 (cm²) / Total</div></div>
           </div>
         </div>
 
@@ -1022,24 +1049,43 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
           </div>
         </div>
 
-        <!-- 噴漆成本項目 -->
+      </div><!-- end ar-col 1 -->
+
+      <!-- ══ 欄2：噴漆成本項目 ══ -->
+      <div class="ar-col">
+
+        <!-- 附件上傳 -->
+        <div class="card">
+          <div class="card-title">📎 客戶圖面 &amp; 附件 <span style="font-weight:400;font-size:11px;color:var(--light)">/ Gambar &amp; Lampiran Pelanggan</span></div>
+          <div style="font-size:12px;color:var(--muted);margin-bottom:6px">上傳尺寸圖或PDF / Upload gambar dimensi atau PDF</div>
+          <div class="attach-zone" id="ar_drop_zone" onclick="document.getElementById('ar_file_input').click()" ondragover="handleDragOver(event,'ar_drop_zone')" ondragleave="handleDragLeave(event,'ar_drop_zone')" ondrop="handleDrop(event,'ar')">
+            <div class="az-icon">📂</div>
+            <div class="az-label">點擊選取 或 拖曳至此<br>Klik pilih atau seret file ke sini</div>
+            <div class="az-hint" id="ar_attach_hint">JPG、PNG、PDF（最多5個 / maks 5 file）</div>
+          </div>
+          <input type="file" id="ar_file_input" accept="image/*,.pdf" multiple style="display:none" onchange="handleFileInput(event,'ar')">
+          <div class="attach-previews" id="ar_previews"></div>
+        </div>
+
+        <div style="font-size:12px;font-weight:700;color:var(--blue);margin:10px 0 6px;padding-left:7px;border-left:3px solid var(--orange)">🖌️ 噴漆成本項目 / Item Biaya Pengecatan</div>
+
         <!-- 底漆 -->
         <div class="cost-item open" id="ai_pr">
           <div class="cost-item-header" onclick="toggleCI('ai_pr')">
             <input type="checkbox" id="ak_pr" checked onchange="calcAreaCost()" onclick="event.stopPropagation()">
-            <span class="cost-item-label">🎨 底漆 Primer</span>
+            <span class="cost-item-label">🎨 底漆 Primer / Cat Dasar</span>
             <span class="cost-item-summary" id="as_pr">—</span>
             <span class="cost-item-toggle-icon">▼</span>
           </div>
           <div class="cost-item-body">
             <div class="g2" style="margin-bottom:8px">
-              <div class="fg"><label>漆粉編號 / 型號</label><input type="text" id="a_pr_code" placeholder="例：Grey RAL 7031 Matt" style="font-family:monospace"></div>
-              <div class="fg"><label>供應商名稱</label><input type="text" id="a_pr_vendor" placeholder="例：PT. Oxyplast Indonesia"></div>
+              <div class="fg"><label class="bilbl">漆粉編號 / 型號 <span class="id">Kode / Tipe Bubuk</span></label><input type="text" id="a_pr_code" placeholder="例：Grey RAL 7031 Matt" style="font-family:monospace"></div>
+              <div class="fg"><label class="bilbl">供應商名稱 <span class="id">Nama Supplier</span></label><input type="text" id="a_pr_vendor" placeholder="例：PT. Oxyplast Indonesia"></div>
             </div>
             <div class="g3">
-              <div class="fg"><label>底漆厚度 (µm) <span style="color:var(--light);font-size:10px">↑漆粉區同步</span></label><input type="number" id="a_pr_um" value="60" oninput="syncUmPr();calcAreaCost()"></div>
-              <div class="fg"><label>底漆單價 (Rp / kg)</label><input type="number" id="a_pr_rp" value="47500" oninput="calcAreaCost()" placeholder="輸入單價"></div>
-              <div class="fg"><label>底漆成本 (Rp/cm²) <span style="color:var(--light);font-size:10px">自動</span></label><input class="ro" type="text" id="a_pr_cm2" readonly></div>
+              <div class="fg"><label class="bilbl">底漆厚度 (µm) <span class="id">Tebal Cat Dasar</span></label><input type="number" id="a_pr_um" value="60" oninput="syncUmPr();calcAreaCost()"></div>
+              <div class="fg"><label class="bilbl">底漆單價 (Rp/kg) <span class="id">Harga Satuan</span></label><input type="number" id="a_pr_rp" value="47500" oninput="calcAreaCost()" placeholder="輸入單價"></div>
+              <div class="fg"><label class="bilbl">底漆成本 (Rp/cm²) <span class="id">Biaya / cm²</span></label><input class="ro" type="text" id="a_pr_cm2" readonly></div>
             </div>
           </div>
         </div>
@@ -1048,19 +1094,19 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
         <div class="cost-item open" id="ai_tc">
           <div class="cost-item-header" onclick="toggleCI('ai_tc')">
             <input type="checkbox" id="ak_tc" checked onchange="calcAreaCost()" onclick="event.stopPropagation()">
-            <span class="cost-item-label">✨ 表漆 Top Coat</span>
+            <span class="cost-item-label">✨ 表漆 Top Coat / Cat Atas</span>
             <span class="cost-item-summary" id="as_tc">—</span>
             <span class="cost-item-toggle-icon">▼</span>
           </div>
           <div class="cost-item-body">
             <div class="g2" style="margin-bottom:8px">
-              <div class="fg"><label>漆粉編號 / 型號</label><input type="text" id="a_tc_code" placeholder="例：ID Grey R7042 Glossy" style="font-family:monospace"></div>
-              <div class="fg"><label>供應商名稱</label><input type="text" id="a_tc_vendor" placeholder="例：PT. Axalta Coating Systems"></div>
+              <div class="fg"><label class="bilbl">漆粉編號 / 型號 <span class="id">Kode / Tipe Bubuk</span></label><input type="text" id="a_tc_code" placeholder="例：ID Grey R7042 Glossy" style="font-family:monospace"></div>
+              <div class="fg"><label class="bilbl">供應商名稱 <span class="id">Nama Supplier</span></label><input type="text" id="a_tc_vendor" placeholder="例：PT. Axalta Coating Systems"></div>
             </div>
             <div class="g3">
-              <div class="fg"><label>表漆厚度 (µm) <span style="color:var(--light);font-size:10px">↑漆粉區同步</span></label><input type="number" id="a_tc_um" value="80" oninput="syncUmTc();calcAreaCost()"></div>
-              <div class="fg"><label>表漆單價 (Rp / kg)</label><input type="number" id="a_tc_rp" value="65000" oninput="calcAreaCost()" placeholder="輸入單價"></div>
-              <div class="fg"><label>表漆成本 (Rp/cm²) <span style="color:var(--light);font-size:10px">自動</span></label><input class="ro" type="text" id="a_tc_cm2" readonly></div>
+              <div class="fg"><label class="bilbl">表漆厚度 (µm) <span class="id">Tebal Cat Atas</span></label><input type="number" id="a_tc_um" value="80" oninput="syncUmTc();calcAreaCost()"></div>
+              <div class="fg"><label class="bilbl">表漆單價 (Rp/kg) <span class="id">Harga Satuan</span></label><input type="number" id="a_tc_rp" value="65000" oninput="calcAreaCost()" placeholder="輸入單價"></div>
+              <div class="fg"><label class="bilbl">表漆成本 (Rp/cm²) <span class="id">Biaya / cm²</span></label><input class="ro" type="text" id="a_tc_cm2" readonly></div>
             </div>
           </div>
         </div>
@@ -1069,15 +1115,15 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
         <div class="cost-item" id="ai_clear">
           <div class="cost-item-header" onclick="toggleCI('ai_clear')">
             <input type="checkbox" id="ak_clear" onchange="calcAreaCost()" onclick="event.stopPropagation()">
-            <span class="cost-item-label">💧 透明漆（防潮）</span>
-            <span class="cost-item-summary" id="as_clear">停用</span>
+            <span class="cost-item-label">💧 透明漆（防潮）/ Cat Bening Anti-lembab</span>
+            <span class="cost-item-summary" id="as_clear">停用 / Nonaktif</span>
             <span class="cost-item-toggle-icon">▼</span>
           </div>
           <div class="cost-item-body">
             <div class="g3">
-              <div class="fg"><label>透明漆厚度 (µm)</label><input type="number" id="a_cl_um" value="40" oninput="calcAreaCost()"></div>
-              <div class="fg"><label>透明漆單價 (Rp / L)</label><input type="number" id="a_cl_rp" value="170000" oninput="calcAreaCost()"></div>
-              <div class="fg"><label>透明漆成本 (Rp/cm²) <span style="color:var(--light);font-size:10px">自動</span></label><input class="ro" type="text" id="a_cl_cm2" readonly></div>
+              <div class="fg"><label class="bilbl">透明漆厚度 (µm) <span class="id">Tebal Cat Bening</span></label><input type="number" id="a_cl_um" value="40" oninput="calcAreaCost()"></div>
+              <div class="fg"><label class="bilbl">透明漆單價 (Rp/L) <span class="id">Harga Satuan</span></label><input type="number" id="a_cl_rp" value="170000" oninput="calcAreaCost()"></div>
+              <div class="fg"><label class="bilbl">透明漆成本 (Rp/cm²) <span class="id">Biaya</span></label><input class="ro" type="text" id="a_cl_cm2" readonly></div>
             </div>
           </div>
         </div>
@@ -1086,27 +1132,28 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
         <div class="cost-item" id="ai_oil">
           <div class="cost-item-header" onclick="toggleCI('ai_oil')">
             <input type="checkbox" id="ak_oil" onchange="calcAreaCost()" onclick="event.stopPropagation()">
-            <span class="cost-item-label">🛢️ 耐油漆粉（Oil Resistant）</span>
-            <span class="cost-item-summary" id="as_oil">停用</span>
+            <span class="cost-item-label">🛢️ 耐油漆粉 / Cat Tahan Oli (Oil Resistant)</span>
+            <span class="cost-item-summary" id="as_oil">停用 / Nonaktif</span>
             <span class="cost-item-toggle-icon">▼</span>
           </div>
           <div class="cost-item-body">
             <div class="g3">
-              <div class="fg"><label>耐油漆厚度 (µm)</label><input type="number" id="a_oil_um" value="80" oninput="calcAreaCost()"></div>
-              <div class="fg"><label>耐油漆單價 (Rp / kg)</label><input type="number" id="a_oil_rp" value="130000" oninput="calcAreaCost()"></div>
-              <div class="fg"><label>耐油漆成本 (Rp/cm²) <span style="color:var(--light);font-size:10px">自動</span></label><input class="ro" type="text" id="a_oil_cm2" readonly></div>
+              <div class="fg"><label class="bilbl">耐油漆厚度 (µm) <span class="id">Tebal Cat</span></label><input type="number" id="a_oil_um" value="80" oninput="calcAreaCost()"></div>
+              <div class="fg"><label class="bilbl">耐油漆單價 (Rp/kg) <span class="id">Harga Satuan</span></label><input type="number" id="a_oil_rp" value="130000" oninput="calcAreaCost()"></div>
+              <div class="fg"><label class="bilbl">耐油漆成本 (Rp/cm²) <span class="id">Biaya</span></label><input class="ro" type="text" id="a_oil_cm2" readonly></div>
             </div>
           </div>
         </div>
-      </div>
 
-      <!-- Right -->
-      <div>
+      </div><!-- end ar-col 2 -->
+
+      <!-- ══ 欄3：換色+LPG+人工+成本拆分+報價 ══ -->
+      <div class="ar-col">
         <!-- 換色損耗成本 -->
         <div class="cost-item" id="ai_cc">
           <div class="cost-item-header" onclick="toggleCI('ai_cc')">
             <input type="checkbox" id="ak_cc" onchange="calcCcLoss();calcAreaCost()" onclick="event.stopPropagation()">
-            <span class="cost-item-label">🎨 換色損耗附加成本</span>
+            <span class="cost-item-label">🎨 換色損耗附加成本 / Biaya Ganti Warna</span>
             <span class="cost-item-summary" id="as_cc">停用</span>
             <span class="cost-item-toggle-icon">▼</span>
           </div>
@@ -1156,7 +1203,7 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
         <div class="cost-item open" id="ai_lpg">
           <div class="cost-item-header" onclick="toggleCI('ai_lpg')">
             <input type="checkbox" id="ak_lpg" checked onchange="calcAreaCost()" onclick="event.stopPropagation()">
-            <span class="cost-item-label">🔥 LPG 烤漆（分攤）</span>
+            <span class="cost-item-label">🔥 LPG 烤漆（分攤）/ LPG Oven (Alokasi)</span>
             <span class="cost-item-summary" id="as_lpg">—</span>
             <span class="cost-item-toggle-icon">▼</span>
           </div>
@@ -1213,7 +1260,7 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
         <div class="cost-item open" id="ai_labor">
           <div class="cost-item-header" onclick="toggleCI('ai_labor')">
             <input type="checkbox" id="ak_labor" checked onchange="calcAreaCost()" onclick="event.stopPropagation()">
-            <span class="cost-item-label">👷 人工費用（分攤）</span>
+            <span class="cost-item-label">👷 人工費用（分攤）/ Tenaga Kerja (Alokasi)</span>
             <span class="cost-item-summary" id="as_labor">—</span>
             <span class="cost-item-toggle-icon">▼</span>
           </div>
@@ -1263,12 +1310,12 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
         <div class="cost-item" id="ai_pkg">
           <div class="cost-item-header" onclick="toggleCI('ai_pkg')">
             <input type="checkbox" id="ak_pkg" onchange="calcAreaCost()" onclick="event.stopPropagation()">
-            <span class="cost-item-label">📦 包裝成本</span>
-            <span class="cost-item-summary" id="as_pkg">停用</span>
+            <span class="cost-item-label">📦 包裝成本 / Biaya Kemasan</span>
+            <span class="cost-item-summary" id="as_pkg">停用 / Nonaktif</span>
             <span class="cost-item-toggle-icon">▼</span>
           </div>
           <div class="cost-item-body">
-            <div class="fg"><label>包裝費用 (Rp / 件)</label><input type="number" id="a_pkg_rp" value="20000" oninput="calcAreaCost()"></div>
+            <div class="fg"><label class="bilbl">包裝費用 (Rp/件) <span class="id">Biaya Kemasan per pcs</span></label><input type="number" id="a_pkg_rp" value="20000" oninput="calcAreaCost()"></div>
           </div>
         </div>
 
@@ -1276,117 +1323,134 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
         <div class="cost-item" id="ai_ship">
           <div class="cost-item-header" onclick="toggleCI('ai_ship')">
             <input type="checkbox" id="ak_ship" onchange="calcAreaCost()" onclick="event.stopPropagation()">
-            <span class="cost-item-label">🚚 運輸成本</span>
-            <span class="cost-item-summary" id="as_ship">停用</span>
+            <span class="cost-item-label">🚚 運輸成本 / Biaya Pengiriman</span>
+            <span class="cost-item-summary" id="as_ship">停用 / Nonaktif</span>
             <span class="cost-item-toggle-icon">▼</span>
           </div>
           <div class="cost-item-body">
             <div class="g2">
               <div class="fg">
-                <label>運費計算方式</label>
+                <label class="bilbl">運費計算方式 <span class="id">Metode Hitung</span></label>
                 <select id="a_ship_mode" onchange="calcAreaCost()">
-                  <option value="pertot">Rp / 批次（固定）</option>
-                  <option value="perunit">Rp / 件</option>
+                  <option value="pertot">Rp / 批次（固定）/ Per Batch</option>
+                  <option value="perunit">Rp / 件 / Per pcs</option>
                 </select>
               </div>
-              <div class="fg"><label>運費金額 (Rp)</label><input type="number" id="a_ship_rp" value="200000" oninput="calcAreaCost()"></div>
+              <div class="fg"><label class="bilbl">運費金額 (Rp) <span class="id">Nominal</span></label><input type="number" id="a_ship_rp" value="200000" oninput="calcAreaCost()"></div>
             </div>
           </div>
         </div>
 
-        <!-- 成本拆分 -->
-        <div class="card" style="margin-top:14px">
-          <div class="card-title">📊 每 cm² 成本拆分</div>
-          <div class="breakdown">
-            <div class="brow" id="abrow_pr"><span class="lbl">🎨 底漆</span><span class="amt" id="ab_pr">—</span></div>
-            <div class="brow" id="abrow_tc"><span class="lbl">✨ 表漆</span><span class="amt" id="ab_tc">—</span></div>
-            <div class="brow" id="abrow_sp"><span class="lbl">💧 特殊塗料</span><span class="amt" id="ab_sp">—</span></div>
-            <div class="brow" id="abrow_cc"><span class="lbl">🎨 換色損耗</span><span class="amt" id="ab_cc">—</span></div>
-            <div class="brow" id="abrow_lpg"><span class="lbl">🔥 LPG 烤漆</span><span class="amt" id="ab_lpg">—</span></div>
-            <div class="brow" id="abrow_labor"><span class="lbl">👷 人工</span><span class="amt" id="ab_labor">—</span></div>
-            <div class="brow" id="abrow_pkg"><span class="lbl">📦 包裝 / 運輸</span><span class="amt" id="ab_pkg">—</span></div>
-            <div class="brow total"><span class="lbl">🔷 總成本 (Rp / cm²)</span><span class="amt" id="ab_total">—</span></div>
-          </div>
-          <div class="g4" style="margin-top:10px">
-            <div class="metric bl"><div class="v" id="am_cm2">—</div><div class="l">成本 Rp/cm²</div></div>
-            <div class="metric bl"><div class="v" id="am_m2cost">—</div><div class="l">成本 Rp/m²</div></div>
-            <div class="metric hl"><div class="v" id="am_1pcs">—</div><div class="l">1件成本 (Rp)</div></div>
-            <div class="metric hl"><div class="v" id="am_npcs">—</div><div class="l">N件成本 (Rp)</div></div>
+      </div><!-- end ar-col 3 -->
+    </div><!-- end ar-layout -->
+
+    <!-- ══ 底部橫條：Rp/kg 成本拆分 + 報價 ══ -->
+    <div class="ar-bottom">
+
+      <!-- Rp/kg 成本拆分 -->
+      <div class="card">
+        <div class="card-title">📊 每 cm² 成本拆分 &amp; 報價 / Rincian Biaya per cm² &amp; Penawaran</div>
+        <div class="g2">
+
+          <!-- 左：數字拆分表 -->
+          <div>
+            <div class="kgbar-wrap">
+              <div class="kgbar-title">💰 每 cm² 成本拆分 (Rp/cm²) / Rincian Biaya per cm²</div>
+              <div id="kgbar_rows">
+                <div class="kgbar-row"><span class="kgbar-lbl">🎨 底漆 / Primer</span><div class="kgbar-bar"><div class="kgbar-fill" id="kgb_pr" style="background:#378ADD;width:0%"></div></div><span class="kgbar-val" id="kgv_pr">—</span><span class="kgbar-pct" id="kgp_pr">—</span></div>
+                <div class="kgbar-row"><span class="kgbar-lbl">✨ 表漆 / Top Coat</span><div class="kgbar-bar"><div class="kgbar-fill" id="kgb_tc" style="background:#8B5CF6;width:0%"></div></div><span class="kgbar-val" id="kgv_tc">—</span><span class="kgbar-pct" id="kgp_tc">—</span></div>
+                <div class="kgbar-row" id="kgrow_sp" style="display:none"><span class="kgbar-lbl">💧 特殊塗料 / Khusus</span><div class="kgbar-bar"><div class="kgbar-fill" id="kgb_sp" style="background:#06B6D4;width:0%"></div></div><span class="kgbar-val" id="kgv_sp">—</span><span class="kgbar-pct" id="kgp_sp">—</span></div>
+                <div class="kgbar-row" id="kgrow_cc" style="display:none"><span class="kgbar-lbl">🎨 換色損耗 / Ganti Warna</span><div class="kgbar-bar"><div class="kgbar-fill" id="kgb_cc" style="background:#F59E0B;width:0%"></div></div><span class="kgbar-val" id="kgv_cc">—</span><span class="kgbar-pct" id="kgp_cc">—</span></div>
+                <div class="kgbar-row"><span class="kgbar-lbl">🔥 LPG 烤漆 / Oven</span><div class="kgbar-bar"><div class="kgbar-fill" id="kgb_lpg" style="background:#EF4444;width:0%"></div></div><span class="kgbar-val" id="kgv_lpg">—</span><span class="kgbar-pct" id="kgp_lpg">—</span></div>
+                <div class="kgbar-row"><span class="kgbar-lbl">👷 人工 / Tenaga Kerja</span><div class="kgbar-bar"><div class="kgbar-fill" id="kgb_labor" style="background:#10B981;width:0%"></div></div><span class="kgbar-val" id="kgv_labor">—</span><span class="kgbar-pct" id="kgp_labor">—</span></div>
+                <div class="kgbar-row" id="kgrow_pkg" style="display:none"><span class="kgbar-lbl">📦 包裝運輸 / Kirim</span><div class="kgbar-bar"><div class="kgbar-fill" id="kgb_pkg" style="background:#6B7280;width:0%"></div></div><span class="kgbar-val" id="kgv_pkg">—</span><span class="kgbar-pct" id="kgp_pkg">—</span></div>
+              </div>
+              <div class="kgbar-total-row">
+                <span class="kgbar-total-lbl">🔷 總成本 / Total Biaya</span>
+                <span class="kgbar-total-val" id="kgbar_total">—</span>
+              </div>
+            </div>
+            <!-- 4格摘要 -->
+            <div class="g4">
+              <div class="metric bl"><div class="v" id="am_cm2">—</div><div class="l">成本 Rp/cm² / Biaya</div></div>
+              <div class="metric bl"><div class="v" id="am_m2cost">—</div><div class="l">成本 Rp/m²</div></div>
+              <div class="metric hl"><div class="v" id="am_1pcs">—</div><div class="l">1件成本 (Rp) / Per pcs</div></div>
+              <div class="metric hl"><div class="v" id="am_npcs">—</div><div class="l">N件成本 (Rp) / Total</div></div>
+            </div>
           </div>
 
-          <!-- ✅ NEW: Cost analysis visual bar -->
-          <div style="margin-top:12px;background:#f8fafc;border:1px solid var(--border);border-radius:8px;padding:11px 13px" id="ar_cost_visual_wrap">
-            <div style="font-size:12px;font-weight:700;color:var(--blue);margin-bottom:8px">📈 成本結構圖</div>
-            <div id="ar_cost_bars" style="display:flex;flex-direction:column;gap:5px"></div>
+          <!-- 右：報價 & 毛利 -->
+          <div>
+            <div class="card" style="margin-bottom:0;border:1px solid var(--border)">
+              <div class="card-title">💰 報價 &amp; 毛利率 / Penawaran &amp; Margin</div>
+              <div class="g2">
+                <div class="fg"><label class="bilbl">目標毛利率 % <span class="id">Target Margin</span></label><div class="sl-row"><input type="range" id="a_margin" min="5" max="60" value="25" oninput="calcAreaQ()"><div class="sl-val" id="a_margin_v">25%</div></div></div>
+                <div class="fg"><label class="bilbl">利息成本 % <span class="id">Biaya Bunga</span></label><div class="sl-row"><input type="range" id="a_interest" min="0" max="10" value="1" step="0.1" oninput="calcAreaQ()"><div class="sl-val" id="a_interest_v">1.0%</div></div></div>
+              </div>
+              <div class="div-or">或直接輸入報價反查毛利率 / Input harga → cek margin</div>
+              <div class="g2">
+                <div class="fg"><label class="bilbl">業務報價 (Rp/cm²) <span class="id">Harga Penawaran</span></label><input type="number" id="a_qcm2" step="0.1" placeholder="輸入後反查 / Input → cek" oninput="calcAreaBack()"></div>
+                <div class="fg"><label class="bilbl">業務報價 (Rp/件) <span class="id">Harga per pcs</span></label><input class="ro" type="text" id="a_q1pcs" readonly></div>
+              </div>
+              <div id="ar_pricing_rationale" style="margin-top:8px;display:none">
+                <div style="background:#fff7ed;border:1.5px solid #f59e0b;border-radius:9px;padding:10px 13px">
+                  <div style="font-size:12px;font-weight:700;color:#92400e;margin-bottom:6px">💡 報價合理性分析 / Analisis Kewajaran Harga</div>
+                  <div id="ar_rationale_content" style="font-size:11.5px;color:#78350f;line-height:1.8"></div>
+                </div>
+              </div>
+              <div class="result-hero">
+                <div class="rh-top">
+                  <div class="rh-block"><div class="lbl">建議報價 / Harga Anjuran</div><div class="val" id="ar_cm2">—</div><div class="sub" id="ar_1pcs">—</div></div>
+                  <div class="rh-div"></div>
+                  <div class="rh-block"><div class="lbl">毛利率 / Margin</div><div class="val" id="ar_margin">25%</div><div class="sub">毛利：<span id="ar_profit">—</span></div></div>
+                  <div class="rh-div"></div>
+                  <div class="rh-block"><div class="lbl">N件報價合計 / Total Penawaran</div><div class="val" id="ar_npcs">—</div><div class="sub" id="ar_nlbl">1 件</div></div>
+                </div>
+                <div class="pbar"><div class="pbar-fill" id="ar_pbar" style="width:25%"></div></div>
+                <div class="pbar-label"><span>0%</span><span>20%</span><span>40%</span><span>60%</span></div>
+              </div>
+              <div id="ar_margin_health" style="margin-top:8px;padding:9px 12px;border-radius:8px;font-size:12px;font-weight:600;display:none"></div>
+            </div>
           </div>
+        </div>
 
-          <div class="sec" style="margin-top:12px">快速參考：漆膜厚度 vs 成本</div>
+        <!-- 快速參考表 -->
+        <div style="margin-top:10px">
+          <div class="sec">快速參考：漆膜厚度 vs 成本 / Referensi Cepat: Tebal vs Biaya</div>
           <table>
-            <tr><th>漆膜厚度</th><th>成本 Min</th><th>成本 Max</th><th>建議報價</th></tr>
+            <tr><th>漆膜厚度 / Tebal Film</th><th>成本 Min / Biaya Min</th><th>成本 Max / Biaya Max</th><th>建議報價 / Harga Anjuran</th></tr>
             <tr><td>&lt; 100µm</td><td>Rp 8/cm²</td><td>Rp 10/cm²</td><td>Rp 12~15</td></tr>
             <tr><td>100~200µm</td><td>Rp 12.5/cm²</td><td>Rp 15/cm²</td><td>Rp 18~22</td></tr>
             <tr><td>&gt; 200µm</td><td>Rp 17/cm²</td><td>Rp 24/cm²</td><td>Rp 25~35</td></tr>
           </table>
         </div>
 
-        <!-- 報價 -->
-        <div class="card">
-          <div class="card-title">💰 報價 &amp; 毛利率</div>
-          <div class="g2">
-            <div class="fg"><label>目標毛利率 %</label><div class="sl-row"><input type="range" id="a_margin" min="5" max="60" value="25" oninput="calcAreaQ()"><div class="sl-val" id="a_margin_v">25%</div></div></div>
-            <div class="fg"><label>利息成本 %</label><div class="sl-row"><input type="range" id="a_interest" min="0" max="10" value="1" step="0.1" oninput="calcAreaQ()"><div class="sl-val" id="a_interest_v">1.0%</div></div></div>
-          </div>
-          <div class="div-or">或直接輸入報價反查毛利率</div>
-          <div class="g2">
-            <div class="fg"><label>業務報價 (Rp / cm²)</label><input type="number" id="a_qcm2" step="0.1" placeholder="輸入後自動反查" oninput="calcAreaBack()"></div>
-            <div class="fg"><label>業務報價 (Rp / 件) <span style="color:var(--light);font-size:10px">自動</span></label><input class="ro" type="text" id="a_q1pcs" readonly></div>
-          </div>
-
-          <!-- ✅ NEW: Pricing Rationale Panel -->
-          <div id="ar_pricing_rationale" style="margin-top:10px;display:none">
-            <div style="background:#fff7ed;border:1.5px solid #f59e0b;border-radius:9px;padding:12px 14px">
-              <div style="font-size:12.5px;font-weight:700;color:#92400e;margin-bottom:8px">💡 報價合理性分析 / Analisis Kewajaran Harga</div>
-              <div id="ar_rationale_content" style="font-size:12px;color:#78350f;line-height:1.8"></div>
-            </div>
-          </div>
-
-          <div class="result-hero">
-            <div class="rh-top">
-              <div class="rh-block"><div class="lbl">建議報價</div><div class="val" id="ar_cm2">—</div><div class="sub" id="ar_1pcs">—</div></div>
-              <div class="rh-div"></div>
-              <div class="rh-block"><div class="lbl">毛利率</div><div class="val" id="ar_margin">25%</div><div class="sub">毛利：<span id="ar_profit">—</span></div></div>
-              <div class="rh-div"></div>
-              <div class="rh-block"><div class="lbl">N件報價合計</div><div class="val" id="ar_npcs">—</div><div class="sub" id="ar_nlbl">1 件</div></div>
-            </div>
-            <div class="pbar"><div class="pbar-fill" id="ar_pbar" style="width:25%"></div></div>
-            <div class="pbar-label"><span>0%</span><span>20%</span><span>40%</span><span>60%</span></div>
-          </div>
-
-          <!-- ✅ NEW: Margin health indicator -->
-          <div id="ar_margin_health" style="margin-top:8px;padding:9px 12px;border-radius:8px;font-size:12px;font-weight:600;display:none"></div>
-
-          <!-- 多物件清單 -->
-          <div class="sec" style="margin-top:12px">多物件合計清單</div>
+        <!-- 多物件清單 -->
+        <div class="multi-list-section" style="margin-top:10px">
+          <div class="sec">多物件合計清單 / Daftar Multi Item</div>
           <table>
-            <tr><th>物件</th><th>面積(cm²)</th><th>件數</th><th>成本(Rp)</th><th>報價(Rp)</th><th></th></tr>
-            <tbody id="multi_tbody"><tr><td colspan="6" style="color:var(--light);text-align:center;padding:10px">點擊「加入清單」</td></tr></tbody>
+            <tr><th>物件 / Barang</th><th>面積(cm²) / Luas</th><th>件數 / Qty</th><th>成本(Rp) / Biaya</th><th>報價(Rp) / Harga</th><th></th></tr>
+            <tbody id="multi_tbody"><tr><td colspan="6" style="color:var(--light);text-align:center;padding:10px">點擊「加入清單」/ Klik "Tambah"</td></tr></tbody>
             <tfoot id="multi_foot" style="display:none">
-              <tr style="background:var(--gray2);font-weight:700"><td colspan="3">合計</td><td id="multi_ctot">—</td><td id="multi_qtot">—</td><td></td></tr>
+              <tr style="background:var(--gray2);font-weight:700"><td colspan="3">合計 / Total</td><td id="multi_ctot">—</td><td id="multi_qtot">—</td><td></td></tr>
             </tfoot>
           </table>
           <div class="btn-row">
-            <button class="btn btn-ghost btn-sm" onclick="addMulti()">➕ 加入清單</button>
-            <button class="btn btn-ghost btn-sm" onclick="clearMulti()">🗑️ 清除</button>
-          </div>
-
-          <div class="btn-row" style="margin-top:8px">
-            <button class="btn btn-blue" onclick="saveRec('ar')">💾 儲存報價記錄</button>
-            <button class="btn btn-ghost" onclick="downloadQuoteXLSX('ar')" style="border-color:var(--green);color:var(--green)">📊 下載成本報價單 (Excel)</button>
-            <button class="btn btn-ghost" onclick="resetAr()">🔄 重新填寫</button>
+            <button class="btn btn-ghost btn-sm" onclick="addMulti()">➕ 加入清單 / Tambah</button>
+            <button class="btn btn-ghost btn-sm" onclick="clearMulti()">🗑️ 清除 / Hapus</button>
           </div>
         </div>
+
+        <div class="btn-row" style="margin-top:10px">
+          <button class="btn btn-blue" onclick="saveRec('ar')">💾 儲存記錄 / Simpan</button>
+          <button class="btn btn-ghost" onclick="downloadQuoteXLSX('ar')" style="border-color:var(--green);color:var(--green)">📊 下載Excel / Unduh Excel</button>
+          <button class="print-btn" onclick="window.print()">🖨️ 列印 / Cetak</button>
+          <button class="btn btn-ghost" onclick="resetAr()">🔄 重填 / Reset</button>
+        </div>
       </div>
-    </div>
+
+    </div><!-- end ar-bottom -->
+
   </div><!-- end mode_ar -->
 </div><!-- end pg_calc -->
 
@@ -1474,58 +1538,11 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
             <input type="number" id="fp_labor12" value="9000" oninput="calcFinCost()">
           </div>
         </div>
-        <!-- 運費模式切換 -->
-        <div style="margin-bottom:8px">
-          <div style="font-size:11.5px;color:var(--muted);font-weight:600;margin-bottom:5px">運費計算方式 / Cara Hitung Ongkir</div>
-          <div style="display:flex;gap:0;border:1.5px solid var(--border);border-radius:7px;overflow:hidden;width:fit-content">
-            <button id="fp_ship_mode_auto" onclick="setFinShipMode('auto')"
-              style="padding:5px 14px;border:none;cursor:pointer;font-size:12px;font-weight:600;background:var(--blue);color:#fff;transition:.15s">
-              🚚 自動計算
-            </button>
-            <button id="fp_ship_mode_manual" onclick="setFinShipMode('manual')"
-              style="padding:5px 14px;border:none;cursor:pointer;font-size:12px;font-weight:600;background:#fff;color:var(--muted);transition:.15s">
-              ✏️ 手動輸入
-            </button>
-          </div>
-        </div>
-
-        <!-- 自動計算區塊 -->
-        <div id="fp_ship_auto_block">
-          <div class="g3">
-            <div class="fg"><label>汽油單價 (Rp / L)</label><input type="number" id="fp_ship_oil" value="10000" oninput="calcFinShipAuto()"></div>
-            <div class="fg"><label>廠商距離 (km, 單程)</label><input type="number" id="fp_ship_dist" value="50" oninput="calcFinShipAuto()"></div>
-            <div class="fg"><label>貨車油耗 (L / 100km)</label><input type="number" id="fp_ship_fuel" value="15" step="0.5" oninput="calcFinShipAuto()"></div>
-          </div>
-          <div class="g3">
-            <div class="fg"><label>貨車最大載重量 (kg)</label><input type="number" id="fp_ship_load" value="3000" oninput="calcFinShipAuto()"></div>
-            <div class="fg"><label>此批貨物實際重量 (kg)</label><input type="number" id="fp_ship_share" value="500" oninput="calcFinShipAuto()"></div>
-            <div class="fg"><label>司機日薪 (Rp)</label><input type="number" id="fp_ship_driver" value="300000" oninput="calcFinShipAuto()"></div>
-          </div>
-          <div class="formula-box" style="margin-top:6px;margin-bottom:8px">
-            <div class="f-title">運費計算明細 / Rincian Ongkir</div>
-            <div class="f-line" id="fp_ship_line1">—</div>
-            <div class="f-line" id="fp_ship_line2">—</div>
-            <div class="f-line" id="fp_ship_line3">—</div>
-            <div class="f-result" id="fp_ship_result">—</div>
-          </div>
-          <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
-            <div style="font-size:11.5px;color:var(--muted)">自動帶入運費：</div>
-            <div style="font-size:14px;font-weight:700;color:var(--blue)" id="fp_ship_auto_kg">— Rp/kg</div>
-          </div>
-        </div>
-
-        <!-- 手動輸入區塊 -->
-        <div id="fp_ship_manual_block" style="display:none">
+        <div class="g2">
           <div class="fg">
             <label>運費 / Ongkir (Rp / kg)</label>
-            <input type="number" id="fp_ship_manual" value="1500" oninput="calcFinCost()">
+            <input type="number" id="fp_ship" value="1500" oninput="calcFinCost()">
           </div>
-        </div>
-
-        <!-- 隱藏欄位供計算用 -->
-        <input type="hidden" id="fp_ship" value="1500">
-
-        <div class="g2" style="margin-top:4px">
           <div class="fg">
             <label>利潤 / Laba (Rp / kg)</label>
             <input type="number" id="fp_profit" value="1000" oninput="calcFinCost()">
@@ -1648,47 +1665,15 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
 
   <!-- 散熱片報價記錄 -->
   <div class="card" style="margin-top:4px">
-    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid var(--border)">
-      <div class="card-title" style="margin:0;padding:0;border:none">📋 散熱片報價記錄 / Riwayat Penawaran Radiator</div>
-      <div style="display:flex;gap:6px;flex-wrap:wrap">
-        <button class="btn btn-ghost btn-sm" onclick="exportFinCSV()" title="匯出 CSV">📥 匯出 CSV</button>
-        <button class="btn btn-ghost btn-sm" onclick="exportFinXLSX()" style="border-color:var(--green);color:var(--green)" title="匯出 Excel">📊 匯出 Excel</button>
-        <button class="btn btn-ghost btn-sm" onclick="syncFinToGSheet()" style="border-color:#0F9D58;color:#0F9D58" title="同步到 Google Sheets">
-          <svg width="13" height="13" viewBox="0 0 24 24" style="vertical-align:-2px;margin-right:3px" fill="currentColor"><path d="M19.188 2H8.062a.75.75 0 0 0-.53.22L2.22 7.53a.75.75 0 0 0-.22.53v13.94A.75.75 0 0 0 2.75 22.75h16.438a.75.75 0 0 0 .75-.75V2.75a.75.75 0 0 0-.75-.75zM7.312 4.06v2.94H4.37zm11.126 17.19H3.5V8.5h4.562a.75.75 0 0 0 .75-.75V3.5h9.626z"/></svg>
-          同步 Google Sheets
-        </button>
-        <button class="btn btn-sm btn-red" onclick="clearFinRecs()">🗑️ 清除</button>
-      </div>
-    </div>
-
-    <!-- Google Sheets 設定（摺疊） -->
-    <div id="fin_gs_panel" style="display:none;background:var(--green2);border:1px solid #a7d9b8;border-radius:8px;padding:10px 13px;margin-bottom:10px;font-size:12px">
-      <div style="font-weight:700;color:var(--green);margin-bottom:7px">🔗 Google Sheets 連接設定</div>
-      <div style="color:var(--muted);margin-bottom:8px;font-size:11px">
-        請先建立 Google Apps Script Webhook，將 URL 貼入下方。
-        <a href="#" onclick="showGSGuide();return false" style="color:var(--blue);text-decoration:underline">查看設定說明 ▶</a>
-      </div>
-      <div class="fg" style="margin-bottom:6px">
-        <label>Apps Script Webhook URL</label>
-        <input type="text" id="fin_gs_url" placeholder="https://script.google.com/macros/s/.../exec"
-          style="font-size:11px;font-family:monospace" oninput="localStorage.setItem('dfi_fin_gs_url',this.value)">
-      </div>
-      <div class="fg" style="margin-bottom:0">
-        <label>工作表名稱 (Sheet Name，留空預設「散熱片記錄」)</label>
-        <input type="text" id="fin_gs_sheet" placeholder="散熱片記錄"
-          style="font-size:11px" oninput="localStorage.setItem('dfi_fin_gs_sheet',this.value)">
-      </div>
-    </div>
-
+    <div class="card-title">📋 散熱片報價記錄 / Riwayat Penawaran Radiator</div>
     <div style="overflow-x:auto">
       <table>
-        <tr><th>日期</th><th>客戶</th><th>規格</th><th>組數</th><th>台數</th><th>一台重(kg)</th><th>Rp/kg成本</th><th>Rp/kg報價</th><th>毛利率</th><th>一台成本</th><th>一台報價</th><th></th></tr>
+        <tr><th>日期</th><th>客戶</th><th>規格</th><th>重量(kg)</th><th>Rp/kg成本</th><th>Rp/kg報價</th><th>毛利率</th><th>一台成本</th><th>一台報價</th><th></th></tr>
         <tbody id="fin_rec_tbody">
-          <tr><td colspan="12" style="text-align:center;color:var(--light);padding:14px">尚無記錄 / Belum ada data</td></tr>
+          <tr><td colspan="10" style="text-align:center;color:var(--light);padding:14px">尚無記錄 / Belum ada data</td></tr>
         </tbody>
       </table>
     </div>
-    <div id="fin_sync_status" style="font-size:11px;color:var(--muted);margin-top:6px;min-height:16px"></div>
   </div>
 </div>
 
@@ -1704,9 +1689,7 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
       </select>
       <button class="btn btn-ghost btn-sm" onclick="exportCSV()" title="匯出 CSV 格式">📥 匯出 CSV</button>
       <button class="btn btn-ghost btn-sm" onclick="exportXLSX()" style="border-color:var(--green);color:var(--green)" title="匯出 Excel 格式">📊 匯出 Excel</button>
-      <button class="btn btn-ghost btn-sm" onclick="syncAllToSheet()" style="border-color:#0f9d58;color:#0f9d58">
-        <img src="https://www.gstatic.com/images/branding/product/1x/sheets_2020q4_32dp.png" style="width:14px;height:14px;vertical-align:middle;margin-right:3px">同步 Sheets
-      </button>
+      <button class="btn btn-ghost btn-sm" onclick="syncAllToSheet()" style="border-color:#0f9d58;color:#0f9d58">📊 同步 Sheets</button>
       <button class="btn btn-sm btn-red" onclick="clearAllRec()">🗑️ 清除全部</button>
     </div>
   </div>
@@ -1941,11 +1924,9 @@ const WT_PRE={
 };
 
 function init(){
-  // 每次開啟頁面都需重新登入
   sessionStorage.removeItem('dfi_role');
-  currentRole = null;
+  currentRole=null;
   document.getElementById('login-overlay').classList.remove('hidden');
-
   $('hdr_date').textContent=new Date().toLocaleDateString('zh-Hant',{year:'numeric',month:'2-digit',day:'2-digit'});
   const sc=localStorage.getItem('dfi_custs'); customers=sc?JSON.parse(sc):[...CUSTS_DEF];
   records=JSON.parse(localStorage.getItem('dfi_recs')||'[]');
@@ -1962,7 +1943,7 @@ function init(){
   updateDerived(); renderCustDrops(); renderCust(); renderRec();
   initFinRows(); calcWt(); calcArea(); updatePaintExample();
   calcLpgAuto(); calcLaborAuto();
-  finPageRecs=JSON.parse(localStorage.getItem('dfi_fin_recs')||'[]'); renderFinRecs(); setFinShipMode('auto');
+  finPageRecs=JSON.parse(localStorage.getItem('dfi_fin_recs')||'[]'); renderFinRecs(); calcFinCost();
 }
 
 function showPg(id,btn){document.querySelectorAll('.pg').forEach(p=>p.classList.remove('on'));document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('on'));$(id).classList.add('on');if(btn)btn.classList.add('on');}
@@ -2113,22 +2094,13 @@ function recalcWeight(){
 }
 function updateShipCalc(){
   const oilRp=pf('w_ship_oil_rp'), dist=pf('w_ship_dist'), fuelL100=pf('w_ship_fuel');
-  const load=pf('w_ship_load')||1, share=pf('w_ship_share')||1, driver=pf('w_ship_driver');
-  const qty=Math.max(1, pf('w_ship_qty')||1);
-  const tripFuel=(dist*2/100)*fuelL100*oilRp;
-  const tripTotal=tripFuel+driver;
-  const batchCost=tripTotal*(share/load);   // 此批貨分攤的運費
-  const perUnit=batchCost/qty;              // 每台運費
-  const ratio=(share/load*100).toFixed(1);
+  const load=pf('w_ship_load')||1, share=pf('w_ship_share'), driver=pf('w_ship_driver');
+  const tripFuel=(dist*2/100)*fuelL100*oilRp, tripTotal=tripFuel+driver;
+  const perUnit=tripTotal*(share/load);
   const e=id=>document.getElementById(id);
-  e('ship_calc_line1').textContent=
-    `① 燃油費：來回 ${dist*2} km × ${fuelL100} L/100km × Rp ${Math.round(oilRp).toLocaleString('en-US')} /L = Rp ${Math.round(tripFuel).toLocaleString('en-US')}`;
-  e('ship_calc_line2').textContent=
-    `② 本趟總費：燃油 Rp ${Math.round(tripFuel).toLocaleString('en-US')} + 司機日薪 Rp ${Math.round(driver).toLocaleString('en-US')} = Rp ${Math.round(tripTotal).toLocaleString('en-US')}`;
-  e('ship_calc_line3').textContent=
-    `③ 此批分攤：Rp ${Math.round(tripTotal).toLocaleString('en-US')} × (${share} kg ÷ ${load} kg) = Rp ${Math.round(batchCost).toLocaleString('en-US')}　（佔車載 ${ratio}%）`;
-  e('ship_calc_result').textContent=
-    `④ 每台運費：Rp ${Math.round(batchCost).toLocaleString('en-US')} ÷ ${qty} 台 = Rp ${Math.round(perUnit).toLocaleString('en-US')} / 台`;
+  e('ship_calc_line1').textContent=`燃油費：來回${dist*2}km × ${fuelL100}L/100km × Rp${Math.round(oilRp).toLocaleString('en-US')} = Rp ${Math.round(tripFuel).toLocaleString('en-US')}`;
+  e('ship_calc_line2').textContent=`一趟總費：Rp${Math.round(tripFuel).toLocaleString('en-US')} + 司機Rp${driver.toLocaleString('en-US')} = Rp ${Math.round(tripTotal).toLocaleString('en-US')}`;
+  e('ship_calc_result').textContent=`此訂單分攤：Rp${Math.round(tripTotal).toLocaleString('en-US')} × (${share}kg ÷ ${load}kg) = Rp ${Math.round(perUnit).toLocaleString('en-US')} / 台`;
 }
 function calcWt(){
   const wt=pf('w_weight')||1, qty=pf('w_qty')||1;
@@ -2155,17 +2127,20 @@ function calcWt(){
   const c_ship  = get('ck_ship',  ()=>{
     const oilRp=pf('w_ship_oil_rp'), dist=pf('w_ship_dist'), fuelL100=pf('w_ship_fuel');
     const load=pf('w_ship_load')||1, share=pf('w_ship_share')||wt, driver=pf('w_ship_driver');
-    const shipQty=Math.max(1, pf('w_ship_qty')||1);
     const tripFuel = (dist*2/100)*fuelL100*oilRp;
     const tripTotal = tripFuel + driver;
-    return (tripTotal * (share/load)) / shipQty;
+    return tripTotal * (share/load);
   });
   const c_sp = c_clear + c_oil;
   const total = c_shell+c_fin+c_weld+c_pr+c_tc+c_sp+c_clamp+c_lpg+c_labor+c_pkg+c_ship;
 
   // summaries on headers
   const fmt=(c,ckId)=>{ const on=ck(ckId); return on?(c>0?Rp(c/wt)+'/kg':'Rp 0'):'停用'; };
-  $('cs_shell').textContent = ck('ck_shell')?(Rp(pf('w_shell_kg'))+'/kg  →  '+Rp(c_shell)+'/台'):'停用';
+  const vendorEl = document.getElementById('w_shell_vendor');
+  const vendorName = vendorEl ? vendorEl.value.trim() : '';
+  $('cs_shell').textContent = ck('ck_shell')
+    ? (vendorName ? vendorName + '　' : '') + Rp(pf('w_shell_kg')) + '/kg  →  ' + Rp(c_shell) + '/台'
+    : '停用';
   $('cs_fin').textContent   = ck('ck_fin')?(Rp(pf('w_fin_kg'))+'/kg  →  '+Rp(c_fin)+'/台'):'停用';
   const weldKg=wt>0?Math.round(c_weld/wt):0; $('cs_weld').textContent=ck('ck_weld')?(Rp(weldKg)+'/kg  →  '+Rp(c_weld)+'/台'):'停用';
   const prCode=$('w_pr_code')?.value||'';
@@ -2513,15 +2488,7 @@ function calcAreaCost(){
   const c_sp=c_clear+c_oil;
   const total=c_pr+c_tc+c_sp+c_cc+c_lpg+c_labor+c_pkg+c_ship;
 
-  const bset2=(rid,aid,c,ckId)=>{$(rid).className='brow'+(ck(ckId)?'':' skip');$(aid).textContent=ck(ckId)?c.toFixed(4):'—';};
-  bset2('abrow_pr','ab_pr',c_pr,'ak_pr'); bset2('abrow_tc','ab_tc',c_tc,'ak_tc');
-  $('abrow_sp').className='brow'+(c_sp>0?'':' skip'); $('ab_sp').textContent=c_sp>0?c_sp.toFixed(4):'—';
-  bset2('abrow_cc','ab_cc',c_cc,'ak_cc');
-  bset2('abrow_lpg','ab_lpg',c_lpg,'ak_lpg'); bset2('abrow_labor','ab_labor',c_labor,'ak_labor');
-  const pk_ship=c_pkg+c_ship; $('abrow_pkg').className='brow'+(pk_ship>0?'':' skip'); $('ab_pkg').textContent=pk_ship>0?pk_ship.toFixed(4):'—';
-  $('ab_total').textContent=total.toFixed(4);
-
-  // summaries
+  // summaries (cost-item header badges)
   $('as_pr').textContent=ck('ak_pr')?(c_pr.toFixed(4)+' Rp/cm²'):'停用';
   $('as_tc').textContent=ck('ak_tc')?(c_tc.toFixed(4)+' Rp/cm²'):'停用';
   $('as_clear').textContent=ck('ak_clear')?(c_clear.toFixed(4)+' Rp/cm²'):'停用';
@@ -2537,9 +2504,32 @@ function calcAreaCost(){
   $('am_1pcs').textContent=Rp(total*area);
   $('am_npcs').textContent=Rp(total*area*qty);
   window._ar={c_cm2:total,area,qty};
-  // Store detail for visual bars
-  window._ar_cost_detail={pr:c_pr,tc:c_tc,sp:c_sp,lpg:c_lpg,labor:c_labor,pkg:c_pkg+c_ship,total};
+  window._ar_cost_detail={pr:c_pr,tc:c_tc,sp:c_sp,cc:c_cc,lpg:c_lpg,labor:c_labor,pkg:c_pkg+c_ship,total};
+  updateKgBars(c_pr,c_tc,c_sp,c_cc,c_lpg,c_labor,c_pkg+c_ship,total);
   calcAreaQ();
+}
+
+function updateKgBars(pr,tc,sp,cc,lpg,labor,pkg,total){
+  const pct=(v)=>total>0?Math.round(v/total*100):0;
+  const fmt=(v)=>v>0?v.toFixed(4)+' Rp/cm²':'—';
+  const setBar=(idB,idV,idP,v,color)=>{
+    const b=document.getElementById(idB),vEl=document.getElementById(idV),pEl=document.getElementById(idP);
+    if(b)b.style.width=(total>0?Math.round(v/total*100):0)+'%';
+    if(vEl)vEl.textContent=fmt(v);
+    if(pEl)pEl.textContent=total>0&&v>0?(pct(v)+'%'):'';
+  };
+  setBar('kgb_pr','kgv_pr','kgp_pr',pr,'#378ADD');
+  setBar('kgb_tc','kgv_tc','kgp_tc',tc,'#8B5CF6');
+  const spRow=document.getElementById('kgrow_sp');if(spRow)spRow.style.display=sp>0?'flex':'none';
+  setBar('kgb_sp','kgv_sp','kgp_sp',sp,'#06B6D4');
+  const ccRow=document.getElementById('kgrow_cc');if(ccRow)ccRow.style.display=cc>0?'flex':'none';
+  setBar('kgb_cc','kgv_cc','kgp_cc',cc,'#F59E0B');
+  setBar('kgb_lpg','kgv_lpg','kgp_lpg',lpg,'#EF4444');
+  setBar('kgb_labor','kgv_labor','kgp_labor',labor,'#10B981');
+  const pkgRow=document.getElementById('kgrow_pkg');if(pkgRow)pkgRow.style.display=pkg>0?'flex':'none';
+  setBar('kgb_pkg','kgv_pkg','kgp_pkg',pkg,'#6B7280');
+  const tot=document.getElementById('kgbar_total');
+  if(tot)tot.textContent=total>0?total.toFixed(4)+' Rp/cm²':'—';
 }
 
 function calcAreaQ(){
@@ -2745,10 +2735,9 @@ function renderMulti(){
 function setPbar(id,pct){const el=$(id);el.style.width=Math.min(100,Math.max(0,pct))+'%';el.style.background=pct>=25?'#22c55e':pct>=15?'#f59e0b':'#ef4444';}
 
 // ── LOGIN SYSTEM ──
-const PW_DEFAULTS = { sales: 'TCMW2026', admin: 'TCMW@cody202688' };
-let currentRole = null;
-let loginSelectedRole = 'sales';
-function getPw(role){ return localStorage.getItem('dfi_pw_'+role)||PW_DEFAULTS[role]; }
+const PW_DEFAULTS={sales:'TCMW2026',admin:'TCMW@cody202688'};
+let currentRole=null,loginSelectedRole='sales';
+function getPw(r){return localStorage.getItem('dfi_pw_'+r)||PW_DEFAULTS[r];}
 function selectRole(role){
   loginSelectedRole=role;
   document.getElementById('tab-sales').classList.toggle('active',role==='sales');
@@ -2762,7 +2751,6 @@ function doLogin(){
   const errEl=document.getElementById('login-err');
   if(pw===getPw(loginSelectedRole)){
     currentRole=loginSelectedRole;
-    sessionStorage.setItem('dfi_role',currentRole);
     document.getElementById('login-overlay').classList.add('hidden');
     const badge=document.getElementById('role-badge');
     if(currentRole==='admin'){badge.textContent='🔑 管理員';badge.className='role-badge admin';}
@@ -2776,23 +2764,18 @@ function doLogin(){
 }
 function doLogout(){
   if(!confirm('確定要登出嗎？'))return;
-  currentRole=null; sessionStorage.removeItem('dfi_role');
+  currentRole=null;
   document.getElementById('login-pw').value='';
-  document.getElementById('login-err').classList.remove('show');
   selectRole('sales');
   document.getElementById('login-overlay').classList.remove('hidden');
 }
-function onRoleBadgeClick(){ if(currentRole==='admin') openAdminModal(); }
+function onRoleBadgeClick(){if(currentRole==='admin')openAdminModal();}
 function openAdminModal(){
-  document.getElementById('adm-new-sales').value='';
-  document.getElementById('adm-confirm-sales').value='';
-  document.getElementById('adm-new-admin').value='';
-  document.getElementById('adm-confirm-admin').value='';
-  document.getElementById('adm-msg').className='admin-msg';
-  document.getElementById('adm-msg').textContent='';
+  ['adm-new-sales','adm-confirm-sales','adm-new-admin','adm-confirm-admin'].forEach(id=>document.getElementById(id).value='');
+  const m=document.getElementById('adm-msg');m.className='admin-msg';m.textContent='';
   document.getElementById('admin-modal').classList.add('show');
 }
-function closeAdminModal(){ document.getElementById('admin-modal').classList.remove('show'); }
+function closeAdminModal(){document.getElementById('admin-modal').classList.remove('show');}
 function saveAdminPw(){
   const msgEl=document.getElementById('adm-msg');
   const ns=document.getElementById('adm-new-sales').value;
@@ -2804,42 +2787,32 @@ function saveAdminPw(){
   if(na&&na!==ca){msgEl.textContent='❌ 管理員兩次密碼不相符';msgEl.className='admin-msg err';return;}
   if(ns.length<6){msgEl.textContent='❌ 密碼至少需6個字元';msgEl.className='admin-msg err';return;}
   localStorage.setItem('dfi_pw_sales',ns);
-  if(na) localStorage.setItem('dfi_pw_admin',na);
-  msgEl.textContent='✅ 密碼已成功更新！'; msgEl.className='admin-msg ok';
+  if(na)localStorage.setItem('dfi_pw_admin',na);
+  msgEl.textContent='✅ 密碼已成功更新！';msgEl.className='admin-msg ok';
   setTimeout(closeAdminModal,1500);
 }
 
 // ── GOOGLE SHEETS SYNC ──
-const GS_URL = 'https://script.google.com/macros/s/AKfycbzRLjgDywzsxuZW7xRbCVq9P88GugcalYR2atKIiXncR1Xwlr2ZuP2fIsbMx2OiUyLk/exec';
-function recToSheetRow(r){
-  return {date:r.date,type:r.mode==='wt'?'⚖️ 變壓器（按重量）':'📐 鐵箱/充電殼（按面積）',cust:r.cust||'',model:r.model||'',size:r.size||'',qty:r.qty||1,unit_cost:r.unit_cost!=null?r.unit_cost:'',unit_quote:r.unit_quote!=null?r.unit_quote:'',unit_label:r.unit_label||'',cost:r.cost||0,quote:r.quote||0,margin:r.margin!=null?r.margin:0,note:r.note||''};
+const GS_URL='https://script.google.com/macros/s/AKfycbzRLjgDywzsxuZW7xRbCVq9P88GugcalYR2atKIiXncR1Xwlr2ZuP2fIsbMx2OiUyLk/exec';
+function gsPost(payload,statusId){
+  const st=statusId?document.getElementById(statusId):null;
+  if(st){st.textContent='⏳ 同步中...';st.style.color='var(--orange)';}
+  const fn='gs_'+Date.now();
+  const ifr=document.createElement('iframe');ifr.name=fn;ifr.style.display='none';document.body.appendChild(ifr);
+  const frm=document.createElement('form');frm.method='GET';frm.action=GS_URL;frm.target=fn;frm.style.display='none';
+  const inp=document.createElement('input');inp.type='hidden';inp.name='data';inp.value=JSON.stringify(payload);
+  frm.appendChild(inp);document.body.appendChild(frm);frm.submit();
+  setTimeout(()=>{
+    try{document.body.removeChild(frm);document.body.removeChild(ifr);}catch(e){}
+    if(st){st.textContent='✅ 已同步 Google Sheets';st.style.color='var(--green)';}
+    setTimeout(()=>{if(st)st.textContent='';},5000);
+  },3000);
 }
-function syncToSheet(action,payload){
-  const gsStatus=document.getElementById('gs-status');
-  if(gsStatus){gsStatus.textContent='⏳ 同步中...';gsStatus.style.color='var(--orange)';}
-  try{
-    const iframeName='gs_iframe_'+Date.now();
-    const iframe=document.createElement('iframe');
-    iframe.name=iframeName; iframe.style.display='none';
-    document.body.appendChild(iframe);
-    const form=document.createElement('form');
-    form.method='GET'; form.action=GS_URL; form.target=iframeName; form.style.display='none';
-    const input=document.createElement('input');
-    input.type='hidden'; input.name='data'; input.value=JSON.stringify(payload);
-    form.appendChild(input); document.body.appendChild(form); form.submit();
-    setTimeout(()=>{
-      try{document.body.removeChild(form);document.body.removeChild(iframe);}catch(e){}
-      if(gsStatus){gsStatus.textContent='✅ 已同步 Google Sheets';gsStatus.style.color='var(--green)';}
-      setTimeout(()=>{if(gsStatus)gsStatus.textContent='';},5000);
-    },3000);
-  }catch(e){
-    if(gsStatus){gsStatus.textContent='⚠️ 同步失敗';gsStatus.style.color='var(--red)';}
-  }
-}
+function recToRow(r){return{date:r.date,type:r.mode==='wt'?'⚖️ 變壓器（按重量）':'📐 鐵箱/充電殼（按面積）',cust:r.cust||'',model:r.model||'',size:r.size||'',qty:r.qty||1,unit_cost:r.unit_cost!=null?r.unit_cost:'',unit_quote:r.unit_quote!=null?r.unit_quote:'',unit_label:r.unit_label||'',cost:r.cost||0,quote:r.quote||0,margin:r.margin!=null?r.margin:0,note:r.note||''};}
 function syncAllToSheet(){
   if(!records.length){alert('目前無記錄可同步');return;}
-  if(!confirm('確定將所有本機記錄（'+records.length+'筆）全量同步到 Google Sheets？\n（這會覆蓋 Google Sheets 現有資料）'))return;
-  syncToSheet('sync_all',{action:'sync_all',records:records.map(recToSheetRow)});
+  if(!confirm('確定將所有本機記錄（'+records.length+'筆）全量同步到 Google Sheets？'))return;
+  gsPost({action:'sync_all',records:records.map(recToRow)},'gs-status');
 }
 
 function saveRec(mode){
@@ -2856,7 +2829,7 @@ function saveRec(mode){
     rec={mode:'ar',date:today(),cust:$('a_cust').value||'—',model:$('a_model').value||'—',size:area+'cm²',qty,cost:Math.round(fc),quote:Math.round(fq),unit_cost:arUnitCost,unit_quote:arUnitQuote,unit_label:'Rp/cm²',margin:+fm.toFixed(1),note:$('a_note').value};
   } else return;
   records.unshift(rec); localStorage.setItem('dfi_recs',JSON.stringify(records));
-  syncToSheet('append',{action:'append',record:recToSheetRow(rec)});
+  gsPost({action:'append',record:recToRow(rec)},null);
   renderRec(); showPg('pg_rec',document.querySelectorAll('.nav button')[2]); alert('✅ 報價記錄已儲存！正在同步到 Google Sheets...');
 }
 function today(){return new Date().toLocaleDateString('zh-Hant',{year:'numeric',month:'2-digit',day:'2-digit'});}
@@ -3430,57 +3403,6 @@ function parseFinPageSpec() {
   }
 }
 
-// ── 散熱片運費模式切換 ──────────────────────────────────────
-let _finShipMode = 'auto';
-
-function setFinShipMode(mode) {
-  _finShipMode = mode;
-  const isAuto = mode === 'auto';
-  document.getElementById('fp_ship_auto_block').style.display   = isAuto ? '' : 'none';
-  document.getElementById('fp_ship_manual_block').style.display = isAuto ? 'none' : '';
-  const btnA = document.getElementById('fp_ship_mode_auto');
-  const btnM = document.getElementById('fp_ship_mode_manual');
-  btnA.style.background = isAuto ? 'var(--blue)' : '#fff';
-  btnA.style.color      = isAuto ? '#fff'         : 'var(--muted)';
-  btnM.style.background = isAuto ? '#fff'         : 'var(--blue)';
-  btnM.style.color      = isAuto ? 'var(--muted)' : '#fff';
-  if (isAuto) calcFinShipAuto(); else calcFinCost();
-}
-
-function calcFinShipAuto() {
-  const oil    = parseFloat(document.getElementById('fp_ship_oil')?.value)    || 0;
-  const dist   = parseFloat(document.getElementById('fp_ship_dist')?.value)   || 0;
-  const fuel   = parseFloat(document.getElementById('fp_ship_fuel')?.value)   || 15;
-  const load   = parseFloat(document.getElementById('fp_ship_load')?.value)   || 1;
-  const share  = parseFloat(document.getElementById('fp_ship_share')?.value)  || 0;
-  const driver = parseFloat(document.getElementById('fp_ship_driver')?.value) || 0;
-
-  const tripFuel  = (dist * 2 / 100) * fuel * oil;
-  const tripTotal = tripFuel + driver;
-  const batchCost = load > 0 ? tripTotal * (share / load) : 0;
-  const ratio     = load > 0 ? (share / load * 100).toFixed(1) : 0;
-
-  // 折算 Rp/kg（依此批貨物實際重量）
-  const shipKg = share > 0 ? batchCost / share : 0;
-
-  const sv = id => document.getElementById(id);
-  sv('fp_ship_line1').textContent =
-    `① 燃油費：來回 ${dist*2} km × ${fuel} L/100km × Rp ${Math.round(oil).toLocaleString('en-US')} /L = Rp ${Math.round(tripFuel).toLocaleString('en-US')}`;
-  sv('fp_ship_line2').textContent =
-    `② 本趟總費：燃油 Rp ${Math.round(tripFuel).toLocaleString('en-US')} + 司機日薪 Rp ${Math.round(driver).toLocaleString('en-US')} = Rp ${Math.round(tripTotal).toLocaleString('en-US')}`;
-  sv('fp_ship_line3').textContent =
-    `③ 此批分攤：Rp ${Math.round(tripTotal).toLocaleString('en-US')} × (${share} kg ÷ ${load} kg) = Rp ${Math.round(batchCost).toLocaleString('en-US')}　（佔車載 ${ratio}%）`;
-  sv('fp_ship_result').textContent =
-    `④ 折算運費：Rp ${Math.round(batchCost).toLocaleString('en-US')} ÷ ${share} kg = Rp ${shipKg.toFixed(1)} /kg`;
-  sv('fp_ship_auto_kg').textContent = `Rp ${shipKg.toFixed(1)} /kg`;
-
-  // 同步到隱藏欄位讓 calcFinCost 讀取
-  document.getElementById('fp_ship').value = shipKg.toFixed(2);
-  calcFinCost();
-}
-
-// ───────────────────────────────────────────────────────────────
-
 function calcFinCost() {
   const spccTax  = parseFloat(document.getElementById('fp_spcc_tax')?.value) || 16000;
   const lossPct  = (parseFloat(document.getElementById('fp_loss_pct')?.value) || 5) / 100;
@@ -3537,9 +3459,7 @@ function calcFinCost() {
   // Cost calculation
   const rodPriceNotax = getRodPriceNotax(d);
   const labor  = T <= 1 ? (parseFloat(document.getElementById('fp_labor10')?.value)||9500) : (parseFloat(document.getElementById('fp_labor12')?.value)||9000);
-  const ship   = _finShipMode === 'manual'
-    ? (parseFloat(document.getElementById('fp_ship_manual')?.value) || 0)
-    : (parseFloat(document.getElementById('fp_ship')?.value) || 0);
+  const ship   = parseFloat(document.getElementById('fp_ship')?.value) || 1500;
   const profit = parseFloat(document.getElementById('fp_profit')?.value) || 1000;
 
   // FINWALL cost: matCost (SPCC notax × 1.05) × weight
@@ -3614,33 +3534,29 @@ function saveFinRec() {
     (document.getElementById('fp_N1')?.value||'?') + 'P');
   const rec = {
     date: today(), cust: document.getElementById('fp_cust')?.value || '—',
-    spec, sets: +sets, qty: +qty,
-    wt: +(wNSets||0).toFixed(3),   // 一台重量（N組合計）
-    cKg: +cKg.toFixed(0),
+    spec, wt: +(wNSets||0).toFixed(3), cKg: +cKg.toFixed(0),
     qKg: +(sq_kg||cKg).toFixed(0),
     margin: sq_kg>0?+((sq_kg-cKg)/sq_kg*100).toFixed(1):0,
-    c1unit: Math.round(cTotal*sets),
-    q1unit: Math.round((sq_kg||cKg)*(wNSets||0)),
+    c1unit: Math.round(cTotal*sets), q1unit: Math.round((sq_kg||cKg)*(wNSets||0)),
   };
   finPageRecs.unshift(rec);
   localStorage.setItem('dfi_fin_recs', JSON.stringify(finPageRecs));
   renderFinRecs();
-  alert('✅ 散熱片報價記錄已儲存！');
+  gsPost({action:'fin_append',record:{date:rec.date,cust:rec.cust,spec:rec.spec,sets:sets,qty:qty,wt:rec.wt,cKg:rec.cKg,qKg:rec.qKg,margin:rec.margin,c1unit:rec.c1unit,q1unit:rec.q1unit,total_quote:Math.round(rec.q1unit*(qty||1))}},null);
+  alert('✅ 散熱片報價記錄已儲存！正在同步到 Google Sheets...');
 }
 
 function renderFinRecs() {
   const el = document.getElementById('fin_rec_tbody');
   if (!el) return;
   if (!finPageRecs.length) {
-    el.innerHTML = '<tr><td colspan="12" style="text-align:center;color:var(--light);padding:14px">尚無記錄 / Belum ada data</td></tr>';
+    el.innerHTML = '<tr><td colspan="10" style="text-align:center;color:var(--light);padding:14px">尚無記錄</td></tr>';
     return;
   }
   el.innerHTML = finPageRecs.map((r,i) => `<tr>
     <td style="font-size:11px;white-space:nowrap">${r.date}</td>
     <td style="font-weight:600;font-size:12px">${r.cust}</td>
     <td style="font-family:monospace;font-size:12px">${r.spec}</td>
-    <td style="text-align:center">${r.sets||1}</td>
-    <td style="text-align:center">${r.qty||1}</td>
     <td>${r.wt} kg</td>
     <td style="color:var(--muted)">${Rp(r.cKg)}/kg</td>
     <td style="font-weight:700;color:var(--orange)">${Rp(r.qKg)}/kg</td>
@@ -3649,169 +3565,6 @@ function renderFinRecs() {
     <td style="font-weight:700;color:var(--blue)">${Rp(r.q1unit)}</td>
     <td><button class="btn btn-sm btn-red" onclick="finPageRecs.splice(${i},1);localStorage.setItem('dfi_fin_recs',JSON.stringify(finPageRecs));renderFinRecs()">🗑️</button></td>
   </tr>`).join('');
-}
-
-function clearFinRecs() {
-  if (!finPageRecs.length) return;
-  if (!confirm('確定要清除所有散熱片報價記錄嗎？')) return;
-  finPageRecs = [];
-  localStorage.setItem('dfi_fin_recs', JSON.stringify(finPageRecs));
-  renderFinRecs();
-}
-
-// ── 散熱片記錄匯出 CSV ──────────────────────────────────────
-function exportFinCSV() {
-  if (!finPageRecs.length) { alert('目前無散熱片報價記錄可匯出'); return; }
-  const headers = ['日期','客戶','規格','組數','台數','一台重量(kg)','成本Rp/kg','報價Rp/kg','毛利率%','一台成本(Rp)','一台報價(Rp)','整單報價(Rp)'];
-  const rows = finPageRecs.map(r => [
-    r.date, r.cust, r.spec, r.sets||1, r.qty||1, r.wt,
-    r.cKg, r.qKg, r.margin,
-    r.c1unit, r.q1unit,
-    Math.round(r.q1unit * (r.qty||1))
-  ]);
-  const csv = [headers, ...rows].map(row => row.map(v => `"${v}"`).join(',')).join('\n');
-  const a = document.createElement('a');
-  a.href = 'data:text/csv;charset=utf-8,\uFEFF' + encodeURIComponent(csv);
-  a.download = 'DFI_散熱片報價記錄_' + new Date().toISOString().slice(0,10) + '.csv';
-  a.click();
-}
-
-// ── 散熱片記錄匯出 Excel ────────────────────────────────────
-function exportFinXLSX() {
-  if (!finPageRecs.length) { alert('目前無散熱片報價記錄可匯出'); return; }
-  const wb = XLSX.utils.book_new();
-
-  // ── 記錄工作表 ──
-  const headers = ['日期','客戶','規格','組數(Set)','訂單台數','一台重量(kg)',
-    '成本 Rp/kg','報價 Rp/kg','毛利率(%)','一台成本(Rp)','一台報價(Rp)','整單報價(Rp)'];
-  const rows = finPageRecs.map(r => [
-    r.date, r.cust, r.spec, r.sets||1, r.qty||1, r.wt,
-    r.cKg, r.qKg, r.margin,
-    r.c1unit, r.q1unit,
-    Math.round(r.q1unit * (r.qty||1))
-  ]);
-  const wsData = [headers, ...rows];
-  const ws = XLSX.utils.aoa_to_sheet(wsData);
-  ws['!cols'] = [{wch:13},{wch:28},{wch:20},{wch:8},{wch:8},{wch:12},
-    {wch:14},{wch:14},{wch:10},{wch:16},{wch:16},{wch:16}];
-
-  // 標題列樣式
-  const rng = XLSX.utils.decode_range(ws['!ref']);
-  for (let c = rng.s.c; c <= rng.e.c; c++) {
-    const addr = XLSX.utils.encode_cell({r:0, c});
-    if (!ws[addr]) continue;
-    ws[addr].s = {
-      fill:{fgColor:{rgb:'1E6B3C'}}, font:{color:{rgb:'FFFFFF'},bold:true,sz:11},
-      alignment:{horizontal:'center',vertical:'center'}
-    };
-  }
-  // 資料列樣式
-  for (let r = 1; r < wsData.length; r++) {
-    const rec = finPageRecs[r-1];
-    for (let c = 0; c < headers.length; c++) {
-      const addr = XLSX.utils.encode_cell({r, c});
-      if (!ws[addr]) ws[addr] = {t:'s', v:''};
-      const bg = r%2===0 ? 'E8F5EE' : 'FFFFFF';
-      ws[addr].s = { fill:{fgColor:{rgb:bg}}, font:{sz:10}, alignment:{vertical:'center'} };
-      if ([3,4,5,6,7,8,9,10,11].includes(c))
-        ws[addr].s.alignment = {horizontal:'right',vertical:'center'};
-      if (c===8) { // 毛利率顏色
-        const m = rec?.margin||0;
-        ws[addr].s.font = {sz:10,bold:true,
-          color:{rgb: m>=20?'1E6B3C': m>=10?'D4770A':'B02828'}};
-      }
-    }
-  }
-  XLSX.utils.book_append_sheet(wb, ws, '散熱片報價記錄');
-
-  // ── 統計摘要工作表 ──
-  const n = finPageRecs.length;
-  const avgM = n ? (finPageRecs.reduce((s,r)=>s+(r.margin||0),0)/n) : 0;
-  const totRev  = finPageRecs.reduce((s,r)=>s+Math.round(r.q1unit*(r.qty||1)),0);
-  const totCost = finPageRecs.reduce((s,r)=>s+Math.round(r.c1unit*(r.qty||1)),0);
-  const wsSummary = XLSX.utils.aoa_to_sheet([
-    ['DFI 散熱片報價系統 — 統計摘要'],
-    ['匯出日期', new Date().toLocaleDateString('zh-Hant')],
-    [''],
-    ['項目','數值'],
-    ['總記錄筆數', n],
-    ['平均毛利率', avgM.toFixed(1)+'%'],
-    ['報價總金額 (Rp)', totRev],
-    ['成本總金額 (Rp)', totCost],
-    ['毛利總金額 (Rp)', totRev - totCost],
-  ]);
-  wsSummary['!cols'] = [{wch:28},{wch:22}];
-  XLSX.utils.book_append_sheet(wb, wsSummary, '統計摘要');
-
-  XLSX.writeFile(wb, 'DFI_散熱片報價記錄_' + new Date().toISOString().slice(0,10) + '.xlsx');
-}
-
-// ── Google Sheets 同步 ──────────────────────────────────────
-function syncFinToGSheet() {
-  const panel = document.getElementById('fin_gs_panel');
-  // 若尚未設定URL，先展開設定面板
-  const savedUrl = localStorage.getItem('dfi_fin_gs_url') || '';
-  if (document.getElementById('fin_gs_url'))
-    document.getElementById('fin_gs_url').value = savedUrl;
-  if (document.getElementById('fin_gs_sheet'))
-    document.getElementById('fin_gs_sheet').value = localStorage.getItem('dfi_fin_gs_sheet') || '';
-
-  if (!savedUrl) {
-    panel.style.display = panel.style.display === 'none' ? '' : 'none';
-    setFinSyncStatus('⚠️ 請先填入 Apps Script Webhook URL，再點擊「同步 Google Sheets」', 'var(--orange)');
-    return;
-  }
-  if (!finPageRecs.length) { alert('目前無散熱片報價記錄可同步'); return; }
-
-  const sheetName = (localStorage.getItem('dfi_fin_gs_sheet') || '散熱片記錄').trim() || '散熱片記錄';
-  const payload = {
-    sheet: sheetName,
-    headers: ['日期','客戶','規格','組數','訂單台數','一台重量(kg)',
-      '成本Rp/kg','報價Rp/kg','毛利率%','一台成本(Rp)','一台報價(Rp)','整單報價(Rp)'],
-    rows: finPageRecs.map(r => [
-      r.date, r.cust, r.spec, r.sets||1, r.qty||1, r.wt,
-      r.cKg, r.qKg, r.margin, r.c1unit, r.q1unit,
-      Math.round(r.q1unit*(r.qty||1))
-    ])
-  };
-
-  setFinSyncStatus('⏳ 同步中，請稍候…', 'var(--blue)');
-  fetch(savedUrl, {
-    method:'POST', mode:'no-cors',
-    headers:{'Content-Type':'application/json'},
-    body: JSON.stringify(payload)
-  }).then(() => {
-    setFinSyncStatus('✅ 已成功同步到 Google Sheets「' + sheetName + '」工作表！ — ' + new Date().toLocaleTimeString('zh-Hant'), 'var(--green)');
-  }).catch(err => {
-    setFinSyncStatus('❌ 同步失敗：' + err.message + '（請確認 Webhook URL 是否正確）', 'var(--red)');
-  });
-}
-
-function setFinSyncStatus(msg, color) {
-  const el = document.getElementById('fin_sync_status');
-  if (el) { el.textContent = msg; el.style.color = color; }
-}
-
-function showGSGuide() {
-  alert(`📋 Google Sheets 連接設定步驟：
-
-1. 開啟您的 Google Sheets
-2. 點選「擴充功能」→「Apps Script」
-3. 貼上以下程式碼並部署：
-
-function doPost(e) {
-  const data = JSON.parse(e.postData.contents);
-  const ss = SpreadsheetApp.getActiveSpreadsheet();
-  let sh = ss.getSheetByName(data.sheet);
-  if (!sh) sh = ss.insertSheet(data.sheet);
-  if (sh.getLastRow() === 0) sh.appendRow(data.headers);
-  data.rows.forEach(row => sh.appendRow(row));
-  return ContentService.createTextOutput('OK');
-}
-
-4. 部署 → 新增部署 → 類型選「網頁應用程式」
-5. 執行身份：「我」/ 存取權限：「所有人」
-6. 複製部署 URL 貼回本系統`);
 }
 
 function resetFinPage() {
