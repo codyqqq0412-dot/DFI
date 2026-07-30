@@ -3229,8 +3229,22 @@ function downloadQuoteXLSX(mode) {
     const profitAmt  = $('wr_profit').textContent || '—';
 
     // Cost breakdown items
+    const shellVendor = (document.getElementById('w_shell_vendor')?.value||'').trim();
+    const oilTubeRp  = pf('w_oil_tube_rp')  || 0;
+    const oilTubeQty = pf('w_oil_tube_qty') || 0;
+    const oilTubeCost = oilTubeRp * oilTubeQty;
+    const shellKgCost = pf('w_shell_kg') * shellWt;
+    const shellTotalCost = shellKgCost + oilTubeCost;
+
+    const shellLabel = '外殼外包' +
+      (shellVendor ? '\n供應商：' + shellVendor : '') +
+      (oilTubeCost > 0 ? '\n注油管：Rp ' + oilTubeRp.toLocaleString('en-US') + ' × ' + oilTubeQty + '支 = Rp ' + oilTubeCost.toLocaleString('en-US') : '');
+    const shellDetail = pf('w_shell_kg') + ' Rp/kg × ' + shellWt.toFixed(2) + 'kg' +
+      (oilTubeCost > 0 ? ' + 油管 Rp ' + oilTubeCost.toLocaleString('en-US') : '');
+    const shellAmt = ck('ck_shell') ? 'Rp ' + shellTotalCost.toLocaleString('en-US') : T('停用','Nonaktif');
+
     const items = [
-      ['外殼外包', ck('ck_shell'), pf('w_shell_kg')+'  Rp/kg', 'Rp '+Rp(pf('w_shell_kg')*shellWt).replace('Rp ','')],
+      [shellLabel, ck('ck_shell'), shellDetail, shellAmt],
       ['散熱片', ck('ck_fin'), pf('w_fin_kg')+' Rp/kg', 'Rp '+Rp(fin*pf('w_fin_kg')).replace('Rp ','')],
       ['焊接外殼', ck('ck_weld'), '—', ck('ck_weld')?'Rp '+Rp(pf('w_weld_rp')).replace('Rp ',''): T('停用','Nonaktif')],
       ['底漆 Primer\n' + ($('w_pr_code')?.value||'') + '\n' + ($('w_pr_vendor')?.value||''),
@@ -3277,6 +3291,8 @@ function downloadQuoteXLSX(mode) {
       }),
       [''],
       ['═══ 報價結果 ═══'],
+      ...(shellVendor ? [['外殼外包供應商 / Vendor', shellVendor]] : []),
+      ...(oilTubeCost > 0 ? [['注油管 Oil Level Control', 'Rp '+oilTubeRp.toLocaleString('en-US')+' / 支 × '+oilTubeQty+' 支', '小計：Rp '+oilTubeCost.toLocaleString('en-US')]] : []),
       ['成本總計 (Rp / 台)', (wt.c_total||0).toLocaleString('en-US')],
       ['成本 (Rp / kg)', totalWt>0?((wt.c_total||0)/totalWt).toFixed(0):'—'],
       ['建議報價 (Rp / kg)', suggestKg],
