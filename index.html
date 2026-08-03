@@ -382,7 +382,22 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
           <div class="g4">
             <div class="fg"><label>🛢️ 桶子 Tank</label><input type="number" id="w_wt_tank" value="100" oninput="recalcWeight()"></div>
             <div class="fg"><label>🔲 蓋子 Cover</label><input type="number" id="w_wt_cover" value="25" oninput="recalcWeight()"></div>
-            <div class="fg"><label>🌡️ 散熱片 Fin <span style="color:var(--light);font-size:10px">從散熱片計算器</span></label><input class="ro" type="text" id="w_wt_fin2" readonly style="background:var(--blue3);color:var(--blue2);font-weight:600" value="0"></div>
+            <div class="fg">
+              <label>🌡️ 散熱片 Fin
+                <span style="color:var(--light);font-size:10px" id="fin_src_hint">從散熱片計算器</span>
+              </label>
+              <div style="display:flex;gap:5px;align-items:center">
+                <input type="number" id="w_wt_fin2" value="0" step="0.001" oninput="finManualOverride()" style="flex:1;min-width:0">
+                <button onclick="setFinZero()" title="無散熱片 / Tanpa Radiator"
+                  style="padding:5px 8px;border:1.5px solid var(--border);border-radius:6px;background:var(--gray);cursor:pointer;font-size:12px;white-space:nowrap;flex-shrink:0"
+                  >✕ 無</button>
+                <button onclick="restoreFinAuto()" title="恢復自動從散熱片計算器帶入"
+                  id="fin_restore_btn"
+                  style="padding:5px 8px;border:1.5px solid var(--blue);border-radius:6px;background:var(--blue3);color:var(--blue);cursor:pointer;font-size:12px;white-space:nowrap;flex-shrink:0;display:none"
+                  >🔄 自動</button>
+              </div>
+              <div class="hint" id="fin_hint">從散熱片頁計算後自動帶入；無散熱片請按「✕ 無」或直接填 0</div>
+            </div>
             <div class="fg"><label>🔧 繞線芯夾 Clamp</label><input type="number" id="w_wt_clamp2" value="10" oninput="recalcWeight()"></div>
           </div>
           <div class="g3" style="margin-top:2px">
@@ -2110,9 +2125,52 @@ function toggleCustomModel(){
   }
 }
 
+function setFinZero(){
+  const el=document.getElementById('w_wt_fin2');
+  if(!el) return;
+  el.value='0';
+  el.dataset.manualOverride='true';
+  el.style.background=''; el.style.color='';
+  const hint=document.getElementById('fin_hint');
+  const srcHint=document.getElementById('fin_src_hint');
+  const restoreBtn=document.getElementById('fin_restore_btn');
+  if(hint) hint.textContent=T('已設為 0（無散熱片）。按「🔄 自動」可恢復從散熱片計算器帶入。','Diset ke 0 (tanpa radiator). Klik "🔄 Auto" untuk kembali ke nilai kalkulator radiator.');
+  if(srcHint) srcHint.textContent=T('手動輸入','Input Manual');
+  if(restoreBtn) restoreBtn.style.display='';
+  recalcWeight();
+}
+function finManualOverride(){
+  const el=document.getElementById('w_wt_fin2');
+  if(!el) return;
+  el.dataset.manualOverride='true';
+  el.style.background=''; el.style.color='';
+  const srcHint=document.getElementById('fin_src_hint');
+  const restoreBtn=document.getElementById('fin_restore_btn');
+  if(srcHint) srcHint.textContent=T('手動輸入','Input Manual');
+  if(restoreBtn) restoreBtn.style.display='';
+  recalcWeight();
+}
+function restoreFinAuto(){
+  const el=document.getElementById('w_wt_fin2');
+  if(!el) return;
+  delete el.dataset.manualOverride;
+  el.style.background='var(--blue3)'; el.style.color='var(--blue2)';
+  const srcHint=document.getElementById('fin_src_hint');
+  const restoreBtn=document.getElementById('fin_restore_btn');
+  const hint=document.getElementById('fin_hint');
+  if(srcHint) srcHint.textContent=T('從散熱片計算器','Dari Kalkulator Radiator');
+  if(restoreBtn) restoreBtn.style.display='none';
+  // Re-read latest value from fin calculator hidden field
+  const finWt=parseFloat(document.getElementById('w_fin_wt')?.value||'0')||0;
+  el.value=finWt>0?finWt.toFixed(3):'0';
+  if(hint) hint.textContent=finWt>0
+    ? T('已恢復自動帶入（散熱片計算器：'+finWt.toFixed(3)+' kg）','Kembali otomatis dari kalkulator radiator: '+finWt.toFixed(3)+' kg')
+    : T('已恢復自動帶入。請先至散熱片計算器頁面輸入規格。','Kembali otomatis. Silakan isi spesifikasi di halaman kalkulator radiator.');
+  recalcWeight();
+}
+
 function recalcWeight(){
   const tank=pf('w_wt_tank'), cover=pf('w_wt_cover'), clamp=pf('w_wt_clamp2');
-  // fin weight comes from fin calculator (synced into w_wt_fin2 display + w_fin_wt hidden)
   const finEl = document.getElementById('w_wt_fin2');
   const fin = parseFloat((finEl?.value||'0').replace(/[^0-9.]/g,'')) || 0;
   const total = tank + cover + fin + clamp;
@@ -3198,10 +3256,15 @@ function updateFinTotals() {
   if (tp) tp.textContent = totalPlates + ' 片';
   // sync hidden field & basic info weight
   document.getElementById('w_fin_wt').value = totalWt;
-  // sync w_wt_fin2 display in basic info
+  // sync w_wt_fin2 in basic info — only if user hasn't manually overridden
   const fin2El = document.getElementById('w_wt_fin2');
-  if (fin2El) {
-    fin2El.value = totalWt > 0 ? Fmt(totalWt) + ' kg' : '0 kg';
+  if (fin2El && !fin2El.dataset.manualOverride) {
+    fin2El.value = totalWt > 0 ? totalWt.toFixed(3) : '0';
+    fin2El.style.background='var(--blue3)'; fin2El.style.color='var(--blue2)';
+    const hint=document.getElementById('fin_hint');
+    const srcHint=document.getElementById('fin_src_hint');
+    if(hint) hint.textContent='從散熱片頁計算後自動帶入（'+totalWt.toFixed(3)+' kg）；無散熱片請按「✕ 無」';
+    if(srcHint) srcHint.textContent='從散熱片計算器 ✓';
   }
   recalcWeight();
 }
