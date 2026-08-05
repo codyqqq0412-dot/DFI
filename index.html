@@ -1723,7 +1723,15 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
   <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px">
     <div style="font-size:15px;font-weight:700;color:var(--blue)"><span class="i18n" data-zh="📋 報價記錄" data-id="📋 Riwayat Penawaran">📋 報價記錄</span></div>
     <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
-      <input type="text" id="rec_search" placeholder="搜尋客戶/型號..." data-ph-zh="搜尋客戶/型號..." data-ph-id="Cari pelanggan/tipe..." style="padding:6px 11px;border:1.5px solid var(--border);border-radius:7px;font-size:12px;width:160px" oninput="renderRec()">
+      <div style="display:flex;align-items:center;gap:0">
+        <input type="text" id="rec_search" placeholder="搜尋客戶/型號..." data-ph-zh="搜尋客戶/型號..." data-ph-id="Cari pelanggan/tipe..."
+          autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
+          style="padding:6px 11px;border:1.5px solid var(--border);border-radius:7px 0 0 7px;font-size:12px;width:150px"
+          oninput="renderRec()">
+        <button onclick="document.getElementById('rec_search').value='';renderRec()"
+          style="padding:6px 8px;border:1.5px solid var(--border);border-left:none;border-radius:0 7px 7px 0;background:var(--gray);cursor:pointer;font-size:12px;color:var(--muted)"
+          title="清除搜尋">✕</button>
+      </div>
       <select id="rec_ft" onchange="renderRec()" style="padding:6px 9px;border:1.5px solid var(--border);border-radius:7px;font-size:12px">
         <option value=""><span class="i18n" data-zh="全部類型" data-id="Semua Tipe">全部類型</span></option>
         <option value="wt">按重量（變壓器）</option>
@@ -1756,36 +1764,51 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
     <div>
       <div class="card">
         <div class="card-title">💱 匯率 &amp; 電費</div>
-        <div class="fg"><label><span class="i18n" data-zh="USD / IDR 匯率" data-id="Kurs USD / IDR">USD / IDR 匯率</span></label><input type="number" id="cfg_usd" value="16912" oninput="saveCfg()"></div>
+        <div class="fg"><label><span class="i18n" data-zh="USD / IDR 匯率" data-id="Kurs USD / IDR">USD / IDR 匯率</span></label><input type="number" id="cfg_usd" value="17453" oninput="saveCfg()"></div>
 
-        <!-- Dynamic electricity months -->
-        <div style="font-size:12px;font-weight:700;color:var(--blue);margin-bottom:6px;margin-top:4px">⚡ 每月電費單價 (Rp/kWh)</div>
-        <div style="font-size:11px;color:var(--muted);margin-bottom:8px">可新增任意月份記錄，平均值自動計算。</div>
+        <!-- Dynamic electricity months - integrated table -->
+        <div style="font-size:12px;font-weight:700;color:var(--blue);margin-bottom:4px;margin-top:8px">⚡ 每月電費記錄</div>
+        <div style="font-size:11px;color:var(--muted);margin-bottom:10px">
+          填入每月電費單價 (Rp/kWh)。若填了「帳單總額」和「用電度數」，系統可自動反推單價。平均值用於成本計算。
+        </div>
+
+        <!-- table header -->
+        <div style="display:grid;grid-template-columns:90px 1fr 1fr 1fr 36px;gap:5px;margin-bottom:4px;padding:0 2px">
+          <div style="font-size:10.5px;font-weight:700;color:var(--muted)">月份</div>
+          <div style="font-size:10.5px;font-weight:700;color:var(--muted)">電費單價<br>(Rp/kWh)</div>
+          <div style="font-size:10.5px;font-weight:700;color:var(--muted)">帳單總額<br>(Rp，含稅)</div>
+          <div style="font-size:10.5px;font-weight:700;color:var(--muted)">用電度數<br>(kWh) <span style="color:var(--light);font-weight:400">→ 自動反推單價</span></div>
+          <div></div>
+        </div>
         <div id="elec_rows_container"></div>
-        <div style="display:flex;gap:8px;margin-top:6px;flex-wrap:wrap;align-items:center">
+        <div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap;align-items:center">
           <button class="btn btn-ghost btn-sm" onclick="addElecRow()" style="border-color:var(--blue);color:var(--blue)">➕ 新增月份</button>
           <span style="font-size:11px;color:var(--light)">最少保留 1 筆</span>
         </div>
 
-        <!-- Total bill section -->
-        <div style="margin-top:10px;background:var(--blue3);border:1px solid var(--blue4);border-radius:8px;padding:10px 13px">
-          <div style="font-size:11.5px;font-weight:700;color:var(--blue);margin-bottom:6px">📋 月份電費帳單（含稅總額）</div>
-          <div style="font-size:11px;color:var(--muted);margin-bottom:6px">可輸入每月總電費帳單，作為備查參考（不影響計算）。</div>
-          <div id="elec_bills_container"></div>
-          <button class="btn btn-ghost btn-sm" onclick="addElecBillRow()" style="margin-top:6px;border-color:var(--blue);color:var(--blue)">➕ 新增帳單記錄</button>
-        </div>
-
         <div class="g2" style="margin-top:10px">
-          <div class="fg"><label><span class="i18n" data-zh="平均電費 (Rp/kWh)" data-id="Rata-rata Tarif Listrik (Rp/kWh)">平均電費 (Rp/kWh)</span> <span style="color:var(--light);font-size:10px" class="i18n" data-zh="自動" data-id="Otomatis">自動</span></label><input class="ro" id="cfg_eavg" readonly style="background:var(--blue3);color:var(--blue2);font-weight:700"></div>
-          <div class="fg"><label><span class="i18n" data-zh="計算月份數" data-id="Jumlah Bulan yang Dihitung">計算月份數</span> <span style="color:var(--light);font-size:10px" class="i18n" data-zh="自動" data-id="Otomatis">自動</span></label><input class="ro" id="cfg_emonths" readonly></div>
+          <div class="fg">
+            <label><span class="i18n" data-zh="平均電費 (Rp/kWh)" data-id="Rata-rata Tarif Listrik (Rp/kWh)">平均電費 (Rp/kWh)</span>
+            <span style="color:var(--light);font-size:10px" class="i18n" data-zh="自動" data-id="Otomatis">自動</span></label>
+            <input class="ro" id="cfg_eavg" readonly style="background:var(--blue3);color:var(--blue2);font-weight:700;font-size:15px">
+          </div>
+          <div class="fg">
+            <label><span class="i18n" data-zh="計算月份數" data-id="Jumlah Bulan yang Dihitung">計算月份數</span>
+            <span style="color:var(--light);font-size:10px" class="i18n" data-zh="自動" data-id="Otomatis">自動</span></label>
+            <input class="ro" id="cfg_emonths" readonly>
+          </div>
         </div>
-      </div>
+        <!-- per-month detail summary -->
+        <div id="elec_summary_bar" style="margin-top:8px;background:var(--gray);border-radius:7px;padding:9px 11px;font-size:11.5px;color:var(--muted);display:none">
+          <div style="font-weight:700;color:var(--blue);margin-bottom:5px">各月電費單價</div>
+          <div id="elec_summary_content"></div>
+        </div>
 
       <div class="card">
         <div class="card-title"><span class="i18n" data-zh="🔥 LPG 瓦斯" data-id="🔥 LPG / Gas">🔥 LPG 瓦斯</span></div>
         <div class="g2">
           <div class="fg"><label><span class="i18n" data-zh="一桶重量 (kg)" data-id="Berat per Tabung (kg)">一桶重量 (kg)</span></label><input type="number" id="cfg_lpgw" value="50" oninput="saveCfg();updateDerived()"></div>
-          <div class="fg"><label><span class="i18n" data-zh="一桶價格 (Rp, 未稅)" data-id="Harga per Tabung (Rp, belum pajak)">一桶價格 (Rp, 未稅)</span></label><input type="number" id="cfg_lpgp" value="837838" oninput="saveCfg();updateDerived()"></div>
+          <div class="fg"><label><span class="i18n" data-zh="一桶價格 (Rp, 未稅)" data-id="Harga per Tabung (Rp, belum pajak)">一桶價格 (Rp, 未稅)</span></label><input type="number" id="cfg_lpgp" value="1100000" oninput="saveCfg();updateDerived()"></div>
         </div>
         <div class="fg"><label><span class="i18n" data-zh="每 kg 瓦斯單價" data-id="Harga LPG per kg">每 kg 瓦斯單價</span> <span style="color:var(--light);font-size:10px" class="i18n" data-zh="自動" data-id="Otomatis">自動</span></label><input class="ro" id="cfg_lpgkg" readonly></div>
         <div class="hint" style="margin-top:4px">供應商：Cv. Makmur Gas</div>
@@ -1794,7 +1817,7 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
       <div class="card">
         <div class="card-title"><span class="i18n" data-zh="👷 人工薪資" data-id="👷 Upah Tenaga Kerja">👷 人工薪資</span></div>
         <div class="g2">
-          <div class="fg"><label><span class="i18n" data-zh="工人月基本薪資 (Rp)" data-id="Gaji Pokok Bulanan Pekerja (Rp)">工人月基本薪資 (Rp)</span></label><input type="number" id="cfg_salary" value="5558515" oninput="saveCfg();updateDerived()"></div>
+          <div class="fg"><label><span class="i18n" data-zh="工人月基本薪資 (Rp)" data-id="Gaji Pokok Bulanan Pekerja (Rp)">工人月基本薪資 (Rp)</span></label><input type="number" id="cfg_salary" value="5938885" oninput="saveCfg();updateDerived()"></div>
           <div class="fg"><label><span class="i18n" data-zh="每月工作天數" data-id="Hari Kerja per Bulan">每月工作天數</span></label><input type="number" id="cfg_days" value="22" oninput="saveCfg();updateDerived()"></div>
         </div>
         <div class="g2">
@@ -1808,7 +1831,7 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
         <div class="fg">
           <label><span class="i18n" data-zh="外殼標準報價 (Rp / kg)" data-id="Harga Standar Cangkang (Rp / kg)">外殼標準報價 (Rp / kg)</span></label>
           <input type="number" id="cfg_shell_kg" value="37000" oninput="saveCfg();syncShellKg()">
-          <div class="hint"><span class="i18n" data-zh="<span class="i18n" data-zh="此值會自動帶入「變壓器外殼按重量」計算頁面" data-id="Nilai ini otomatis diisi ke halaman kalkulasi cangkang trafo">此值會自動帶入「變壓器外殼按重量」計算頁面</span>" data-id="Nilai ini otomatis diisi ke halaman kalkulasi berat cangkang trafo">此值會自動帶入「變壓器外殼按重量」計算頁面</span></div>
+          <div class="hint"><span class="i18n" data-zh="此值會自動帶入「變壓器外殼按重量」計算頁面" data-id="Nilai ini otomatis diisi ke halaman kalkulasi berat cangkang trafo">此值會自動帶入「變壓器外殼按重量」計算頁面</span></div>
         </div>
         <div class="alert alert-blue" style="margin-top:8px">外殼報價依重量計算：外殼重量(kg) × Rp/kg = 外殼外包成本</div>
       </div>
@@ -2006,15 +2029,15 @@ function toggleCI(id){
 
 // ─── ELECTRICITY MONTH SYSTEM ───
 let elecRows = [
-  {month:'2026年1月', rate:2165.79},
-  {month:'2026年2月', rate:2165.53},
-  {month:'2026年3月', rate:2176.60}
+  {month:'2026年1月', rate:2165.79, bill:936955834, kwh:0, derived:false},
+  {month:'2026年2月', rate:2165.53, bill:858125792, kwh:0, derived:false},
+  {month:'2026年3月', rate:2176.60, bill:564915893, kwh:0, derived:false},
+  {month:'2026年4月', rate:2206.07, bill:927705829, kwh:0, derived:false},
+  {month:'2026年5月', rate:2235.67, bill:1012809328, kwh:0, derived:false},
+  {month:'2026年6月', rate:2235.67, bill:718604500, kwh:0, derived:false},
+  {month:'2026年7月', rate:2246.23, bill:864713713, kwh:0, derived:false},
 ];
-let elecBills = [
-  {month:'2026年1月', total:936955834},
-  {month:'2026年2月', total:858125792},
-  {month:'2026年3月', total:564915893}
-];
+let elecBills = [];
 
 function addElecRow(){
   elecRows.push({month:'', rate:0});
@@ -2040,34 +2063,44 @@ function removeElecBillRow(i){
 function renderElecRows(){
   const c=document.getElementById('elec_rows_container');
   if(!c)return;
-  c.innerHTML=elecRows.map((r,i)=>`
-    <div style="display:grid;grid-template-columns:1fr 1fr auto;gap:8px;align-items:end;margin-bottom:6px;padding:8px;background:var(--gray);border-radius:7px;border:1px solid var(--border)">
-      <div class="fg" style="margin:0"><label style="font-size:11px"><span class="i18n" data-zh="月份標籤" data-id="Label Bulan">月份標籤</span></label>
-        <input type="text" value="${r.month}" placeholder="例：2026年4月" style="padding:6px 8px;border:1.5px solid var(--border);border-radius:5px;font-size:12.5px;width:100%" oninput="elecRows[${i}].month=this.value;renderElecBills()">
-      </div>
-      <div class="fg" style="margin:0"><label style="font-size:11px"><span class="i18n" data-zh="電費單價 (Rp/kWh)" data-id="Tarif Listrik (Rp/kWh)">電費單價 (Rp/kWh)</span></label>
-        <input type="number" value="${r.rate}" step="0.01" style="padding:6px 8px;border:1.5px solid var(--border);border-radius:5px;font-size:12.5px;width:100%" oninput="elecRows[${i}].rate=parseFloat(this.value)||0;saveElecData();updateDerived()">
-      </div>
-      <button onclick="removeElecRow(${i})" style="padding:6px 9px;background:var(--red2);border:1px solid var(--red);border-radius:5px;cursor:pointer;font-size:13px;color:var(--red)">✕</button>
-    </div>`).join('');
+  c.innerHTML=elecRows.map((r,i)=>{
+    const isDerived=!!r.derived;
+    const rateBg=isDerived?'var(--blue3)':'#fff';
+    const rateColor=isDerived?'var(--blue2)':'inherit';
+    const rateBorder=isDerived?'var(--blue)':'var(--border)';
+    return `<div style="display:grid;grid-template-columns:90px 1fr 1fr 1fr 32px;gap:4px;align-items:center;margin-bottom:4px">
+      <input type="text" value="${r.month||''}" placeholder="2026年${i+1}月"
+        style="padding:5px 7px;border:1.5px solid var(--border);border-radius:5px;font-size:12px"
+        oninput="elecRows[${i}].month=this.value;saveElecData()">
+      <input type="number" value="${r.rate||''}" step="0.01" placeholder="單價"
+        style="padding:5px 7px;border:1.5px solid ${rateBorder};border-radius:5px;font-size:12px;background:${rateBg};color:${rateColor}"
+        title="${isDerived?'由帳單÷度數自動計算（藍色）':'手動輸入'}"
+        oninput="elecRows[${i}].rate=parseFloat(this.value)||0;elecRows[${i}].derived=false;saveElecData();updateDerived()">
+      <input type="number" value="${r.bill||''}" placeholder="帳單總額 Rp"
+        style="padding:5px 7px;border:1.5px solid var(--border);border-radius:5px;font-size:12px"
+        oninput="elecRows[${i}].bill=parseFloat(this.value)||0;tryDeriveRate(${i})">
+      <input type="number" value="${r.kwh||''}" placeholder="度數 kWh"
+        style="padding:5px 7px;border:1.5px solid var(--border);border-radius:5px;font-size:12px"
+        oninput="elecRows[${i}].kwh=parseFloat(this.value)||0;tryDeriveRate(${i})">
+      <button onclick="removeElecRow(${i})"
+        style="padding:4px 7px;background:var(--red2);border:1px solid var(--red);border-radius:5px;cursor:pointer;font-size:12px;color:var(--red)">✕</button>
+    </div>`;
+  }).join('');
   updateDerived();
 }
+function tryDeriveRate(i){
+  const r=elecRows[i];
+  if(r.bill>0&&r.kwh>0){
+    r.rate=Math.round(r.bill/r.kwh*100)/100;
+    r.derived=true;
+  }
+  saveElecData();
+  renderElecRows();
+}
 function renderElecBills(){
+  // legacy stub — bills now integrated into elecRows
   const c=document.getElementById('elec_bills_container');
-  if(!c)return;
-  // sync month labels from elecRows
-  const labels=elecRows.map(r=>r.month).filter(Boolean);
-  c.innerHTML=elecBills.map((b,i)=>`
-    <div style="display:grid;grid-template-columns:1fr 1fr auto;gap:8px;align-items:end;margin-bottom:6px">
-      <div class="fg" style="margin:0"><label style="font-size:11px"><span class="i18n" data-zh="月份" data-id="Bulan">月份</span></label>
-        <input type="text" value="${b.month}" placeholder="月份" list="elec_month_list_${i}" style="padding:6px 8px;border:1.5px solid var(--border);border-radius:5px;font-size:12.5px;width:100%" oninput="elecBills[${i}].month=this.value">
-        <datalist id="elec_month_list_${i}">${labels.map(l=>`<option value="${l}">`).join('')}</datalist>
-      </div>
-      <div class="fg" style="margin:0"><label style="font-size:11px"><span class="i18n" data-zh="總電費帳單 (Rp，含稅）" data-id="Total Tagihan Listrik (Rp, inkl. pajak)">總電費帳單 (Rp，含稅）</span></label>
-        <input type="number" value="${b.total}" style="padding:6px 8px;border:1.5px solid var(--border);border-radius:5px;font-size:12.5px;width:100%" oninput="elecBills[${i}].total=parseInt(this.value)||0;saveElecData()">
-      </div>
-      <button onclick="removeElecBillRow(${i})" style="padding:6px 9px;background:var(--red2);border:1px solid var(--red);border-radius:5px;cursor:pointer;font-size:13px;color:var(--red)">✕</button>
-    </div>`).join('');
+  if(c) c.innerHTML='';
 }
 function saveElecData(){
   const cfg=JSON.parse(localStorage.getItem('dfi_cfg')||'{}');
@@ -2078,10 +2111,35 @@ function saveElecData(){
 function saveCfg(){localStorage.setItem('dfi_cfg',JSON.stringify({salary:$('cfg_salary').value,lpgp:$('cfg_lpgp').value,shell_kg:$('cfg_shell_kg').value,density:$('cfg_density').value,eff:$('cfg_eff').value,elecRows,elecBills}));updateDerived();}
 function syncShellKg(){$('w_shell_kg').value=$('cfg_shell_kg').value;calcWt();}
 function updateDerived(){
-  const validRates=elecRows.map(r=>r.rate).filter(v=>v>0);
+  const validRows=elecRows.filter(r=>r.rate>0);
+  const validRates=validRows.map(r=>r.rate);
   const avg=validRates.length>0?(validRates.reduce((a,b)=>a+b,0)/validRates.length):0;
   if($('cfg_eavg'))$('cfg_eavg').value=avg.toFixed(2);
   if($('cfg_emonths'))$('cfg_emonths').value=validRates.length+' 個月';
+
+  // Summary bar
+  const bar=document.getElementById('elec_summary_bar');
+  const content=document.getElementById('elec_summary_content');
+  if(bar&&content&&validRows.length>0){
+    bar.style.display='block';
+    const maxRate=Math.max(...validRates);
+    content.innerHTML=validRows.map(r=>{
+      const pct=Math.round(r.rate/maxRate*100);
+      const tag=r.derived?'<span style="font-size:10px;color:var(--blue);margin-left:4px">帳單反推</span>':'';
+      return `<div style="display:flex;align-items:center;gap:7px;margin-bottom:4px">
+        <span style="min-width:70px;font-size:11px">${r.month||'—'}</span>
+        <div style="flex:1;background:var(--gray2);border-radius:3px;height:12px">
+          <div style="width:${pct}%;height:100%;background:var(--blue);border-radius:3px"></div>
+        </div>
+        <span style="min-width:80px;text-align:right;font-size:11px;font-weight:600;color:var(--blue)">${r.rate.toFixed(2)}</span>
+        ${tag}
+      </div>`;
+    }).join('')+`<div style="margin-top:6px;padding-top:6px;border-top:1px solid var(--gray3);display:flex;justify-content:space-between;font-size:11.5px;font-weight:700;color:var(--blue)">
+      <span>平均 (${validRates.length}個月)</span>
+      <span>${avg.toFixed(2)} Rp/kWh</span>
+    </div>`;
+  } else if(bar) bar.style.display='none';
+
   // legacy compat
   if($('cfg_e1'))$('cfg_e1').value=elecRows[0]?.rate||0;
   if($('cfg_e2'))$('cfg_e2').value=elecRows[1]?.rate||0;
@@ -2936,7 +2994,10 @@ function saveRec(mode){
 }
 function today(){return new Date().toLocaleDateString('zh-Hant',{year:'numeric',month:'2-digit',day:'2-digit'});}
 function renderRec(){
-  const q=($('rec_search').value||'').toLowerCase(), ft=$('rec_ft').value;
+  let q=($('rec_search').value||'').trim().toLowerCase();
+  // Guard: if search box was autofilled with a currency/number value, ignore it
+  if(/^rp\s*[\d,.]/.test(q) || /^[\d,.\s]+$/.test(q)) q='';
+  const ft=$('rec_ft').value;
   const rows=records.filter(r=>(!ft||r.mode===ft)&&(!q||(r.cust+r.model).toLowerCase().includes(q)));
   $('st_tot').textContent=records.length; $('st_wt').textContent=records.filter(r=>r.mode==='wt').length; $('st_ar').textContent=records.filter(r=>r.mode==='ar').length;
   const avg=records.length?records.reduce((s,r)=>s+(r.margin||0),0)/records.length:0; $('st_avg').textContent=avg.toFixed(1)+'%';
