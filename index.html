@@ -268,7 +268,6 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
 </head>
 <body>
 
-<!-- LOGIN OVERLAY -->
 <div id="login-overlay">
   <div class="login-box">
     <div class="login-logo">
@@ -290,7 +289,6 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
   </div>
 </div>
 
-<!-- ADMIN MODAL -->
 <div id="admin-modal">
   <div class="admin-box">
     <h3>🔑 管理員設定 — 修改密碼</h3>
@@ -357,10 +355,10 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
         <div class="card">
           <div class="card-title"><span class="i18n" data-zh="🗂️ 基本資訊" data-id="🗂️ Informasi Dasar">🗂️ 基本資訊</span></div>
           <div class="g2">
-            <div class="fg"><label><span class="i18n" data-zh="客戶名稱" data-id="Nama Pelanggan">客戶名稱</span></label><select id="w_cust"><option value="">-- 選擇客戶 --</option></select></div>
+            <div class="fg"><label><span class="i18n" data-zh="客戶名稱" data-id="Nama Pelanggan">客戶名稱</span></label><select id="w_cust" autocomplete="off"><option value="">-- 選擇客戶 --</option></select></div>
             <div class="fg">
               <label>變壓器型號</label>
-              <select id="w_model" onchange="loadWtPreset();toggleCustomModel()">
+              <select id="w_model" onchange="loadWtPreset();toggleCustomModel()" autocomplete="off">
                 <option value="">-- 選擇 / 自訂 --</option>
                 <option value="50">50 KVA</option>
                 <option value="100">100 KVA</option>
@@ -375,19 +373,19 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
               <input type="text" id="w_model_custom"
                 placeholder="例：2000 KVA、315 KVA、PADMOUNT 1000 KVA..."
                 style="display:none;margin-top:6px;width:100%;padding:7px 9px;border:1.5px solid var(--orange);border-radius:6px;font-size:13px;background:#fff"
-                oninput="calcWt()">
+                oninput="calcWt()" autocomplete="off" name="dfi_5541b221">
             </div>
           </div>
           <div class="sec" style="margin-top:4px">各部件重量 (kg / 台)</div>
           <div class="g4">
-            <div class="fg"><label>🛢️ 桶子 Tank</label><input type="number" id="w_wt_tank" value="100" oninput="recalcWeight()"></div>
-            <div class="fg"><label>🔲 蓋子 Cover</label><input type="number" id="w_wt_cover" value="25" oninput="recalcWeight()"></div>
+            <div class="fg"><label>🛢️ 桶子 Tank</label><input type="number" id="w_wt_tank" value="100" oninput="recalcWeight()" autocomplete="off"></div>
+            <div class="fg"><label>🔲 蓋子 Cover</label><input type="number" id="w_wt_cover" value="25" oninput="recalcWeight()" autocomplete="off"></div>
             <div class="fg">
               <label>🌡️ 散熱片 Fin
                 <span style="color:var(--light);font-size:10px" id="fin_src_hint">從散熱片計算器</span>
               </label>
               <div style="display:flex;gap:5px;align-items:center">
-                <input type="number" id="w_wt_fin2" value="0" step="0.001" oninput="finManualOverride()" style="flex:1;min-width:0">
+                <input type="number" id="w_wt_fin2" value="0" step="0.001" oninput="finManualOverride()" style="flex:1;min-width:0" autocomplete="off">
                 <button onclick="setFinZero()" title="無散熱片 / Tanpa Radiator"
                   style="padding:5px 8px;border:1.5px solid var(--border);border-radius:6px;background:var(--gray);cursor:pointer;font-size:12px;white-space:nowrap;flex-shrink:0"
                   >✕ 無</button>
@@ -398,22 +396,22 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
               </div>
               <div class="hint" id="fin_hint">從散熱片頁計算後自動帶入；無散熱片請按「✕ 無」或直接填 0</div>
             </div>
-            <div class="fg"><label>🔧 繞線芯夾 Clamp</label><input type="number" id="w_wt_clamp2" value="10" oninput="recalcWeight()"></div>
+            <div class="fg"><label>🔧 繞線芯夾 Clamp</label><input type="number" id="w_wt_clamp2" value="10" oninput="recalcWeight()" autocomplete="off"></div>
           </div>
           <div class="g3" style="margin-top:2px">
             <div class="fg">
               <label><span class="i18n" data-zh="🔷 外殼總重量 (kg)" data-id="🔷 Total Berat Cangkang (kg)">🔷 外殼總重量 (kg)</span> <span style="color:var(--light);font-size:10px">自動加總</span></label>
-              <input class="ro" type="text" id="w_weight_show" readonly style="background:var(--blue3);color:var(--blue2);font-weight:700;font-size:14px">
+              <input class="ro" type="text" id="w_weight_show" readonly style="background:var(--blue3);color:var(--blue2);font-weight:700;font-size:14px" autocomplete="off" name="dfi_6343ba66">
               <input type="hidden" id="w_weight" value="165">
             </div>
             <div class="fg">
               <label><span class="i18n" data-zh="🏗️ 外包重量 (kg)" data-id="🏗️ Berat Outsourcing (kg)">🏗️ 外包重量 (kg)</span> <span style="color:var(--light);font-size:10px">桶+蓋+夾，可手動</span></label>
-              <input type="number" id="w_shell_wt" value="135" oninput="calcWt()" style="border-color:var(--orange)">
+              <input type="number" id="w_shell_wt" value="135" oninput="calcWt()" style="border-color:var(--orange)" autocomplete="off">
               <div class="hint"><span class="i18n" data-zh="外包不含散熱片；若有差異可手動覆蓋" data-id="Tidak termasuk sirip; isi manual jika berbeda">外包不含散熱片；若有差異可手動覆蓋</span></div>
             </div>
-            <div class="fg"><label>訂單<span class="i18n" data-zh="數量" data-id="Jumlah">數量</span> (台)</label><input type="number" id="w_qty" value="1" min="1" oninput="calcWt()"></div>
+            <div class="fg"><label>訂單<span class="i18n" data-zh="數量" data-id="Jumlah">數量</span> (台)</label><input type="number" id="w_qty" value="1" min="1" oninput="calcWt()" autocomplete="off"></div>
           </div>
-          <div class="fg"><label><span class="i18n" data-zh="備註" data-id="Catatan">備註</span></label><input type="text" id="w_note" placeholder="選填"></div>
+          <div class="fg"><label><span class="i18n" data-zh="備註" data-id="Catatan">備註</span></label><input type="text" id="w_note" placeholder="選填" autocomplete="off" name="dfi_88256882"></div>
         </div>
 
 
@@ -447,7 +445,7 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
           <div class="cost-item-body">
             <div class="fg">
               <label data-zh="外包供應商名稱" data-id="Nama Vendor Outsourcing"><span class="i18n" data-zh="外包供應商名稱 / Nama Vendor Outsourcing" data-id="Nama Vendor Outsourcing">外包供應商名稱 / Nama Vendor Outsourcing</span></label>
-              <input type="text" id="w_shell_vendor" placeholder="例：PT. Kharisma、PT. Dharma..." list="shell_vendor_list" oninput="calcWt()">
+              <input type="text" id="w_shell_vendor" placeholder="例：PT. Kharisma、PT. Dharma..." list="shell_vendor_list" oninput="calcWt()" autocomplete="off" name="dfi_071970c4">
               <datalist id="shell_vendor_list">
                 <option value="PT. Kharisma">
                 <option value="PT. Dharma Controlcable Ind.">
@@ -458,12 +456,12 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
             <div class="g2">
               <div class="fg">
                 <label data-zh="外殼供應商報價 (Rp / kg)" data-id="Harga Vendor Cangkang (Rp / kg)"><span class="i18n" data-zh="外殼供應商報價 (Rp / kg)" data-id="Harga Vendor Cangkang (Rp / kg)">外殼供應商報價 (Rp / kg)</span></label>
-                <input type="number" id="w_shell_kg" value="37000" oninput="calcWt()">
+                <input type="number" id="w_shell_kg" value="37000" oninput="calcWt()" autocomplete="off">
                 <div class="hint" data-zh="目前標準：Rp 37,000 / kg" data-id="Standar saat ini: Rp 37,000 / kg"><span class="i18n" data-zh="目前標準：Rp 37,000 / kg" data-id="Standar saat ini: Rp 37,000 / kg">目前標準：Rp 37,000 / kg</span></div>
               </div>
               <div class="fg">
                 <label data-zh="外殼成本小計 (Rp / 台)" data-id="Subtotal Biaya Cangkang (Rp / unit)"><span class="i18n" data-zh="外殼成本小計 (Rp / 台)" data-id="Subtotal Biaya Cangkang (Rp / unit)">外殼成本小計 (Rp / 台)</span> <span style="color:var(--light);font-size:10px" data-zh="自動" data-id="Otomatis">自動</span></label>
-                <input class="ro" type="text" id="w_shell_sub" readonly>
+                <input class="ro" type="text" id="w_shell_sub" readonly autocomplete="off" name="dfi_6be8b273">
               </div>
             </div>
 
@@ -475,15 +473,15 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
               <div class="g3">
                 <div class="fg" style="margin-bottom:0">
                   <label data-zh="注油管單支價格 (Rp / 支)" data-id="Harga per Batang Selang (Rp / pcs)"><span class="i18n" data-zh="注油管單支價格 (Rp / 支) / Harga per Batang" data-id="Harga per Batang Selang (Rp / pcs)">注油管單支價格 (Rp / 支) / Harga per Batang</span></label>
-                  <input type="number" id="w_oil_tube_rp" value="0" placeholder="0 = 不計入" oninput="calcWt()">
+                  <input type="number" id="w_oil_tube_rp" value="0" placeholder="0 = 不計入" oninput="calcWt()" autocomplete="off">
                 </div>
                 <div class="fg" style="margin-bottom:0">
                   <label data-zh="每台使用支數" data-id="Jumlah per Unit"><span class="i18n" data-zh="每台使用支數 / Jumlah per Unit" data-id="Jumlah per Unit Trafo">每台使用支數 / Jumlah per Unit</span></label>
-                  <input type="number" id="w_oil_tube_qty" value="1" min="0" step="1" oninput="calcWt()">
+                  <input type="number" id="w_oil_tube_qty" value="1" min="0" step="1" oninput="calcWt()" autocomplete="off">
                 </div>
                 <div class="fg" style="margin-bottom:0">
                   <label data-zh="注油管成本 (Rp / 台)" data-id="Biaya Selang (Rp / unit)"><span class="i18n" data-zh="注油管成本 (Rp / 台)" data-id="Biaya Selang (Rp / unit)">注油管成本 (Rp / 台)</span> <span style="color:var(--light);font-size:10px" class="i18n" data-zh="自動" data-id="Otomatis">自動</span></label>
-                  <input class="ro" type="text" id="w_oil_tube_sub" readonly>
+                  <input class="ro" type="text" id="w_oil_tube_sub" readonly autocomplete="off" name="dfi_2e4edaf4">
                 </div>
               </div>
               <div class="hint" style="margin-top:6px" data-zh="注油管單價×支數，計入外殼外包總成本" data-id="Harga × jumlah, dimasukkan ke total biaya cangkang">注油管單價 × 支數，列入外殼外包總成本 / Harga × jumlah, dimasukkan ke total biaya cangkang.</div>
@@ -512,19 +510,19 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
               <div class="g4" style="gap:8px">
                 <div class="fg" style="margin-bottom:0">
                   <label style="font-size:11px">B1 邊前緣 / Edge Front (mm)</label>
-                  <input type="number" id="fin_B1" value="35" step="1" oninput="updateFinTotals()" style="padding:5px 7px;font-size:12px">
+                  <input type="number" id="fin_B1" value="35" step="1" oninput="updateFinTotals()" style="padding:5px 7px;font-size:12px" autocomplete="off">
                 </div>
                 <div class="fg" style="margin-bottom:0">
                   <label style="font-size:11px">B2 邊後緣 / Edge Rear (mm)</label>
-                  <input type="number" id="fin_B2" value="35" step="1" oninput="updateFinTotals()" style="padding:5px 7px;font-size:12px">
+                  <input type="number" id="fin_B2" value="35" step="1" oninput="updateFinTotals()" style="padding:5px 7px;font-size:12px" autocomplete="off">
                 </div>
                 <div class="fg" style="margin-bottom:0">
                   <label style="font-size:11px">C 片間距 / Fin Pitch (mm)</label>
-                  <input type="number" id="fin_C" value="40" step="1" oninput="updateFinTotals()" style="padding:5px 7px;font-size:12px">
+                  <input type="number" id="fin_C" value="40" step="1" oninput="updateFinTotals()" style="padding:5px 7px;font-size:12px" autocomplete="off">
                 </div>
                 <div class="fg" style="margin-bottom:0">
                   <label style="font-size:11px">d 連接桿徑 / Rod Dia. (mm)</label>
-                  <input type="number" id="fin_d" value="8" step="1" oninput="updateFinTotals()" style="padding:5px 7px;font-size:12px">
+                  <input type="number" id="fin_d" value="8" step="1" oninput="updateFinTotals()" style="padding:5px 7px;font-size:12px" autocomplete="off">
                 </div>
               </div>
               <div style="font-size:10.5px;color:var(--orange);margin-top:5px">
@@ -576,7 +574,7 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
                 <div id="fin_buy_panel">
                   <div class="fg" style="margin-bottom:0">
                     <label style="font-size:11px">散熱片外購報價 / Harga Beli (Rp / kg)</label>
-                    <input type="number" id="w_fin_kg" value="26000" oninput="calcWt()" style="width:100%;padding:5px 8px;border:1.5px solid var(--border);border-radius:5px">
+                    <input type="number" id="w_fin_kg" value="26000" oninput="calcWt()" style="width:100%;padding:5px 8px;border:1.5px solid var(--border);border-radius:5px" autocomplete="off">
                     <div style="font-size:10px;color:var(--muted);margin-top:2px">目前市場：Rp 26,000/kg（參考值）</div>
                   </div>
                 </div>
@@ -620,10 +618,10 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
           </div>
           <div class="cost-item-body">
             <div class="g2">
-              <div class="fg"><label><span class="i18n" data-zh="焊接費用 (Rp / 台)" data-id="Biaya Las (Rp / unit)">焊接費用 (Rp / 台)</span></label><input type="number" id="w_weld_rp" value="500000" oninput="calcWt()"></div>
-              <div class="fg"><label>焊接費用 (Rp / kg) <span style="color:var(--light);font-size:10px"><span class="i18n" data-zh="自動" data-id="Otomatis">自動</span></span></label><input class="ro" type="text" id="w_weld_kg" readonly></div>
+              <div class="fg"><label><span class="i18n" data-zh="焊接費用 (Rp / 台)" data-id="Biaya Las (Rp / unit)">焊接費用 (Rp / 台)</span></label><input type="number" id="w_weld_rp" value="500000" oninput="calcWt()" autocomplete="off"></div>
+              <div class="fg"><label>焊接費用 (Rp / kg) <span style="color:var(--light);font-size:10px"><span class="i18n" data-zh="自動" data-id="Otomatis">自動</span></span></label><input class="ro" type="text" id="w_weld_kg" readonly autocomplete="off" name="dfi_2e94dfa6"></div>
             </div>
-            <div class="fg"><label><span class="i18n" data-zh="備註" data-id="Catatan">備註</span></label><input type="text" id="w_weld_note" placeholder="例：含點焊、氬焊工資"></div>
+            <div class="fg"><label><span class="i18n" data-zh="備註" data-id="Catatan">備註</span></label><input type="text" id="w_weld_note" placeholder="例：含點焊、氬焊工資" autocomplete="off" name="dfi_f4683279"></div>
           </div>
         </div>
 
@@ -637,13 +635,13 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
           </div>
           <div class="cost-item-body">
             <div class="g2" style="margin-bottom:8px">
-              <div class="fg"><label><span class="i18n" data-zh="漆粉編號 / 型號" data-id="Kode / Tipe Bubuk">漆粉編號 / 型號</span></label><input type="text" id="w_pr_code" placeholder="例：Grey RAL 7031 Matt" style="font-family:monospace"></div>
-              <div class="fg"><label><span class="i18n" data-zh="供應商名稱" data-id="Nama Supplier">供應商名稱</span></label><input type="text" id="w_pr_vendor" placeholder="例：PT. Oxyplast Indonesia"></div>
+              <div class="fg"><label><span class="i18n" data-zh="漆粉編號 / 型號" data-id="Kode / Tipe Bubuk">漆粉編號 / 型號</span></label><input type="text" id="w_pr_code" placeholder="例：Grey RAL 7031 Matt" style="font-family:monospace" autocomplete="off" name="dfi_89d938de"></div>
+              <div class="fg"><label><span class="i18n" data-zh="供應商名稱" data-id="Nama Supplier">供應商名稱</span></label><input type="text" id="w_pr_vendor" placeholder="例：PT. Oxyplast Indonesia" autocomplete="off" name="dfi_1d290f43"></div>
             </div>
             <div class="g3">
-              <div class="fg"><label><span class="i18n" data-zh="底漆用量 (kg / 台)" data-id="Pemakaian Cat Dasar (kg / unit)">底漆用量 (kg / 台)</span></label><input type="number" id="w_pr_kg" value="5" step="0.1" oninput="calcWt()"></div>
-              <div class="fg"><label><span class="i18n" data-zh="底漆厚度 (µm)" data-id="Tebal Cat Dasar (µm)">底漆厚度 (µm)</span></label><input type="number" id="w_pr_um" value="60" oninput="calcWt()"></div>
-              <div class="fg"><label><span class="i18n" data-zh="底漆單價 (Rp / kg)" data-id="Harga Satuan Cat Dasar (Rp / kg)">底漆單價 (Rp / kg)</span></label><input type="number" id="w_pr_cv" value="47500" oninput="calcWt()" placeholder="輸入單價"></div>
+              <div class="fg"><label><span class="i18n" data-zh="底漆用量 (kg / 台)" data-id="Pemakaian Cat Dasar (kg / unit)">底漆用量 (kg / 台)</span></label><input type="number" id="w_pr_kg" value="5" step="0.1" oninput="calcWt()" autocomplete="off"></div>
+              <div class="fg"><label><span class="i18n" data-zh="底漆厚度 (µm)" data-id="Tebal Cat Dasar (µm)">底漆厚度 (µm)</span></label><input type="number" id="w_pr_um" value="60" oninput="calcWt()" autocomplete="off"></div>
+              <div class="fg"><label><span class="i18n" data-zh="底漆單價 (Rp / kg)" data-id="Harga Satuan Cat Dasar (Rp / kg)">底漆單價 (Rp / kg)</span></label><input type="number" id="w_pr_cv" value="47500" oninput="calcWt()" placeholder="輸入單價" autocomplete="off"></div>
             </div>
           </div>
         </div>
@@ -658,13 +656,13 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
           </div>
           <div class="cost-item-body">
             <div class="g2" style="margin-bottom:8px">
-              <div class="fg"><label><span class="i18n" data-zh="漆粉編號 / 型號" data-id="Kode / Tipe Bubuk">漆粉編號 / 型號</span></label><input type="text" id="w_tc_code" placeholder="例：ID Grey R7042 Glossy" style="font-family:monospace"></div>
-              <div class="fg"><label><span class="i18n" data-zh="供應商名稱" data-id="Nama Supplier">供應商名稱</span></label><input type="text" id="w_tc_vendor" placeholder="例：PT. Axalta Coating Systems"></div>
+              <div class="fg"><label><span class="i18n" data-zh="漆粉編號 / 型號" data-id="Kode / Tipe Bubuk">漆粉編號 / 型號</span></label><input type="text" id="w_tc_code" placeholder="例：ID Grey R7042 Glossy" style="font-family:monospace" autocomplete="off" name="dfi_d6be4172"></div>
+              <div class="fg"><label><span class="i18n" data-zh="供應商名稱" data-id="Nama Supplier">供應商名稱</span></label><input type="text" id="w_tc_vendor" placeholder="例：PT. Axalta Coating Systems" autocomplete="off" name="dfi_da9d393f"></div>
             </div>
             <div class="g3">
-              <div class="fg"><label><span class="i18n" data-zh="表漆用量 (kg / 台)" data-id="Pemakaian Cat Atas (kg / unit)">表漆用量 (kg / 台)</span></label><input type="number" id="w_tc_kg" value="7" step="0.1" oninput="calcWt()"></div>
-              <div class="fg"><label><span class="i18n" data-zh="表漆厚度 (µm)" data-id="Tebal Cat Atas (µm)">表漆厚度 (µm)</span></label><input type="number" id="w_tc_um" value="80" oninput="calcWt()"></div>
-              <div class="fg"><label><span class="i18n" data-zh="表漆單價 (Rp / kg)" data-id="Harga Satuan Cat Atas (Rp / kg)">表漆單價 (Rp / kg)</span></label><input type="number" id="w_tc_cv" value="65000" oninput="calcWt()" placeholder="輸入單價"></div>
+              <div class="fg"><label><span class="i18n" data-zh="表漆用量 (kg / 台)" data-id="Pemakaian Cat Atas (kg / unit)">表漆用量 (kg / 台)</span></label><input type="number" id="w_tc_kg" value="7" step="0.1" oninput="calcWt()" autocomplete="off"></div>
+              <div class="fg"><label><span class="i18n" data-zh="表漆厚度 (µm)" data-id="Tebal Cat Atas (µm)">表漆厚度 (µm)</span></label><input type="number" id="w_tc_um" value="80" oninput="calcWt()" autocomplete="off"></div>
+              <div class="fg"><label><span class="i18n" data-zh="表漆單價 (Rp / kg)" data-id="Harga Satuan Cat Atas (Rp / kg)">表漆單價 (Rp / kg)</span></label><input type="number" id="w_tc_cv" value="65000" oninput="calcWt()" placeholder="輸入單價" autocomplete="off"></div>
             </div>
           </div>
         </div>
@@ -679,13 +677,13 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
           </div>
           <div class="cost-item-body">
             <div class="g2" style="margin-bottom:8px">
-              <div class="fg"><label><span class="i18n" data-zh="漆粉編號 / 型號" data-id="Kode / Tipe Bubuk">漆粉編號 / 型號</span></label><input type="text" id="w_cl_code" placeholder="例：Clear Varnish CL-40" style="font-family:monospace"></div>
-              <div class="fg"><label><span class="i18n" data-zh="供應商名稱" data-id="Nama Supplier">供應商名稱</span></label><input type="text" id="w_cl_vendor" placeholder="例：PT. Nippon Paint"></div>
+              <div class="fg"><label><span class="i18n" data-zh="漆粉編號 / 型號" data-id="Kode / Tipe Bubuk">漆粉編號 / 型號</span></label><input type="text" id="w_cl_code" placeholder="例：Clear Varnish CL-40" style="font-family:monospace" autocomplete="off" name="dfi_de6d8d6a"></div>
+              <div class="fg"><label><span class="i18n" data-zh="供應商名稱" data-id="Nama Supplier">供應商名稱</span></label><input type="text" id="w_cl_vendor" placeholder="例：PT. Nippon Paint" autocomplete="off" name="dfi_3c4b4b99"></div>
             </div>
             <div class="g3">
-              <div class="fg"><label class="i18n" data-zh="用量 (kg / 台)" data-id="Pemakaian (kg / unit)">用量 (kg / 台)</label><input type="number" id="w_cl_kg" value="2" step="0.1" oninput="calcWt()"></div>
-              <div class="fg"><label class="i18n" data-zh="噴漆厚度 (µm)" data-id="Tebal Cat (µm)">噴漆厚度 (µm)</label><input type="number" id="w_cl_um" value="40" oninput="calcWt()"></div>
-              <div class="fg"><label class="i18n" data-zh="單價 (Rp / kg)" data-id="Harga Satuan (Rp / kg)">單價 (Rp / kg)</label><input type="number" id="w_cl_rp" value="130000" oninput="calcWt()" placeholder="輸入單價"></div>
+              <div class="fg"><label class="i18n" data-zh="用量 (kg / 台)" data-id="Pemakaian (kg / unit)">用量 (kg / 台)</label><input type="number" id="w_cl_kg" value="2" step="0.1" oninput="calcWt()" autocomplete="off"></div>
+              <div class="fg"><label class="i18n" data-zh="噴漆厚度 (µm)" data-id="Tebal Cat (µm)">噴漆厚度 (µm)</label><input type="number" id="w_cl_um" value="40" oninput="calcWt()" autocomplete="off"></div>
+              <div class="fg"><label class="i18n" data-zh="單價 (Rp / kg)" data-id="Harga Satuan (Rp / kg)">單價 (Rp / kg)</label><input type="number" id="w_cl_rp" value="130000" oninput="calcWt()" placeholder="輸入單價" autocomplete="off"></div>
             </div>
           </div>
         </div>
@@ -700,13 +698,13 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
           </div>
           <div class="cost-item-body">
             <div class="g2" style="margin-bottom:8px">
-              <div class="fg"><label><span class="i18n" data-zh="漆粉編號 / 型號" data-id="Kode / Tipe Bubuk">漆粉編號 / 型號</span></label><input type="text" id="w_oil_code" placeholder="例：Oil Resist OR-80 Black" style="font-family:monospace"></div>
-              <div class="fg"><label><span class="i18n" data-zh="供應商名稱" data-id="Nama Supplier">供應商名稱</span></label><input type="text" id="w_oil_vendor" placeholder="例：PT. Jotun Indonesia"></div>
+              <div class="fg"><label><span class="i18n" data-zh="漆粉編號 / 型號" data-id="Kode / Tipe Bubuk">漆粉編號 / 型號</span></label><input type="text" id="w_oil_code" placeholder="例：Oil Resist OR-80 Black" style="font-family:monospace" autocomplete="off" name="dfi_2d488430"></div>
+              <div class="fg"><label><span class="i18n" data-zh="供應商名稱" data-id="Nama Supplier">供應商名稱</span></label><input type="text" id="w_oil_vendor" placeholder="例：PT. Jotun Indonesia" autocomplete="off" name="dfi_b4a1a6e1"></div>
             </div>
             <div class="g3">
-              <div class="fg"><label class="i18n" data-zh="用量 (kg / 台)" data-id="Pemakaian (kg / unit)">用量 (kg / 台)</label><input type="number" id="w_oil_kg" value="3" step="0.1" oninput="calcWt()"></div>
-              <div class="fg"><label class="i18n" data-zh="噴漆厚度 (µm)" data-id="Tebal Cat (µm)">噴漆厚度 (µm)</label><input type="number" id="w_oil_um" value="80" oninput="calcWt()"></div>
-              <div class="fg"><label class="i18n" data-zh="單價 (Rp / kg)" data-id="Harga Satuan (Rp / kg)">單價 (Rp / kg)</label><input type="number" id="w_oil_rp" value="130000" oninput="calcWt()" placeholder="輸入單價"></div>
+              <div class="fg"><label class="i18n" data-zh="用量 (kg / 台)" data-id="Pemakaian (kg / unit)">用量 (kg / 台)</label><input type="number" id="w_oil_kg" value="3" step="0.1" oninput="calcWt()" autocomplete="off"></div>
+              <div class="fg"><label class="i18n" data-zh="噴漆厚度 (µm)" data-id="Tebal Cat (µm)">噴漆厚度 (µm)</label><input type="number" id="w_oil_um" value="80" oninput="calcWt()" autocomplete="off"></div>
+              <div class="fg"><label class="i18n" data-zh="單價 (Rp / kg)" data-id="Harga Satuan (Rp / kg)">單價 (Rp / kg)</label><input type="number" id="w_oil_rp" value="130000" oninput="calcWt()" placeholder="輸入單價" autocomplete="off"></div>
             </div>
           </div>
         </div>
@@ -721,13 +719,13 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
           </div>
           <div class="cost-item-body">
             <div class="g2" style="margin-bottom:8px">
-              <div class="fg"><label><span class="i18n" data-zh="漆粉編號 / 型號" data-id="Kode / Tipe Bubuk">漆粉編號 / 型號</span></label><input type="text" id="w_clamp_code" placeholder="例：ID Grey R7042 Glossy" style="font-family:monospace"></div>
-              <div class="fg"><label><span class="i18n" data-zh="供應商名稱" data-id="Nama Supplier">供應商名稱</span></label><input type="text" id="w_clamp_vendor" placeholder="例：PT. Axalta Coating Systems"></div>
+              <div class="fg"><label><span class="i18n" data-zh="漆粉編號 / 型號" data-id="Kode / Tipe Bubuk">漆粉編號 / 型號</span></label><input type="text" id="w_clamp_code" placeholder="例：ID Grey R7042 Glossy" style="font-family:monospace" autocomplete="off" name="dfi_2f8fe070"></div>
+              <div class="fg"><label><span class="i18n" data-zh="供應商名稱" data-id="Nama Supplier">供應商名稱</span></label><input type="text" id="w_clamp_vendor" placeholder="例：PT. Axalta Coating Systems" autocomplete="off" name="dfi_bba2769b"></div>
             </div>
             <div class="g3">
-              <div class="fg"><label class="i18n" data-zh="用量 (kg / 台)" data-id="Pemakaian (kg / unit)">用量 (kg / 台)</label><input type="number" id="w_clamp_kg" value="2" step="0.1" oninput="calcWt()"></div>
-              <div class="fg"><label class="i18n" data-zh="噴漆厚度 (µm)" data-id="Tebal Cat (µm)">噴漆厚度 (µm)</label><input type="number" id="w_clamp_um" value="60" oninput="calcWt()"></div>
-              <div class="fg"><label class="i18n" data-zh="漆粉單價 (Rp / kg)" data-id="Harga Satuan Bubuk (Rp / kg)">漆粉單價 (Rp / kg)</label><input type="number" id="w_clamp_rp" value="65000" oninput="calcWt()" placeholder="輸入單價"></div>
+              <div class="fg"><label class="i18n" data-zh="用量 (kg / 台)" data-id="Pemakaian (kg / unit)">用量 (kg / 台)</label><input type="number" id="w_clamp_kg" value="2" step="0.1" oninput="calcWt()" autocomplete="off"></div>
+              <div class="fg"><label class="i18n" data-zh="噴漆厚度 (µm)" data-id="Tebal Cat (µm)">噴漆厚度 (µm)</label><input type="number" id="w_clamp_um" value="60" oninput="calcWt()" autocomplete="off"></div>
+              <div class="fg"><label class="i18n" data-zh="漆粉單價 (Rp / kg)" data-id="Harga Satuan Bubuk (Rp / kg)">漆粉單價 (Rp / kg)</label><input type="number" id="w_clamp_rp" value="65000" oninput="calcWt()" placeholder="輸入單價" autocomplete="off"></div>
             </div>
           </div>
         </div>
@@ -745,10 +743,10 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
           </div>
           <div class="cost-item-body">
             <div class="g2">
-              <div class="fg"><label><span class="i18n" data-zh="LPG 用量 (kg / 台)" data-id="Pemakaian LPG (kg / unit)">LPG 用量 (kg / 台)</span></label><input type="number" id="w_lpg_kg" value="15" oninput="calcWt()"></div>
+              <div class="fg"><label><span class="i18n" data-zh="LPG 用量 (kg / 台)" data-id="Pemakaian LPG (kg / unit)">LPG 用量 (kg / 台)</span></label><input type="number" id="w_lpg_kg" value="15" oninput="calcWt()" autocomplete="off"></div>
               <div class="fg">
                 <label><span class="i18n" data-zh="LPG 單價 (Rp / kg)" data-id="Harga Satuan LPG (Rp / kg)">LPG 單價 (Rp / kg)</span> <span style="color:var(--light);font-size:10px">從基本參數同步</span></label>
-                <input class="ro" type="text" id="w_lpg_rp_show" readonly style="background:var(--blue3);color:var(--blue2);font-weight:700">
+                <input class="ro" type="text" id="w_lpg_rp_show" readonly style="background:var(--blue3);color:var(--blue2);font-weight:700" autocomplete="off" name="dfi_edbfb166">
                 <input type="hidden" id="w_lpg_rp" value="16756">
                 <div class="hint" style="margin-top:4px">如需修改請至「⚙️ 基本參數 → LPG 瓦斯」更新一桶價格</div>
               </div>
@@ -766,9 +764,9 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
           </div>
           <div class="cost-item-body">
             <div class="g3">
-              <div class="fg"><label class="i18n" data-zh="噴漆工時 (hr / 台)" data-id="Jam Kerja Pengecatan (hr / unit)">噴漆工時 (hr / 台)</label><input type="number" id="w_hr" value="8" step="0.5" oninput="calcWt()"></div>
-              <div class="fg"><label class="i18n" data-zh="操作人數" data-id="Jumlah Operator">操作人數</label><input type="number" id="w_ppl" value="2" min="1" oninput="calcWt()"></div>
-              <div class="fg"><label class="i18n" data-zh="工人月薪 (Rp)" data-id="Gaji Bulanan Pekerja (Rp)">工人月薪 (Rp)</label><input type="number" id="w_salary" value="5558515" oninput="calcWt()"></div>
+              <div class="fg"><label class="i18n" data-zh="噴漆工時 (hr / 台)" data-id="Jam Kerja Pengecatan (hr / unit)">噴漆工時 (hr / 台)</label><input type="number" id="w_hr" value="8" step="0.5" oninput="calcWt()" autocomplete="off"></div>
+              <div class="fg"><label class="i18n" data-zh="操作人數" data-id="Jumlah Operator">操作人數</label><input type="number" id="w_ppl" value="2" min="1" oninput="calcWt()" autocomplete="off"></div>
+              <div class="fg"><label class="i18n" data-zh="工人月薪 (Rp)" data-id="Gaji Bulanan Pekerja (Rp)">工人月薪 (Rp)</label><input type="number" id="w_salary" value="5558515" oninput="calcWt()" autocomplete="off"></div>
             </div>
           </div>
         </div>
@@ -782,7 +780,7 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
             <span class="cost-item-toggle-icon">▼</span>
           </div>
           <div class="cost-item-body">
-            <div class="fg"><label><span class="i18n" data-zh="包裝費用 (Rp / 台)" data-id="Biaya Kemasan (Rp / unit)">包裝費用 (Rp / 台)</span></label><input type="number" id="w_pkg_rp" value="30000" oninput="calcWt()"></div>
+            <div class="fg"><label><span class="i18n" data-zh="包裝費用 (Rp / 台)" data-id="Biaya Kemasan (Rp / unit)">包裝費用 (Rp / 台)</span></label><input type="number" id="w_pkg_rp" value="30000" oninput="calcWt()" autocomplete="off"></div>
           </div>
         </div>
 
@@ -796,14 +794,14 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
           </div>
           <div class="cost-item-body">
             <div class="g3">
-              <div class="fg"><label>汽油單價 (Rp / L)</label><input type="number" id="w_ship_oil_rp" value="10000" oninput="calcWt();updateShipCalc()"></div>
-              <div class="fg"><label><span class="i18n" data-zh="客戶" data-id="Pelanggan">客戶</span>距離 (km, 單程)</label><input type="number" id="w_ship_dist" value="50" oninput="calcWt();updateShipCalc()"></div>
-              <div class="fg"><label>貨車油耗 (L / 100km)</label><input type="number" id="w_ship_fuel" value="15" step="0.5" oninput="calcWt();updateShipCalc()"></div>
+              <div class="fg"><label>汽油單價 (Rp / L)</label><input type="number" id="w_ship_oil_rp" value="10000" oninput="calcWt();updateShipCalc()" autocomplete="off"></div>
+              <div class="fg"><label><span class="i18n" data-zh="客戶" data-id="Pelanggan">客戶</span>距離 (km, 單程)</label><input type="number" id="w_ship_dist" value="50" oninput="calcWt();updateShipCalc()" autocomplete="off"></div>
+              <div class="fg"><label>貨車油耗 (L / 100km)</label><input type="number" id="w_ship_fuel" value="15" step="0.5" oninput="calcWt();updateShipCalc()" autocomplete="off"></div>
             </div>
             <div class="g3">
-              <div class="fg"><label>貨車滿載重量 (kg)</label><input type="number" id="w_ship_load" value="3000" oninput="calcWt();updateShipCalc()"></div>
-              <div class="fg"><label>此訂單分攤重量 (kg)</label><input type="number" id="w_ship_share" value="200" oninput="calcWt();updateShipCalc()"></div>
-              <div class="fg"><label>司機日薪 (Rp)</label><input type="number" id="w_ship_driver" value="300000" oninput="calcWt();updateShipCalc()"></div>
+              <div class="fg"><label>貨車滿載重量 (kg)</label><input type="number" id="w_ship_load" value="3000" oninput="calcWt();updateShipCalc()" autocomplete="off"></div>
+              <div class="fg"><label>此訂單分攤重量 (kg)</label><input type="number" id="w_ship_share" value="200" oninput="calcWt();updateShipCalc()" autocomplete="off"></div>
+              <div class="fg"><label>司機日薪 (Rp)</label><input type="number" id="w_ship_driver" value="300000" oninput="calcWt();updateShipCalc()" autocomplete="off"></div>
             </div>
             <div class="formula-box" style="margin-top:8px">
               <div class="f-title">運費計算明細</div>
@@ -854,8 +852,8 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
           </div>
           <div class="div-or"><span class="i18n" data-zh="或直接輸入報價反查毛利率" data-id="Atau input harga → cek margin">或直接輸入報價反查毛利率</span></div>
           <div class="g2">
-            <div class="fg"><label><span class="i18n" data-zh="業務報價 (Rp / kg)" data-id="Harga Penawaran (Rp / kg)">業務報價 (Rp / kg)</span></label><input type="number" id="w_qkg" placeholder="輸入後自動反查毛利" oninput="calcWtBack()"></div>
-            <div class="fg"><label><span class="i18n" data-zh="業務報價 (Rp / 台)" data-id="Harga Penawaran (Rp / unit)">業務報價 (Rp / 台)</span> <span style="color:var(--light);font-size:10px" class="i18n" data-zh="自動" data-id="Otomatis">自動</span></label><input class="ro" type="text" id="w_qtot" readonly></div>
+            <div class="fg"><label><span class="i18n" data-zh="業務報價 (Rp / kg)" data-id="Harga Penawaran (Rp / kg)">業務報價 (Rp / kg)</span></label><input type="number" id="w_qkg" placeholder="輸入後自動反查毛利" oninput="calcWtBack()" autocomplete="off"></div>
+            <div class="fg"><label><span class="i18n" data-zh="業務報價 (Rp / 台)" data-id="Harga Penawaran (Rp / unit)">業務報價 (Rp / 台)</span> <span style="color:var(--light);font-size:10px" class="i18n" data-zh="自動" data-id="Otomatis">自動</span></label><input class="ro" type="text" id="w_qtot" readonly autocomplete="off" name="dfi_b9a758b4"></div>
           </div>
           <div class="result-hero">
             <div class="rh-top">
@@ -896,13 +894,13 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
         <div class="card">
           <div class="card-title">🗂️ 基本資訊 <span style="font-weight:400;font-size:11px;color:var(--light)">/ Informasi Dasar</span></div>
           <div class="g2">
-            <div class="fg"><label class="bilbl"><span class="i18n" data-zh="客戶名稱" data-id="Nama Pelanggan">客戶名稱</span> <span class="id">Nama Pelanggan</span></label><select id="a_cust"><option value="">-- 選擇客戶 / Pilih --</option></select></div>
-            <div class="fg"><label class="bilbl"><span class="i18n" data-zh="物件名稱 / 型號" data-id="Nama Barang / Tipe">物件名稱 / 型號</span> <span class="id">Nama / Tipe Barang</span></label><input type="text" id="a_model" placeholder="例：Warna Box 5kW"></div>
+            <div class="fg"><label class="bilbl"><span class="i18n" data-zh="客戶名稱" data-id="Nama Pelanggan">客戶名稱</span> <span class="id">Nama Pelanggan</span></label><select id="a_cust" autocomplete="off"><option value="">-- 選擇客戶 / Pilih --</option></select></div>
+            <div class="fg"><label class="bilbl"><span class="i18n" data-zh="物件名稱 / 型號" data-id="Nama Barang / Tipe">物件名稱 / 型號</span> <span class="id">Nama / Tipe Barang</span></label><input type="text" id="a_model" placeholder="例：Warna Box 5kW" autocomplete="off" name="dfi_02648dda"></div>
           </div>
           <div class="g2">
             <div class="fg">
               <label class="bilbl"><span class="i18n" data-zh="物件種類" data-id="Jenis Barang">物件種類</span> <span class="id">Jenis Barang</span></label>
-              <select id="a_otype" onchange="calcArea()">
+              <select id="a_otype" onchange="calcArea()" autocomplete="off">
                 <option value="box10">鐵箱（內+外 10面，標準）/ Box Besi 10 Sisi</option>
                 <option value="box10_nobot">鐵箱（內+外 8面，無頂底）/ Box 8 Sisi</option>
                 <option value="box5ext">鐵箱（僅外 5面，舊款）/ Box 5 Sisi Luar</option>
@@ -912,9 +910,9 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
                 <option value="manual">✏️ 直接填寫面積 / Input Manual</option>
               </select>
             </div>
-            <div class="fg"><label class="bilbl"><span class="i18n" data-zh="數量 (pcs)" data-id="Jumlah (pcs)">數量 (pcs)</span> <span class="id">Jumlah</span></label><input type="number" id="a_qty" value="1" min="1" oninput="calcArea()"></div>
+            <div class="fg"><label class="bilbl"><span class="i18n" data-zh="數量 (pcs)" data-id="Jumlah (pcs)">數量 (pcs)</span> <span class="id">Jumlah</span></label><input type="number" id="a_qty" value="1" min="1" oninput="calcArea()" autocomplete="off"></div>
           </div>
-          <div class="fg"><label class="bilbl"><span class="i18n" data-zh="備註" data-id="Catatan">備註</span> <span class="id">Catatan</span></label><input type="text" id="a_note" placeholder="選填 / Opsional"></div>
+          <div class="fg"><label class="bilbl"><span class="i18n" data-zh="備註" data-id="Catatan">備註</span> <span class="id">Catatan</span></label><input type="text" id="a_note" placeholder="選填 / Opsional" autocomplete="off" name="dfi_e1bc15ed"></div>
         </div>
 
 
@@ -940,15 +938,15 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
           <div class="card-title">📐 物件尺寸 &amp; 噴漆面積 <span style="font-weight:400;font-size:11px;color:var(--light)">/ Dimensi &amp; Luas Cat</span></div>
           <div id="a_dim_auto">
             <div class="g3">
-              <div class="fg"><label class="bilbl"><span class="i18n" data-zh="長 (mm)" data-id="Panjang (mm)">長 (mm)</span> <span class="id">Panjang</span></label><input type="number" id="a_L" value="420" oninput="calcArea()"></div>
-              <div class="fg"><label class="bilbl"><span class="i18n" data-zh="寬 (mm)" data-id="Lebar (mm)">寬 (mm)</span> <span class="id">Lebar</span></label><input type="number" id="a_W" value="650" oninput="calcArea()"></div>
-              <div class="fg"><label class="bilbl"><span class="i18n" data-zh="高 (mm)" data-id="Tinggi (mm)">高 (mm)</span> <span class="id">Tinggi</span></label><input type="number" id="a_H" value="195" oninput="calcArea()"></div>
+              <div class="fg"><label class="bilbl"><span class="i18n" data-zh="長 (mm)" data-id="Panjang (mm)">長 (mm)</span> <span class="id">Panjang</span></label><input type="number" id="a_L" value="420" oninput="calcArea()" autocomplete="off"></div>
+              <div class="fg"><label class="bilbl"><span class="i18n" data-zh="寬 (mm)" data-id="Lebar (mm)">寬 (mm)</span> <span class="id">Lebar</span></label><input type="number" id="a_W" value="650" oninput="calcArea()" autocomplete="off"></div>
+              <div class="fg"><label class="bilbl"><span class="i18n" data-zh="高 (mm)" data-id="Tinggi (mm)">高 (mm)</span> <span class="id">Tinggi</span></label><input type="number" id="a_H" value="195" oninput="calcArea()" autocomplete="off"></div>
             </div>
           </div>
           <div id="a_dim_manual" style="display:none">
             <div class="fg">
               <label class="bilbl"><span class="i18n" data-zh="噴漆面積 (cm²)" data-id="Luas Pengecatan (cm²)">噴漆面積 (cm²)</span> <span class="id">Luas Pengecatan</span></label>
-              <input type="number" id="a_area_in" value="" placeholder="直接填入 / Input langsung" oninput="calcArea()">
+              <input type="number" id="a_area_in" value="" placeholder="直接填入 / Input langsung" oninput="calcArea()" autocomplete="off">
             </div>
           </div>
           <div id="a_formula_box" class="formula-box" style="margin-top:8px">
@@ -1003,16 +1001,16 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
             <div class="g3" style="margin-bottom:8px">
               <div class="fg" style="margin-bottom:0">
                 <label><span class="i18n" data-zh="底漆厚度 (µm)" data-id="Tebal Cat Dasar (µm)">底漆厚度 (µm)</span></label>
-                <input type="number" id="pw_pr_um" value="60" oninput="calcPowder()" style="border-color:var(--blue)">
+                <input type="number" id="pw_pr_um" value="60" oninput="calcPowder()" style="border-color:var(--blue)" autocomplete="off">
               </div>
               <div class="fg" style="margin-bottom:0">
                 <label>漆粉密度 (g/cm³)</label>
-                <input type="number" id="pw_pr_den" value="1.2" step="0.01" oninput="calcPowder()">
+                <input type="number" id="pw_pr_den" value="1.2" step="0.01" oninput="calcPowder()" autocomplete="off">
                 <div class="hint">粉末塗料通常 1.1~1.4</div>
               </div>
               <div class="fg" style="margin-bottom:0">
                 <label class="i18n" data-zh="底漆單價 (Rp/kg)" data-id="Harga Satuan Cat Dasar (Rp/kg)">底漆單價 (Rp/kg)</label>
-                <input type="number" id="pw_pr_rp" value="47500" oninput="calcPowder()">
+                <input type="number" id="pw_pr_rp" value="47500" oninput="calcPowder()" autocomplete="off">
               </div>
             </div>
             <!-- 公式說明 -->
@@ -1034,15 +1032,15 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
             <div class="g3" style="margin-bottom:8px">
               <div class="fg" style="margin-bottom:0">
                 <label><span class="i18n" data-zh="表漆厚度 (µm)" data-id="Tebal Cat Atas (µm)">表漆厚度 (µm)</span></label>
-                <input type="number" id="pw_tc_um" value="80" oninput="calcPowder()" style="border-color:var(--purple)">
+                <input type="number" id="pw_tc_um" value="80" oninput="calcPowder()" style="border-color:var(--purple)" autocomplete="off">
               </div>
               <div class="fg" style="margin-bottom:0">
                 <label>漆粉密度 (g/cm³)</label>
-                <input type="number" id="pw_tc_den" value="1.2" step="0.01" oninput="calcPowder()">
+                <input type="number" id="pw_tc_den" value="1.2" step="0.01" oninput="calcPowder()" autocomplete="off">
               </div>
               <div class="fg" style="margin-bottom:0">
                 <label class="i18n" data-zh="表漆單價 (Rp/kg)" data-id="Harga Satuan Cat Atas (Rp/kg)">表漆單價 (Rp/kg)</label>
-                <input type="number" id="pw_tc_rp" value="65000" oninput="calcPowder()">
+                <input type="number" id="pw_tc_rp" value="65000" oninput="calcPowder()" autocomplete="off">
               </div>
             </div>
             <!-- 公式說明 -->
@@ -1121,13 +1119,13 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
           </div>
           <div class="cost-item-body">
             <div class="g2" style="margin-bottom:8px">
-              <div class="fg"><label class="bilbl"><span class="i18n" data-zh="漆粉編號 / 型號" data-id="Kode / Tipe Bubuk">漆粉編號 / 型號</span> <span class="id">Kode / Tipe Bubuk</span></label><input type="text" id="a_pr_code" placeholder="例：Grey RAL 7031 Matt" style="font-family:monospace"></div>
-              <div class="fg"><label class="bilbl"><span class="i18n" data-zh="供應商名稱" data-id="Nama Supplier">供應商名稱</span> <span class="id">Nama Supplier</span></label><input type="text" id="a_pr_vendor" placeholder="例：PT. Oxyplast Indonesia"></div>
+              <div class="fg"><label class="bilbl"><span class="i18n" data-zh="漆粉編號 / 型號" data-id="Kode / Tipe Bubuk">漆粉編號 / 型號</span> <span class="id">Kode / Tipe Bubuk</span></label><input type="text" id="a_pr_code" placeholder="例：Grey RAL 7031 Matt" style="font-family:monospace" autocomplete="off" name="dfi_f0e11542"></div>
+              <div class="fg"><label class="bilbl"><span class="i18n" data-zh="供應商名稱" data-id="Nama Supplier">供應商名稱</span> <span class="id">Nama Supplier</span></label><input type="text" id="a_pr_vendor" placeholder="例：PT. Oxyplast Indonesia" autocomplete="off" name="dfi_a1e45129"></div>
             </div>
             <div class="g3">
-              <div class="fg"><label class="bilbl"><span class="i18n" data-zh="底漆厚度 (µm)" data-id="Tebal Cat Dasar (µm)">底漆厚度 (µm)</span> <span class="id">Tebal Cat Dasar</span></label><input type="number" id="a_pr_um" value="60" oninput="syncUmPr();calcAreaCost()"></div>
-              <div class="fg"><label class="bilbl">底漆單價 (Rp/kg) <span class="id">Harga Satuan</span></label><input type="number" id="a_pr_rp" value="47500" oninput="calcAreaCost()" placeholder="輸入單價"></div>
-              <div class="fg"><label class="bilbl">底漆成本 (Rp/cm²) <span class="id">Biaya / cm²</span></label><input class="ro" type="text" id="a_pr_cm2" readonly></div>
+              <div class="fg"><label class="bilbl"><span class="i18n" data-zh="底漆厚度 (µm)" data-id="Tebal Cat Dasar (µm)">底漆厚度 (µm)</span> <span class="id">Tebal Cat Dasar</span></label><input type="number" id="a_pr_um" value="60" oninput="syncUmPr();calcAreaCost()" autocomplete="off"></div>
+              <div class="fg"><label class="bilbl">底漆單價 (Rp/kg) <span class="id">Harga Satuan</span></label><input type="number" id="a_pr_rp" value="47500" oninput="calcAreaCost()" placeholder="輸入單價" autocomplete="off"></div>
+              <div class="fg"><label class="bilbl">底漆成本 (Rp/cm²) <span class="id">Biaya / cm²</span></label><input class="ro" type="text" id="a_pr_cm2" readonly autocomplete="off" name="dfi_2e01d2f4"></div>
             </div>
           </div>
         </div>
@@ -1142,13 +1140,13 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
           </div>
           <div class="cost-item-body">
             <div class="g2" style="margin-bottom:8px">
-              <div class="fg"><label class="bilbl"><span class="i18n" data-zh="漆粉編號 / 型號" data-id="Kode / Tipe Bubuk">漆粉編號 / 型號</span> <span class="id">Kode / Tipe Bubuk</span></label><input type="text" id="a_tc_code" placeholder="例：ID Grey R7042 Glossy" style="font-family:monospace"></div>
-              <div class="fg"><label class="bilbl"><span class="i18n" data-zh="供應商名稱" data-id="Nama Supplier">供應商名稱</span> <span class="id">Nama Supplier</span></label><input type="text" id="a_tc_vendor" placeholder="例：PT. Axalta Coating Systems"></div>
+              <div class="fg"><label class="bilbl"><span class="i18n" data-zh="漆粉編號 / 型號" data-id="Kode / Tipe Bubuk">漆粉編號 / 型號</span> <span class="id">Kode / Tipe Bubuk</span></label><input type="text" id="a_tc_code" placeholder="例：ID Grey R7042 Glossy" style="font-family:monospace" autocomplete="off" name="dfi_f14552dd"></div>
+              <div class="fg"><label class="bilbl"><span class="i18n" data-zh="供應商名稱" data-id="Nama Supplier">供應商名稱</span> <span class="id">Nama Supplier</span></label><input type="text" id="a_tc_vendor" placeholder="例：PT. Axalta Coating Systems" autocomplete="off" name="dfi_bb8035a7"></div>
             </div>
             <div class="g3">
-              <div class="fg"><label class="bilbl"><span class="i18n" data-zh="表漆厚度 (µm)" data-id="Tebal Cat Atas (µm)">表漆厚度 (µm)</span> <span class="id">Tebal Cat Atas</span></label><input type="number" id="a_tc_um" value="80" oninput="syncUmTc();calcAreaCost()"></div>
-              <div class="fg"><label class="bilbl">表漆單價 (Rp/kg) <span class="id">Harga Satuan</span></label><input type="number" id="a_tc_rp" value="65000" oninput="calcAreaCost()" placeholder="輸入單價"></div>
-              <div class="fg"><label class="bilbl">表漆成本 (Rp/cm²) <span class="id">Biaya / cm²</span></label><input class="ro" type="text" id="a_tc_cm2" readonly></div>
+              <div class="fg"><label class="bilbl"><span class="i18n" data-zh="表漆厚度 (µm)" data-id="Tebal Cat Atas (µm)">表漆厚度 (µm)</span> <span class="id">Tebal Cat Atas</span></label><input type="number" id="a_tc_um" value="80" oninput="syncUmTc();calcAreaCost()" autocomplete="off"></div>
+              <div class="fg"><label class="bilbl">表漆單價 (Rp/kg) <span class="id">Harga Satuan</span></label><input type="number" id="a_tc_rp" value="65000" oninput="calcAreaCost()" placeholder="輸入單價" autocomplete="off"></div>
+              <div class="fg"><label class="bilbl">表漆成本 (Rp/cm²) <span class="id">Biaya / cm²</span></label><input class="ro" type="text" id="a_tc_cm2" readonly autocomplete="off" name="dfi_f23fd407"></div>
             </div>
           </div>
         </div>
@@ -1163,9 +1161,9 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
           </div>
           <div class="cost-item-body">
             <div class="g3">
-              <div class="fg"><label class="bilbl"><span class="i18n" data-zh="透明漆厚度 (µm)" data-id="Tebal Cat Bening (µm)">透明漆厚度 (µm)</span> <span class="id">Tebal Cat Bening</span></label><input type="number" id="a_cl_um" value="40" oninput="calcAreaCost()"></div>
-              <div class="fg"><label class="bilbl">透明漆單價 (Rp/L) <span class="id">Harga Satuan</span></label><input type="number" id="a_cl_rp" value="170000" oninput="calcAreaCost()"></div>
-              <div class="fg"><label class="bilbl">透明漆成本 (Rp/cm²) <span class="id">Biaya</span></label><input class="ro" type="text" id="a_cl_cm2" readonly></div>
+              <div class="fg"><label class="bilbl"><span class="i18n" data-zh="透明漆厚度 (µm)" data-id="Tebal Cat Bening (µm)">透明漆厚度 (µm)</span> <span class="id">Tebal Cat Bening</span></label><input type="number" id="a_cl_um" value="40" oninput="calcAreaCost()" autocomplete="off"></div>
+              <div class="fg"><label class="bilbl">透明漆單價 (Rp/L) <span class="id">Harga Satuan</span></label><input type="number" id="a_cl_rp" value="170000" oninput="calcAreaCost()" autocomplete="off"></div>
+              <div class="fg"><label class="bilbl">透明漆成本 (Rp/cm²) <span class="id">Biaya</span></label><input class="ro" type="text" id="a_cl_cm2" readonly autocomplete="off" name="dfi_fd036c55"></div>
             </div>
           </div>
         </div>
@@ -1180,9 +1178,9 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
           </div>
           <div class="cost-item-body">
             <div class="g3">
-              <div class="fg"><label class="bilbl"><span class="i18n" data-zh="耐油漆厚度 (µm)" data-id="Tebal Cat Tahan Oli (µm)">耐油漆厚度 (µm)</span> <span class="id">Tebal Cat</span></label><input type="number" id="a_oil_um" value="80" oninput="calcAreaCost()"></div>
-              <div class="fg"><label class="bilbl">耐油漆單價 (Rp/kg) <span class="id">Harga Satuan</span></label><input type="number" id="a_oil_rp" value="130000" oninput="calcAreaCost()"></div>
-              <div class="fg"><label class="bilbl">耐油漆成本 (Rp/cm²) <span class="id">Biaya</span></label><input class="ro" type="text" id="a_oil_cm2" readonly></div>
+              <div class="fg"><label class="bilbl"><span class="i18n" data-zh="耐油漆厚度 (µm)" data-id="Tebal Cat Tahan Oli (µm)">耐油漆厚度 (µm)</span> <span class="id">Tebal Cat</span></label><input type="number" id="a_oil_um" value="80" oninput="calcAreaCost()" autocomplete="off"></div>
+              <div class="fg"><label class="bilbl">耐油漆單價 (Rp/kg) <span class="id">Harga Satuan</span></label><input type="number" id="a_oil_rp" value="130000" oninput="calcAreaCost()" autocomplete="off"></div>
+              <div class="fg"><label class="bilbl">耐油漆成本 (Rp/cm²) <span class="id">Biaya</span></label><input class="ro" type="text" id="a_oil_cm2" readonly autocomplete="off" name="dfi_f88b128b"></div>
             </div>
           </div>
         </div>
@@ -1205,7 +1203,7 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
             </div>
             <div class="fg">
               <label>換色情境</label>
-              <select id="a_cc_type" onchange="setCcType()">
+              <select id="a_cc_type" onchange="setCcType()" autocomplete="off">
                 <option value="dark2light">深色 → 淺色（最高損耗，建議+25%）</option>
                 <option value="med2light" selected>中色 → 淺色（建議+15%）</option>
                 <option value="light2light">淺色 → 淺色（建議+8%）</option>
@@ -1224,7 +1222,7 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
               </div>
               <div class="fg">
                 <label>適用漆層</label>
-                <select id="a_cc_layer" onchange="calcCcLoss()">
+                <select id="a_cc_layer" onchange="calcCcLoss()" autocomplete="off">
                   <option value="tc">表漆（Top Coat，通常只表漆換色）</option>
                   <option value="both">底漆+表漆均換色</option>
                 </select>
@@ -1259,30 +1257,30 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
             <div class="g3">
               <div class="fg">
                 <label><span class="i18n" data-zh="使用瓦斯重量 (kg)" data-id="Berat LPG yang Digunakan (kg)">使用瓦斯重量 (kg)</span></label>
-                <input type="number" id="a_lpg_kg_direct" value="500" min="0" step="5" oninput="calcLpgAuto()">
+                <input type="number" id="a_lpg_kg_direct" value="500" min="0" step="5" oninput="calcLpgAuto()" autocomplete="off">
                 <div class="hint"><span class="i18n" data-zh="直接輸入本批使用的瓦斯 kg 數" data-id="Masukkan langsung berat LPG yang dipakai (kg)">直接輸入本批使用的瓦斯 kg 數</span></div>
               </div>
               <div class="fg">
                 <label><span class="i18n" data-zh="換算桶數" data-id="Konversi Jumlah Tabung">換算桶數</span> <span style="color:var(--light);font-size:10px" class="i18n" data-zh="自動" data-id="Otomatis">自動</span></label>
-                <input class="ro" type="text" id="a_lpg_barrels_show" readonly>
+                <input class="ro" type="text" id="a_lpg_barrels_show" readonly autocomplete="off" name="dfi_7cb3895f">
                 <div class="hint" id="a_lpg_barrel_hint">每桶50kg，自動換算</div>
               </div>
               <div class="fg">
                 <label><span class="i18n" data-zh="瓦斯單價 (Rp/kg)" data-id="Harga Satuan LPG (Rp/kg)">瓦斯單價 (Rp/kg)</span> <span style="color:var(--light);font-size:10px" class="i18n" data-zh="自動" data-id="Otomatis">自動</span></label>
-                <input class="ro" type="text" id="a_lpg_rp_show" readonly>
+                <input class="ro" type="text" id="a_lpg_rp_show" readonly autocomplete="off" name="dfi_fc784731">
               </div>
             </div>
 
             <!-- 或用桶數反推 -->
             <div style="margin-bottom:8px;display:flex;align-items:center;gap:8px">
               <span style="font-size:11.5px;color:var(--muted)">或改用桶數填寫：</span>
-              <input type="number" id="a_lpg_barrels" min="1" step="1" placeholder="桶數" style="width:70px;padding:5px 7px;border:1.5px solid var(--border);border-radius:5px;font-size:12.5px" oninput="lpgBarrelsToKg()">
+              <input type="number" id="a_lpg_barrels" min="1" step="1" placeholder="桶數" style="width:70px;padding:5px 7px;border:1.5px solid var(--border);border-radius:5px;font-size:12.5px" oninput="lpgBarrelsToKg()" autocomplete="off">
               <span style="font-size:11.5px;color:var(--muted)">桶　→ 自動帶入kg</span>
             </div>
 
             <div class="fg">
               <label><span class="i18n" data-zh="批次噴漆面積 (cm²)" data-id="Luas Pengecatan Batch (cm²)">批次噴漆面積 (cm²)</span> <span style="color:var(--light);font-size:10px">留空=自動用N件合計</span></label>
-              <input type="number" id="a_lpg_batch_area" placeholder="留空則自動帶入本批N件合計面積" oninput="calcLpgAuto()">
+              <input type="number" id="a_lpg_batch_area" placeholder="留空則自動帶入本批N件合計面積" oninput="calcLpgAuto()" autocomplete="off">
               <div class="hint">可填全月或全批次總面積，做更精準的分攤計算</div>
             </div>
 
@@ -1293,7 +1291,7 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
             </div>
             <div style="margin-top:8px">
               <div class="fg"><label><span class="i18n" data-zh="或直接手動輸入分攤值 (Rp/cm²)" data-id="Atau input manual nilai alokasi (Rp/cm²)">或直接手動輸入分攤值 (Rp/cm²)</span> <span style="color:var(--light);font-size:10px">覆蓋自動計算</span></label>
-              <input type="number" id="a_lpg_cm2" step="0.01" placeholder="留空=自動計算" oninput="calcAreaCost()"></div>
+              <input type="number" id="a_lpg_cm2" step="0.01" placeholder="留空=自動計算" oninput="calcAreaCost()" autocomplete="off"></div>
             </div>
           </div>
         </div>
@@ -1314,26 +1312,26 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
             <div class="g3">
               <div class="fg">
                 <label><span class="i18n" data-zh="噴漆工人人數" data-id="Jumlah Pekerja Pengecatan">噴漆工人人數</span></label>
-                <input type="number" id="a_labor_ppl" value="5" min="1" oninput="calcLaborAuto()">
+                <input type="number" id="a_labor_ppl" value="5" min="1" oninput="calcLaborAuto()" autocomplete="off">
               </div>
               <div class="fg">
                 <label><span class="i18n" data-zh="生產天數 (天/批)" data-id="Hari Produksi (hari/batch)">生產天數 (天/批)</span></label>
-                <input type="number" id="a_labor_days" value="1" min="0.5" step="0.5" oninput="calcLaborAuto()">
+                <input type="number" id="a_labor_days" value="1" min="0.5" step="0.5" oninput="calcLaborAuto()" autocomplete="off">
                 <div class="hint"><span class="i18n" data-zh="此批訂單實際生產天數" data-id="Hari produksi aktual untuk batch ini">此批訂單實際生產天數</span></div>
               </div>
               <div class="fg">
                 <label><span class="i18n" data-zh="每天工時 (hr)" data-id="Jam Kerja per Hari (hr)">每天工時 (hr)</span> <span style="color:var(--light);font-size:10px" class="i18n" data-zh="自動帶入" data-id="Otomatis">自動帶入</span></label>
-                <input class="ro" type="text" id="a_labor_hrs_show" readonly>
+                <input class="ro" type="text" id="a_labor_hrs_show" readonly autocomplete="off" name="dfi_d6a90745">
               </div>
             </div>
             <div class="g2">
               <div class="fg">
                 <label><span class="i18n" data-zh="月薪 (Rp)" data-id="Gaji Bulanan (Rp)">月薪 (Rp)</span> <span style="color:var(--light);font-size:10px" class="i18n" data-zh="自動帶入" data-id="Otomatis">自動帶入</span></label>
-                <input class="ro" type="text" id="a_labor_sal_show" readonly>
+                <input class="ro" type="text" id="a_labor_sal_show" readonly autocomplete="off" name="dfi_c77982e8">
               </div>
               <div class="fg">
                 <label><span class="i18n" data-zh="每小時工資 (Rp/hr)" data-id="Upah per Jam (Rp/hr)">每小時工資 (Rp/hr)</span> <span style="color:var(--light);font-size:10px" class="i18n" data-zh="自動" data-id="Otomatis">自動</span></label>
-                <input class="ro" type="text" id="a_labor_hr_show" readonly>
+                <input class="ro" type="text" id="a_labor_hr_show" readonly autocomplete="off" name="dfi_b298c9d0">
               </div>
             </div>
             <div class="g3" style="margin-top:6px">
@@ -1343,7 +1341,7 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
             </div>
             <div style="margin-top:8px">
               <div class="fg"><label><span class="i18n" data-zh="或直接手動輸入分攤值 (Rp/cm²)" data-id="Atau input manual nilai alokasi (Rp/cm²)">或直接手動輸入分攤值 (Rp/cm²)</span> <span style="color:var(--light);font-size:10px">覆蓋自動計算</span></label>
-              <input type="number" id="a_labor_cm2" step="0.5" placeholder="留空=自動計算" oninput="calcAreaCost()"></div>
+              <input type="number" id="a_labor_cm2" step="0.5" placeholder="留空=自動計算" oninput="calcAreaCost()" autocomplete="off"></div>
             </div>
           </div>
         </div>
@@ -1357,7 +1355,7 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
             <span class="cost-item-toggle-icon">▼</span>
           </div>
           <div class="cost-item-body">
-            <div class="fg"><label class="bilbl">包裝費用 (Rp/件) <span class="id">Biaya Kemasan per pcs</span></label><input type="number" id="a_pkg_rp" value="20000" oninput="calcAreaCost()"></div>
+            <div class="fg"><label class="bilbl">包裝費用 (Rp/件) <span class="id">Biaya Kemasan per pcs</span></label><input type="number" id="a_pkg_rp" value="20000" oninput="calcAreaCost()" autocomplete="off"></div>
           </div>
         </div>
 
@@ -1373,12 +1371,12 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
             <div class="g2">
               <div class="fg">
                 <label class="bilbl"><span class="i18n" data-zh="運費計算方式" data-id="Metode Hitung Ongkir">運費計算方式</span> <span class="id">Metode Hitung</span></label>
-                <select id="a_ship_mode" onchange="calcAreaCost()">
+                <select id="a_ship_mode" onchange="calcAreaCost()" autocomplete="off">
                   <option value="pertot">Rp / 批次（固定）/ Per Batch</option>
                   <option value="perunit">Rp / 件 / Per pcs</option>
                 </select>
               </div>
-              <div class="fg"><label class="bilbl"><span class="i18n" data-zh="運費金額 (Rp)" data-id="Nominal Ongkir (Rp)">運費金額 (Rp)</span> <span class="id">Nominal</span></label><input type="number" id="a_ship_rp" value="200000" oninput="calcAreaCost()"></div>
+              <div class="fg"><label class="bilbl"><span class="i18n" data-zh="運費金額 (Rp)" data-id="Nominal Ongkir (Rp)">運費金額 (Rp)</span> <span class="id">Nominal</span></label><input type="number" id="a_ship_rp" value="200000" oninput="calcAreaCost()" autocomplete="off"></div>
             </div>
           </div>
         </div>
@@ -1431,8 +1429,8 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
               </div>
               <div class="div-or"><span class="i18n" data-zh="或直接輸入報價反查毛利率" data-id="Atau input harga → cek margin">或直接輸入報價反查毛利率 / Input harga → cek margin</span></div>
               <div class="g2">
-                <div class="fg"><label class="bilbl">業務報價 (Rp/cm²) <span class="id">Harga Penawaran</span></label><input type="number" id="a_qcm2" step="0.1" placeholder="輸入後反查 / Input → cek" oninput="calcAreaBack()"></div>
-                <div class="fg"><label class="bilbl">業務報價 (Rp/件) <span class="id">Harga per pcs</span></label><input class="ro" type="text" id="a_q1pcs" readonly></div>
+                <div class="fg"><label class="bilbl">業務報價 (Rp/cm²) <span class="id">Harga Penawaran</span></label><input type="number" id="a_qcm2" step="0.1" placeholder="輸入後反查 / Input → cek" oninput="calcAreaBack()" autocomplete="off"></div>
+                <div class="fg"><label class="bilbl">業務報價 (Rp/件) <span class="id">Harga per pcs</span></label><input class="ro" type="text" id="a_q1pcs" readonly autocomplete="off" name="dfi_e40ba2cc"></div>
               </div>
               <div id="ar_pricing_rationale" style="margin-top:8px;display:none">
                 <div style="background:#fff7ed;border:1.5px solid #f59e0b;border-radius:9px;padding:10px 13px">
@@ -1514,24 +1512,24 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
         <div class="g2">
           <div class="fg">
             <label>SPCC 含稅價 (Rp / kg)</label>
-            <input type="number" id="fp_spcc_tax" value="16000" oninput="calcFinCost()">
+            <input type="number" id="fp_spcc_tax" value="16000" oninput="calcFinCost()" autocomplete="off">
             <div class="hint">目前漲至 Rp 16,000/kg（含稅） / Sekarang naik Rp 16,000/kg (termasuk PPN)</div>
           </div>
           <div class="fg">
             <label>SPCC 未稅價 (Rp / kg) <span style="color:var(--light);font-size:10px"><span class="i18n" data-zh="自動" data-id="Otomatis">自動</span></span></label>
-            <input class="ro" type="text" id="fp_spcc_notax" readonly>
+            <input class="ro" type="text" id="fp_spcc_notax" readonly autocomplete="off" name="dfi_dbf043f7">
             <div class="hint">含稅 ÷ 1.11 / Termasuk pajak ÷ 1.11</div>
           </div>
         </div>
         <div class="g2">
           <div class="fg">
             <label>生產損失率 / Tingkat Losses Produksi (%)</label>
-            <input type="number" id="fp_loss_pct" value="5" step="0.5" oninput="calcFinCost()">
+            <input type="number" id="fp_loss_pct" value="5" step="0.5" oninput="calcFinCost()" autocomplete="off">
             <div class="hint">折波沖壓損失（通常5%）/ Losses press corrugated (biasanya 5%)</div>
           </div>
           <div class="fg">
             <label>散熱片材料成本 (Rp / kg) <span style="color:var(--light);font-size:10px"><span class="i18n" data-zh="自動" data-id="Otomatis">自動</span></span></label>
-            <input class="ro" type="text" id="fp_mat_cost" readonly style="background:var(--blue3);color:var(--blue2);font-weight:700">
+            <input class="ro" type="text" id="fp_mat_cost" readonly style="background:var(--blue3);color:var(--blue2);font-weight:700" autocomplete="off" name="dfi_5bd4d75c">
             <div class="hint">未稅 × (1 + 損失率) / Harga blm pajak × (1 + losses)</div>
           </div>
         </div>
@@ -1547,19 +1545,19 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
           <tr><th>直徑 / Diameter</th><th>含稅價 (Rp/kg)</th><th>未稅價 (自動)</th><th>使用場合</th></tr>
           <tr>
             <td><strong>5 mm</strong></td>
-            <td><input type="number" id="fp_rod5_tax" value="15000" oninput="calcFinCost()" style="width:100px;padding:4px 6px;border:1px solid var(--border);border-radius:4px;font-size:12px"></td>
+            <td><input type="number" id="fp_rod5_tax" value="15000" oninput="calcFinCost()" style="width:100px;padding:4px 6px;border:1px solid var(--border);border-radius:4px;font-size:12px" autocomplete="off"></td>
             <td id="fp_rod5_notax" style="font-size:12px;color:var(--muted)">—</td>
             <td style="font-size:11px;color:var(--muted)">小型散熱片</td>
           </tr>
           <tr>
             <td><strong>8 mm</strong></td>
-            <td><input type="number" id="fp_rod8_tax" value="37000" oninput="calcFinCost()" style="width:100px;padding:4px 6px;border:1px solid var(--border);border-radius:4px;font-size:12px"></td>
+            <td><input type="number" id="fp_rod8_tax" value="37000" oninput="calcFinCost()" style="width:100px;padding:4px 6px;border:1px solid var(--border);border-radius:4px;font-size:12px" autocomplete="off"></td>
             <td id="fp_rod8_notax" style="font-size:12px;color:var(--muted)">—</td>
             <td style="font-size:11px;color:var(--muted)">中型散熱片（最常用）</td>
           </tr>
           <tr>
             <td><strong>10 mm</strong></td>
-            <td><input type="number" id="fp_rod10_tax" value="57000" oninput="calcFinCost()" style="width:100px;padding:4px 6px;border:1px solid var(--border);border-radius:4px;font-size:12px"></td>
+            <td><input type="number" id="fp_rod10_tax" value="57000" oninput="calcFinCost()" style="width:100px;padding:4px 6px;border:1px solid var(--border);border-radius:4px;font-size:12px" autocomplete="off"></td>
             <td id="fp_rod10_notax" style="font-size:12px;color:var(--muted)">—</td>
             <td style="font-size:11px;color:var(--muted)">大型散熱片</td>
           </tr>
@@ -1573,21 +1571,21 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
         <div class="g2">
           <div class="fg">
             <label>加工資 1.0mm (Rp / kg)</label>
-            <input type="number" id="fp_labor10" value="9500" oninput="calcFinCost()">
+            <input type="number" id="fp_labor10" value="9500" oninput="calcFinCost()" autocomplete="off">
           </div>
           <div class="fg">
             <label>加工資 1.2mm (Rp / kg)</label>
-            <input type="number" id="fp_labor12" value="9000" oninput="calcFinCost()">
+            <input type="number" id="fp_labor12" value="9000" oninput="calcFinCost()" autocomplete="off">
           </div>
         </div>
         <div class="g2">
           <div class="fg">
             <label>運費 / Ongkir (Rp / kg)</label>
-            <input type="number" id="fp_ship" value="1500" oninput="calcFinCost()">
+            <input type="number" id="fp_ship" value="1500" oninput="calcFinCost()" autocomplete="off">
           </div>
           <div class="fg">
             <label>利潤 / Laba (Rp / kg)</label>
-            <input type="number" id="fp_profit" value="1000" oninput="calcFinCost()">
+            <input type="number" id="fp_profit" value="1000" oninput="calcFinCost()" autocomplete="off">
           </div>
         </div>
       </div>
@@ -1601,25 +1599,25 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
         <div class="g2">
           <div class="fg">
             <label><span class="i18n" data-zh="客戶名稱" data-id="Nama Pelanggan">客戶名稱</span></label>
-            <select id="fp_cust"><option value="">-- 選擇客戶 / Pilih --</option></select>
+            <select id="fp_cust" autocomplete="off"><option value="">-- 選擇客戶 / Pilih --</option></select>
           </div>
           <div class="fg">
             <label class="i18n" data-zh="規格字串（可直接貼上）" data-id="String Spesifikasi (bisa langsung paste)">規格字串（可直接貼上）</label>
-            <input type="text" id="fp_spec" placeholder="例：1.0*600*130*17P" oninput="parseFinPageSpec()" style="font-family:monospace">
+            <input type="text" id="fp_spec" placeholder="例：1.0*600*130*17P" oninput="parseFinPageSpec()" style="font-family:monospace" autocomplete="off" name="dfi_b5422293">
           </div>
         </div>
         <div class="g4">
-          <div class="fg"><label class="i18n" data-zh="T 板厚 (mm)" data-id="T Tebal Plat (mm)">T 板厚 (mm)</label><input type="number" id="fp_T" value="1" step="0.1" oninput="calcFinCost()"></div>
-          <div class="fg"><label class="i18n" data-zh="L 寬度 (mm)" data-id="L Lebar (mm)">L 寬度 (mm)</label><input type="number" id="fp_L" value="600" oninput="calcFinCost()"></div>
-          <div class="fg"><label class="i18n" data-zh="D 高度 (mm)" data-id="D Tinggi (mm)">D 高度 (mm)</label><input type="number" id="fp_D" value="130" oninput="calcFinCost()"></div>
-          <div class="fg"><label class="i18n" data-zh="N1 片數 (P)" data-id="N1 Jumlah Sirip (P)">N1 片數 (P)</label><input type="number" id="fp_N1" value="17" oninput="calcFinCost()"></div>
+          <div class="fg"><label class="i18n" data-zh="T 板厚 (mm)" data-id="T Tebal Plat (mm)">T 板厚 (mm)</label><input type="number" id="fp_T" value="1" step="0.1" oninput="calcFinCost()" autocomplete="off"></div>
+          <div class="fg"><label class="i18n" data-zh="L 寬度 (mm)" data-id="L Lebar (mm)">L 寬度 (mm)</label><input type="number" id="fp_L" value="600" oninput="calcFinCost()" autocomplete="off"></div>
+          <div class="fg"><label class="i18n" data-zh="D 高度 (mm)" data-id="D Tinggi (mm)">D 高度 (mm)</label><input type="number" id="fp_D" value="130" oninput="calcFinCost()" autocomplete="off"></div>
+          <div class="fg"><label class="i18n" data-zh="N1 片數 (P)" data-id="N1 Jumlah Sirip (P)">N1 片數 (P)</label><input type="number" id="fp_N1" value="17" oninput="calcFinCost()" autocomplete="off"></div>
         </div>
         <div class="g4">
-          <div class="fg"><label class="i18n" data-zh="B1 邊前緣 (mm)" data-id="B1 Tepi Depan (mm)">B1 邊前緣 (mm)</label><input type="number" id="fp_B1" value="35" oninput="calcFinCost()"></div>
-          <div class="fg"><label class="i18n" data-zh="B2 邊後緣 (mm)" data-id="B2 Tepi Belakang (mm)">B2 邊後緣 (mm)</label><input type="number" id="fp_B2" value="35" oninput="calcFinCost()"></div>
-          <div class="fg"><label class="i18n" data-zh="C 片間距 (mm)" data-id="C Jarak Antar Sirip (mm)">C 片間距 (mm)</label><input type="number" id="fp_C" value="40" oninput="calcFinCost()"></div>
+          <div class="fg"><label class="i18n" data-zh="B1 邊前緣 (mm)" data-id="B1 Tepi Depan (mm)">B1 邊前緣 (mm)</label><input type="number" id="fp_B1" value="35" oninput="calcFinCost()" autocomplete="off"></div>
+          <div class="fg"><label class="i18n" data-zh="B2 邊後緣 (mm)" data-id="B2 Tepi Belakang (mm)">B2 邊後緣 (mm)</label><input type="number" id="fp_B2" value="35" oninput="calcFinCost()" autocomplete="off"></div>
+          <div class="fg"><label class="i18n" data-zh="C 片間距 (mm)" data-id="C Jarak Antar Sirip (mm)">C 片間距 (mm)</label><input type="number" id="fp_C" value="40" oninput="calcFinCost()" autocomplete="off"></div>
           <div class="fg"><label class="i18n" data-zh="d 鐵條徑 (mm)" data-id="d Diameter Batang Besi (mm)">d 鐵條徑 (mm)</label>
-            <select id="fp_d" onchange="calcFinCost()">
+            <select id="fp_d" onchange="calcFinCost()" autocomplete="off">
               <option value="5">5 mm</option>
               <option value="8" selected>8 mm</option>
               <option value="10">10 mm</option>
@@ -1627,8 +1625,8 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
           </div>
         </div>
         <div class="g2">
-          <div class="fg"><label>組數 / Jumlah Set</label><input type="number" id="fp_sets" value="1" min="1" oninput="calcFinCost()"></div>
-          <div class="fg"><label>訂單<span class="i18n" data-zh="數量" data-id="Jumlah">數量</span> / Qty Order (台)</label><input type="number" id="fp_qty" value="1" min="1" oninput="calcFinCost()"></div>
+          <div class="fg"><label>組數 / Jumlah Set</label><input type="number" id="fp_sets" value="1" min="1" oninput="calcFinCost()" autocomplete="off"></div>
+          <div class="fg"><label>訂單<span class="i18n" data-zh="數量" data-id="Jumlah">數量</span> / Qty Order (台)</label><input type="number" id="fp_qty" value="1" min="1" oninput="calcFinCost()" autocomplete="off"></div>
         </div>
       </div>
 
@@ -1681,7 +1679,7 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
           </div>
           <div class="fg">
             <label>直接輸入報價 (Rp/kg) 反查毛利</label>
-            <input type="number" id="fp_quote_kg" placeholder="輸入報價 Rp/kg" oninput="calcFinBack()">
+            <input type="number" id="fp_quote_kg" placeholder="輸入報價 Rp/kg" oninput="calcFinBack()" autocomplete="off">
           </div>
         </div>
 
@@ -1727,12 +1725,12 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
         <input type="text" id="rec_search" placeholder="搜尋客戶/型號..." data-ph-zh="搜尋客戶/型號..." data-ph-id="Cari pelanggan/tipe..."
           autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
           style="padding:6px 11px;border:1.5px solid var(--border);border-radius:7px 0 0 7px;font-size:12px;width:150px"
-          oninput="renderRec()">
+          oninput="renderRec()" name="dfi_41d616b3">
         <button onclick="document.getElementById('rec_search').value='';renderRec()"
           style="padding:6px 8px;border:1.5px solid var(--border);border-left:none;border-radius:0 7px 7px 0;background:var(--gray);cursor:pointer;font-size:12px;color:var(--muted)"
           title="清除搜尋">✕</button>
       </div>
-      <select id="rec_ft" onchange="renderRec()" style="padding:6px 9px;border:1.5px solid var(--border);border-radius:7px;font-size:12px">
+      <select id="rec_ft" onchange="renderRec()" style="padding:6px 9px;border:1.5px solid var(--border);border-radius:7px;font-size:12px" autocomplete="off">
         <option value=""><span class="i18n" data-zh="全部類型" data-id="Semua Tipe">全部類型</span></option>
         <option value="wt">按重量（變壓器）</option>
         <option value="ar">按面積（鐵箱）</option>
@@ -1764,7 +1762,7 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
     <div>
       <div class="card">
         <div class="card-title">💱 匯率 &amp; 電費</div>
-        <div class="fg"><label><span class="i18n" data-zh="USD / IDR 匯率" data-id="Kurs USD / IDR">USD / IDR 匯率</span></label><input type="number" id="cfg_usd" value="17453" oninput="saveCfg()"></div>
+        <div class="fg"><label><span class="i18n" data-zh="USD / IDR 匯率" data-id="Kurs USD / IDR">USD / IDR 匯率</span></label><input type="number" id="cfg_usd" value="17453" oninput="saveCfg()" autocomplete="off"></div>
 
         <!-- Dynamic electricity months - integrated table -->
         <div style="font-size:12px;font-weight:700;color:var(--blue);margin-bottom:4px;margin-top:8px">⚡ 每月電費記錄</div>
@@ -1790,12 +1788,12 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
           <div class="fg">
             <label><span class="i18n" data-zh="平均電費 (Rp/kWh)" data-id="Rata-rata Tarif Listrik (Rp/kWh)">平均電費 (Rp/kWh)</span>
             <span style="color:var(--light);font-size:10px" class="i18n" data-zh="自動" data-id="Otomatis">自動</span></label>
-            <input class="ro" id="cfg_eavg" readonly style="background:var(--blue3);color:var(--blue2);font-weight:700;font-size:15px">
+            <input class="ro" id="cfg_eavg" readonly style="background:var(--blue3);color:var(--blue2);font-weight:700;font-size:15px" autocomplete="off">
           </div>
           <div class="fg">
             <label><span class="i18n" data-zh="計算月份數" data-id="Jumlah Bulan yang Dihitung">計算月份數</span>
             <span style="color:var(--light);font-size:10px" class="i18n" data-zh="自動" data-id="Otomatis">自動</span></label>
-            <input class="ro" id="cfg_emonths" readonly>
+            <input class="ro" id="cfg_emonths" readonly autocomplete="off">
           </div>
         </div>
         <!-- per-month detail summary -->
@@ -1807,22 +1805,22 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
       <div class="card">
         <div class="card-title"><span class="i18n" data-zh="🔥 LPG 瓦斯" data-id="🔥 LPG / Gas">🔥 LPG 瓦斯</span></div>
         <div class="g2">
-          <div class="fg"><label><span class="i18n" data-zh="一桶重量 (kg)" data-id="Berat per Tabung (kg)">一桶重量 (kg)</span></label><input type="number" id="cfg_lpgw" value="50" oninput="saveCfg();updateDerived()"></div>
-          <div class="fg"><label><span class="i18n" data-zh="一桶價格 (Rp, 未稅)" data-id="Harga per Tabung (Rp, belum pajak)">一桶價格 (Rp, 未稅)</span></label><input type="number" id="cfg_lpgp" value="1100000" oninput="saveCfg();updateDerived()"></div>
+          <div class="fg"><label><span class="i18n" data-zh="一桶重量 (kg)" data-id="Berat per Tabung (kg)">一桶重量 (kg)</span></label><input type="number" id="cfg_lpgw" value="50" oninput="saveCfg();updateDerived()" autocomplete="off"></div>
+          <div class="fg"><label><span class="i18n" data-zh="一桶價格 (Rp, 未稅)" data-id="Harga per Tabung (Rp, belum pajak)">一桶價格 (Rp, 未稅)</span></label><input type="number" id="cfg_lpgp" value="1100000" oninput="saveCfg();updateDerived()" autocomplete="off"></div>
         </div>
-        <div class="fg"><label><span class="i18n" data-zh="每 kg 瓦斯單價" data-id="Harga LPG per kg">每 kg 瓦斯單價</span> <span style="color:var(--light);font-size:10px" class="i18n" data-zh="自動" data-id="Otomatis">自動</span></label><input class="ro" id="cfg_lpgkg" readonly></div>
+        <div class="fg"><label><span class="i18n" data-zh="每 kg 瓦斯單價" data-id="Harga LPG per kg">每 kg 瓦斯單價</span> <span style="color:var(--light);font-size:10px" class="i18n" data-zh="自動" data-id="Otomatis">自動</span></label><input class="ro" id="cfg_lpgkg" readonly autocomplete="off"></div>
         <div class="hint" style="margin-top:4px">供應商：Cv. Makmur Gas</div>
       </div>
 
       <div class="card">
         <div class="card-title"><span class="i18n" data-zh="👷 人工薪資" data-id="👷 Upah Tenaga Kerja">👷 人工薪資</span></div>
         <div class="g2">
-          <div class="fg"><label><span class="i18n" data-zh="工人月基本薪資 (Rp)" data-id="Gaji Pokok Bulanan Pekerja (Rp)">工人月基本薪資 (Rp)</span></label><input type="number" id="cfg_salary" value="5938885" oninput="saveCfg();updateDerived()"></div>
-          <div class="fg"><label><span class="i18n" data-zh="每月工作天數" data-id="Hari Kerja per Bulan">每月工作天數</span></label><input type="number" id="cfg_days" value="22" oninput="saveCfg();updateDerived()"></div>
+          <div class="fg"><label><span class="i18n" data-zh="工人月基本薪資 (Rp)" data-id="Gaji Pokok Bulanan Pekerja (Rp)">工人月基本薪資 (Rp)</span></label><input type="number" id="cfg_salary" value="5938885" oninput="saveCfg();updateDerived()" autocomplete="off"></div>
+          <div class="fg"><label><span class="i18n" data-zh="每月工作天數" data-id="Hari Kerja per Bulan">每月工作天數</span></label><input type="number" id="cfg_days" value="22" oninput="saveCfg();updateDerived()" autocomplete="off"></div>
         </div>
         <div class="g2">
-          <div class="fg"><label><span class="i18n" data-zh="每天工時 (hr)" data-id="Jam Kerja per Hari (hr)">每天工時 (hr)</span></label><input type="number" id="cfg_hrs" value="8" oninput="saveCfg();updateDerived()"></div>
-          <div class="fg"><label><span class="i18n" data-zh="每小時工資 (Rp/hr)" data-id="Upah per Jam (Rp/hr)">每小時工資 (Rp/hr)</span> <span style="color:var(--light);font-size:10px" class="i18n" data-zh="自動" data-id="Otomatis">自動</span></label><input class="ro" id="cfg_hrrate" readonly></div>
+          <div class="fg"><label><span class="i18n" data-zh="每天工時 (hr)" data-id="Jam Kerja per Hari (hr)">每天工時 (hr)</span></label><input type="number" id="cfg_hrs" value="8" oninput="saveCfg();updateDerived()" autocomplete="off"></div>
+          <div class="fg"><label><span class="i18n" data-zh="每小時工資 (Rp/hr)" data-id="Upah per Jam (Rp/hr)">每小時工資 (Rp/hr)</span> <span style="color:var(--light);font-size:10px" class="i18n" data-zh="自動" data-id="Otomatis">自動</span></label><input class="ro" id="cfg_hrrate" readonly autocomplete="off"></div>
         </div>
       </div>
 
@@ -1830,7 +1828,7 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
         <div class="card-title"><span class="i18n" data-zh="🏗️ 外殼供應商報價" data-id="🏗️ Harga Vendor Cangkang">🏗️ 外殼供應商報價</span></div>
         <div class="fg">
           <label><span class="i18n" data-zh="外殼標準報價 (Rp / kg)" data-id="Harga Standar Cangkang (Rp / kg)">外殼標準報價 (Rp / kg)</span></label>
-          <input type="number" id="cfg_shell_kg" value="37000" oninput="saveCfg();syncShellKg()">
+          <input type="number" id="cfg_shell_kg" value="37000" oninput="saveCfg();syncShellKg()" autocomplete="off">
           <div class="hint"><span class="i18n" data-zh="此值會自動帶入「變壓器外殼按重量」計算頁面" data-id="Nilai ini otomatis diisi ke halaman kalkulasi berat cangkang trafo">此值會自動帶入「變壓器外殼按重量」計算頁面</span></div>
         </div>
         <div class="alert alert-blue" style="margin-top:8px">外殼報價依重量計算：外殼重量(kg) × Rp/kg = 外殼外包成本</div>
@@ -1844,7 +1842,7 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
         <div class="g2">
           <div class="fg">
             <label><span class="i18n" data-zh="漆粉平均密度 (g / cm³)" data-id="Densitas Rata-rata Bubuk Cat (g / cm³)">漆粉平均密度 (g / cm³)</span></label>
-            <input type="number" id="cfg_density" value="1.2" step="0.01" oninput="saveCfg();updatePaintExample()">
+            <input type="number" id="cfg_density" value="1.2" step="0.01" oninput="saveCfg();updatePaintExample()" autocomplete="off">
           </div>
           <div class="fg">
             <label><span class="i18n" data-zh="噴粉轉移效率" data-id="Efisiensi Transfer Semprot">噴粉轉移效率</span></label>
@@ -1896,17 +1894,17 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
       <div class="card">
         <div class="card-title"><span class="i18n" data-zh="➕ 新增 / 編輯客戶" data-id="➕ Tambah / Edit Pelanggan">➕ 新增 / 編輯客戶</span></div>
         <div class="g2">
-          <div class="fg"><label class="i18n" data-zh="序號" data-id="No. Urut">序號</label><input type="text" id="nc_no" placeholder="例：30"></div>
-          <div class="fg"><label class="i18n" data-zh="公司名稱 *" data-id="Nama Perusahaan *">公司名稱 *</label><input type="text" id="nc_name" placeholder="PT. ..."></div>
+          <div class="fg"><label class="i18n" data-zh="序號" data-id="No. Urut">序號</label><input type="text" id="nc_no" placeholder="例：30" autocomplete="off" name="dfi_57b831e2"></div>
+          <div class="fg"><label class="i18n" data-zh="公司名稱 *" data-id="Nama Perusahaan *">公司名稱 *</label><input type="text" id="nc_name" placeholder="PT. ..." autocomplete="off" name="dfi_17a86f75"></div>
         </div>
-        <div class="fg"><label class="i18n" data-zh="地址" data-id="Alamat">地址</label><input type="text" id="nc_addr"></div>
+        <div class="fg"><label class="i18n" data-zh="地址" data-id="Alamat">地址</label><input type="text" id="nc_addr" autocomplete="off" name="dfi_901422bd"></div>
         <div class="g2">
-          <div class="fg"><label><span class="i18n" data-zh="聯絡人" data-id="Kontak Person">聯絡人</span></label><input type="text" id="nc_contact" placeholder="Bpk./Ibu ..."></div>
-          <div class="fg"><label>HP</label><input type="text" id="nc_hp" placeholder="+628..."></div>
+          <div class="fg"><label><span class="i18n" data-zh="聯絡人" data-id="Kontak Person">聯絡人</span></label><input type="text" id="nc_contact" placeholder="Bpk./Ibu ..." autocomplete="off" name="dfi_a8f641f9"></div>
+          <div class="fg"><label>HP</label><input type="text" id="nc_hp" placeholder="+628..." autocomplete="off" name="dfi_b0615153"></div>
         </div>
         <div class="g2">
-          <div class="fg"><label>Email</label><input type="text" id="nc_email"></div>
-          <div class="fg"><label><span class="i18n" data-zh="備註" data-id="Catatan">備註</span></label><input type="text" id="nc_note"></div>
+          <div class="fg"><label>Email</label><input type="text" id="nc_email" autocomplete="off" name="dfi_3dcf88a7"></div>
+          <div class="fg"><label><span class="i18n" data-zh="備註" data-id="Catatan">備註</span></label><input type="text" id="nc_note" autocomplete="off" name="dfi_787ed3cf"></div>
         </div>
         <div class="btn-row">
           <button class="btn btn-blue" onclick="saveCust()"><span class="i18n" data-zh="💾 儲存客戶" data-id="💾 Simpan Pelanggan">💾 儲存客戶</span></button>
@@ -1917,7 +1915,7 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
     <div>
       <div class="card">
         <div class="card-title"><span class="i18n" data-zh="🔍 客戶列表" data-id="🔍 Daftar Pelanggan">🔍 客戶列表</span></div>
-        <input type="text" id="cust_search" placeholder="搜尋..." style="width:100%;padding:7px 11px;border:1.5px solid var(--border);border-radius:7px;margin-bottom:10px;font-size:13px" oninput="renderCust()">
+        <input type="text" id="cust_search" placeholder="搜尋..." style="width:100%;padding:7px 11px;border:1.5px solid var(--border);border-radius:7px;margin-bottom:10px;font-size:13px" oninput="renderCust()" autocomplete="off" name="dfi_792750c5">
         <div style="overflow-x:auto">
           <table>
             <tr><th>No.</th><th><span class="i18n" data-zh="公司名稱" data-id="Nama Perusahaan">公司名稱</span></th><th><span class="i18n" data-zh="聯絡人" data-id="Kontak">聯絡人</span></th><th>HP</th><th><span class="i18n" data-zh="操作" data-id="Aksi">操作</span></th></tr>
@@ -2013,6 +2011,13 @@ function init(){
   finPageRecs=JSON.parse(localStorage.getItem('dfi_fin_recs')||'[]'); renderFinRecs(); calcFinCost();
   // Apply language last (after all DOM is ready)
   setTimeout(()=>switchLang(currentLang), 0);
+  // Restore last session form data, then hook autosave
+  setTimeout(()=>{
+    const restored = restoreAutosave();
+    hookAutosave();
+    // Trigger recalc after restore
+    if(restored){ recalcWeight(); calcWt(); calcArea(); calcFinCost(); }
+  }, 100);
 }
 
 function showPg(id,btn){document.querySelectorAll('.pg').forEach(p=>p.classList.remove('on'));document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('on'));$(id).classList.add('on');if(btn)btn.classList.add('on');}
@@ -2071,17 +2076,17 @@ function renderElecRows(){
     return `<div style="display:grid;grid-template-columns:90px 1fr 1fr 1fr 32px;gap:4px;align-items:center;margin-bottom:4px">
       <input type="text" value="${r.month||''}" placeholder="2026年${i+1}月"
         style="padding:5px 7px;border:1.5px solid var(--border);border-radius:5px;font-size:12px"
-        oninput="elecRows[${i}].month=this.value;saveElecData()">
+        oninput="elecRows[${i}].month=this.value;saveElecData()" autocomplete="off">
       <input type="number" value="${r.rate||''}" step="0.01" placeholder="單價"
         style="padding:5px 7px;border:1.5px solid ${rateBorder};border-radius:5px;font-size:12px;background:${rateBg};color:${rateColor}"
         title="${isDerived?'由帳單÷度數自動計算（藍色）':'手動輸入'}"
-        oninput="elecRows[${i}].rate=parseFloat(this.value)||0;elecRows[${i}].derived=false;saveElecData();updateDerived()">
+        oninput="elecRows[${i}].rate=parseFloat(this.value)||0;elecRows[${i}].derived=false;saveElecData();updateDerived()" autocomplete="off">
       <input type="number" value="${r.bill||''}" placeholder="帳單總額 Rp"
         style="padding:5px 7px;border:1.5px solid var(--border);border-radius:5px;font-size:12px"
-        oninput="elecRows[${i}].bill=parseFloat(this.value)||0;tryDeriveRate(${i})">
+        oninput="elecRows[${i}].bill=parseFloat(this.value)||0;tryDeriveRate(${i})" autocomplete="off">
       <input type="number" value="${r.kwh||''}" placeholder="度數 kWh"
         style="padding:5px 7px;border:1.5px solid var(--border);border-radius:5px;font-size:12px"
-        oninput="elecRows[${i}].kwh=parseFloat(this.value)||0;tryDeriveRate(${i})">
+        oninput="elecRows[${i}].kwh=parseFloat(this.value)||0;tryDeriveRate(${i})" autocomplete="off">
       <button onclick="removeElecRow(${i})"
         style="padding:4px 7px;background:var(--red2);border:1px solid var(--red);border-radius:5px;cursor:pointer;font-size:12px;color:var(--red)">✕</button>
     </div>`;
@@ -2228,15 +2233,16 @@ function restoreFinAuto(){
 }
 
 function recalcWeight(){
-  const tank=pf('w_wt_tank'), cover=pf('w_wt_cover'), clamp=pf('w_wt_clamp2');
+  const tank  = Math.round((pf('w_wt_tank')  || 0) * 1000) / 1000;
+  const cover = Math.round((pf('w_wt_cover') || 0) * 1000) / 1000;
+  const clamp = Math.round((pf('w_wt_clamp2')|| 0) * 1000) / 1000;
   const finEl = document.getElementById('w_wt_fin2');
-  const fin = parseFloat((finEl?.value||'0').replace(/[^0-9.]/g,'')) || 0;
-  const total = tank + cover + fin + clamp;
-  const shellWt = tank + cover + clamp;
+  const fin   = Math.round((parseFloat((finEl?.value||'0').replace(/[^0-9.]/g,''))||0) * 1000) / 1000;
+  const total    = Math.round((tank + cover + fin + clamp) * 1000) / 1000;
+  const shellWt  = Math.round((tank + cover + clamp) * 1000) / 1000;
   document.getElementById('w_weight').value = total;
-  document.getElementById('w_weight_show').value = total.toLocaleString('en-US')+' kg';
-  // auto-sync shell outsource weight (tank+cover+clamp, no fin)
-  document.getElementById('w_shell_wt').value = +shellWt.toFixed(3);
+  document.getElementById('w_weight_show').value = total.toFixed(3).replace(/\.?0+$/,'').replace(/(\.\d{1,3})$/,'$1')+' kg';
+  document.getElementById('w_shell_wt').value = shellWt;
   calcWt();
 }
 function updateShipCalc(){
@@ -2333,7 +2339,7 @@ function calcWt(){
   $('wb_total').textContent = wt>0?Rp(total/wt)+'/kg':'—';
   const costKg=wt>0?total/wt:0; $('wm_ckg').textContent=Rp(costKg)+'/kg'; $('wm_c1').textContent=Rp(total);
   $('wm_cn').textContent=Rp(total*qty); $('wm_wt').textContent=(wt*qty).toLocaleString('en-US')+'kg';
-  window._wt={c_total:total,weight:wt,qty}; calcWtQ();
+  window._wt={c_total:total,weight:+wt.toFixed(3),qty}; calcWtQ();
 }
 
 function calcWtQ(){
@@ -2368,7 +2374,7 @@ function clearAllWeights(){
   initFinRows(true); // reset fin rows to zero
 }
 function resetWt(){attachFiles['wt']=[]; renderPreviews('wt');
-
+  clearAutosave();
   $('w_model').value='';
   $('w_wt_tank').value=0; $('w_wt_cover').value=0; $('w_wt_clamp2').value=0;
   $('w_qty').value=1;
@@ -2786,6 +2792,7 @@ function updateCostBars(){
   }).join('')||'<div style="color:var(--light);font-size:12px">啟用至少一項成本項目</div>';
 }
 function resetAr(){attachFiles['ar']=[]; renderPreviews('ar');
+  clearAutosave();
 $('a_model').value='';$('a_qty').value=1;$('a_L').value=420;$('a_W').value=650;$('a_H').value=195;$('a_qcm2').value='';$('a_note').value='';calcArea();}
 
 function syncUmPr(){
@@ -2951,7 +2958,6 @@ function saveAdminPw(){
   msgEl.textContent='✅ 密碼已成功更新！';msgEl.className='admin-msg ok';
   setTimeout(closeAdminModal,1500);
 }
-
 // ── GOOGLE SHEETS SYNC ──
 const GS_URL='https://script.google.com/macros/s/AKfycbzRLjgDywzsxuZW7xRbCVq9P88GugcalYR2atKIiXncR1Xwlr2ZuP2fIsbMx2OiUyLk/exec';
 function gsPost(payload,statusId){
@@ -2974,14 +2980,13 @@ function syncAllToSheet(){
   if(!confirm('確定將所有記錄（'+records.length+'筆）全量同步到 Google Sheets？'))return;
   gsPost({action:'sync_all',records:records.map(recToRow)},'gs-status');
 }
-
 function saveRec(mode){
   let rec;
   if(mode==='wt'&&window._wt){
     const{c_total,weight,qty,sq,sqkg}=window._wt;
     const qkg=pf('w_qkg'), fq=qkg?qkg*weight:(sq||0), fm=qkg?((fq-c_total)/fq*100):pf('w_margin');
     const wtUnitCost=weight>0?Math.round(c_total/weight):0; const wtUnitQuote=weight>0?Math.round(fq/weight):0;
-    rec={mode:'wt',date:today(),cust:$('w_cust').value||'—',model:(document.getElementById('w_model').value==='custom'?(document.getElementById('w_model_custom')?.value||'自訂型號'):(document.getElementById('w_model').value||weight+'kg 自訂')),size:weight+'kg',qty,cost:Math.round(c_total),quote:Math.round(fq),unit_cost:wtUnitCost,unit_quote:wtUnitQuote,unit_label:'Rp/kg',margin:+fm.toFixed(1),note:$('w_note').value};
+    rec={mode:'wt',date:today(),cust:$('w_cust').value||'—',model:(document.getElementById('w_model').value==='custom'?(document.getElementById('w_model_custom')?.value||'自訂型號'):(document.getElementById('w_model').value||weight+'kg 自訂')),size:parseFloat(weight).toFixed(3)+'kg',qty,cost:Math.round(c_total),quote:Math.round(fq),unit_cost:wtUnitCost,unit_quote:wtUnitQuote,unit_label:'Rp/kg',margin:+fm.toFixed(1),note:$('w_note').value};
   } else if(mode==='ar'&&window._ar){
     const{c_cm2,area,qty,sq,sq1}=window._ar;
     const qcm2=pf('a_qcm2'), fq=qcm2?qcm2*area*qty:(sq1||0)*qty, fc=c_cm2*area*qty, fm=qcm2?((qcm2-c_cm2)/qcm2*100):pf('a_margin');
@@ -2991,6 +2996,14 @@ function saveRec(mode){
   records.unshift(rec); localStorage.setItem('dfi_recs',JSON.stringify(records));
   gsPost({action:'append',record:recToRow(rec)},null);
   renderRec(); showPg('pg_rec',document.querySelectorAll('.nav button')[2]); alert('✅ 報價記錄已儲存！');
+}
+function formatSize(s){
+  if(!s) return '—';
+  // e.g. "338.034999999999997kg" -> "338.035kg"
+  return s.replace(/([\d.]+)(kg|cm²)/, (_,n,u)=>{
+    const v = parseFloat(n);
+    return (isNaN(v)?n : parseFloat(v.toFixed(3)).toLocaleString('en-US',{minimumFractionDigits:0,maximumFractionDigits:3})) + u;
+  });
 }
 function today(){return new Date().toLocaleDateString('zh-Hant',{year:'numeric',month:'2-digit',day:'2-digit'});}
 function renderRec(){
@@ -3009,7 +3022,7 @@ function renderRec(){
       <td><span class="badge ${r.mode==='wt'?'bg-b':'bg-o'}">${r.mode==='wt'?'⚖️重量':'📐面積'}</span></td>
       <td style="font-weight:700;font-size:12px;max-width:110px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${r.cust}</td>
       <td><span class="chip">${r.model}</span></td>
-      <td style="font-size:12px">${r.size}</td>
+      <td style="font-size:12px">${formatSize(r.size)}</td>
       <td style="text-align:center">${r.qty}</td>
       <td style="font-size:11.5px;color:var(--muted);white-space:nowrap">${uc}</td>
       <td style="font-size:11.5px;color:var(--orange);font-weight:700;white-space:nowrap">${uq}</td>
@@ -3186,20 +3199,20 @@ function renderFinRows() {
         <input type="text" class="spec-input" value="${r.spec||''}"
           placeholder="1.0*600*190*14P"
           oninput="parseFinSpec(${i},this.value)"
-          style="width:100%">
+          style="width:100%" autocomplete="off">
         <div class="fin-parse-hint" id="fin_hint_${i}"></div>
       </div>
       <div><input type="number" value="${r.t}" step="0.1" min="0.1"
-        oninput="updateFinField(${i},'t',this.value)" style="width:100%"></div>
+        oninput="updateFinField(${i},'t',this.value)" style="width:100%" autocomplete="off"></div>
       <div><input type="number" value="${r.L}" step="1" min="1"
-        oninput="updateFinField(${i},'L',this.value)" style="width:100%"></div>
+        oninput="updateFinField(${i},'L',this.value)" style="width:100%" autocomplete="off"></div>
       <div><input type="number" value="${r.W}" step="1" min="1"
-        oninput="updateFinField(${i},'W',this.value)" style="width:100%"></div>
+        oninput="updateFinField(${i},'W',this.value)" style="width:100%" autocomplete="off"></div>
       <div><input type="number" value="${r.P}" step="1" min="1"
-        oninput="updateFinField(${i},'P',this.value)" style="width:100%"></div>
+        oninput="updateFinField(${i},'P',this.value)" style="width:100%" autocomplete="off"></div>
       <div>
         <input type="number" value="${r.sets||1}" step="1" min="1"
-          oninput="updateFinField(${i},'sets',this.value)" style="width:100%">
+          oninput="updateFinField(${i},'sets',this.value)" style="width:100%" autocomplete="off">
       </div>
       <div>
         <button class="btn btn-sm btn-red" onclick="removeFinRow(${i})" 
@@ -3752,6 +3765,7 @@ function renderFinRecs() {
 }
 
 function resetFinPage() {
+  clearAutosave();
   document.getElementById('fp_spec').value = '';
   document.getElementById('fp_T').value  = 1;
   document.getElementById('fp_L').value  = 600;
@@ -3973,6 +3987,130 @@ function switchLang(lang){
 
 function getLang(){return currentLang;}
 function T(zh,id){return currentLang==='id'?id:zh;}
+
+// ─── AUTO-SAVE / AUTO-RESTORE FORM FIELDS ───
+const AUTOSAVE_KEY = 'dfi_form_state';
+const AUTOSAVE_WT_FIELDS = [
+  'w_cust','w_model','w_note','w_qty',
+  'w_wt_tank','w_wt_cover','w_wt_fin2','w_wt_clamp2',
+  'w_shell_vendor','w_shell_kg','w_oil_tube_rp','w_oil_tube_qty',
+  'w_pr_code','w_pr_vendor','w_pr_kg','w_pr_um',
+  'w_tc_code','w_tc_vendor','w_tc_kg','w_tc_um',
+  'w_cl_en','w_cl_kg','w_cl_um','w_cl_rp',
+  'w_oil_en','w_oil_code','w_oil_vendor','w_oil_kg','w_oil_um','w_oil_rp',
+  'w_clamp_en','w_clamp_code','w_clamp_vendor','w_clamp_kg','w_clamp_um','w_clamp_rp',
+  'w_lpg_kg','w_hr','w_ppl','w_salary',
+  'w_pkg_en','w_pkg_rp',
+  'w_ship_en','w_ship_oil_rp','w_ship_dist','w_ship_fuel','w_ship_cap','w_ship_self_wt','w_ship_driver',
+  'w_margin','w_interest','w_qkg',
+  'w_fin_b1','w_fin_b2','w_fin_c','w_fin_d',
+];
+const AUTOSAVE_AR_FIELDS = [
+  'a_cust','a_model','a_otype','a_qty','a_note',
+  'a_L','a_W','a_H','a_area_in',
+  'pw_pr_um','pw_pr_den','pw_pr_rp','pw_pr_loss',
+  'pw_tc_um','pw_tc_den','pw_tc_rp','pw_tc_loss',
+  'a_pr_code','a_pr_vendor','a_pr_um','a_pr_rp',
+  'a_tc_code','a_tc_vendor','a_tc_um','a_tc_rp',
+  'a_cl_um','a_cl_rp',
+  'a_oil_um','a_oil_rp',
+  'a_lpg_kg_direct','a_lpg_batch_area','a_lpg_cm2',
+  'a_labor_ppl','a_labor_days','a_labor_cm2',
+  'a_pkg_rp','a_ship_rp','a_ship_mode',
+  'a_margin','a_interest','a_qcm2',
+];
+const AUTOSAVE_CHECKBOXES = [
+  'ck_shell','ck_fin','ck_weld','ck_pr','ck_tc','ck_clear','ck_oil','ck_clamp','ck_lpg','ck_labor','ck_pkg','ck_ship',
+  'ak_pr','ak_tc','ak_clear','ak_oil','ak_cc','ak_lpg','ak_labor','ak_pkg','ak_ship',
+];
+
+const AUTOSAVE_FIN_FIELDS = [
+  'fp_cust','fp_spec','fp_sets',
+  'fp_T','fp_L','fp_D','fp_N1','fp_B1','fp_B2','fp_C','fp_d',
+  'fp_spcc_notax','fp_spcc_tax',
+  'fp_rod5_notax','fp_rod5_tax',
+  'fp_rod8_notax','fp_rod8_tax',
+  'fp_rod10_notax','fp_rod10_tax',
+  'fp_labor10','fp_labor12',
+  'fp_loss_pct','fp_ship','fp_margin',
+  'fp_quote_kg',
+];
+function scheduleAutosave(){
+  clearTimeout(_autosaveTimer);
+  _autosaveTimer = setTimeout(doAutosave, 800);
+}
+function doAutosave(){
+  try {
+    const state = { ts: Date.now(), wt:{}, ck:{}, finRows:[] };
+    [...AUTOSAVE_WT_FIELDS, ...AUTOSAVE_AR_FIELDS, ...AUTOSAVE_FIN_FIELDS].forEach(id=>{
+      const el=document.getElementById(id); if(el) state.wt[id]=el.value;
+    });
+    AUTOSAVE_CHECKBOXES.forEach(id=>{
+      const el=document.getElementById(id); if(el) state.ck[id]=el.checked;
+    });
+    if(typeof finRows !== 'undefined') state.finRows = JSON.parse(JSON.stringify(finRows));
+    const fin2=document.getElementById('w_wt_fin2');
+    if(fin2) state.fin2_manual = fin2.dataset.manualOverride||'';
+    localStorage.setItem(AUTOSAVE_KEY, JSON.stringify(state));
+  } catch(e){ console.warn('Autosave failed:', e); }
+}
+function restoreAutosave(){
+  try {
+    const raw = localStorage.getItem(AUTOSAVE_KEY);
+    if(!raw) return false;
+    const state = JSON.parse(raw);
+    if(!state || !state.ts) return false;
+    Object.keys(state.wt||{}).forEach(id=>{
+      const el=document.getElementById(id);
+      if(el && state.wt[id]!==undefined) el.value=state.wt[id];
+    });
+    AUTOSAVE_CHECKBOXES.forEach(id=>{
+      const el=document.getElementById(id);
+      if(el && state.ck && state.ck[id]!==undefined) el.checked=!!state.ck[id];
+    });
+    if(state.finRows && state.finRows.length > 0 && typeof finRows !== 'undefined'){
+      finRows = state.finRows;
+      if(typeof renderFinRows === 'function') renderFinRows();
+    }
+    const fin2=document.getElementById('w_wt_fin2');
+    if(fin2 && state.fin2_manual){
+      fin2.dataset.manualOverride = state.fin2_manual;
+      fin2.style.background=''; fin2.style.color='';
+    }
+    const dt = new Date(state.ts);
+    const label = dt.toLocaleDateString('zh-Hant')+ ' ' + dt.toLocaleTimeString('zh-Hant',{hour:'2-digit',minute:'2-digit'});
+    showAutosaveBadge(label);
+    return true;
+  } catch(e){ console.warn('Restore failed:', e); return false; }
+}
+function showAutosaveBadge(label){
+  const existing = document.getElementById('autosave_badge');
+  if(existing) existing.remove();
+  const badge = document.createElement('div');
+  badge.id = 'autosave_badge';
+  badge.style.cssText='position:fixed;bottom:16px;right:16px;background:var(--blue);color:#fff;padding:8px 14px;border-radius:8px;font-size:12px;z-index:9999;box-shadow:0 2px 12px rgba(0,0,0,.18);display:flex;align-items:center;gap:8px';
+  badge.innerHTML = `<span>✅ 已還原上次資料（${label}）</span><button onclick="clearAutosave()" style="background:rgba(255,255,255,.2);border:none;color:#fff;border-radius:4px;padding:2px 7px;cursor:pointer;font-size:11px">清除</button>`;
+  document.body.appendChild(badge);
+  setTimeout(()=>{ if(badge.parentNode) badge.style.opacity='0'; badge.style.transition='opacity .5s'; setTimeout(()=>badge.remove(), 600); }, 5000);
+}
+function clearAutosave(){
+  localStorage.removeItem(AUTOSAVE_KEY);
+  const b=document.getElementById('autosave_badge'); if(b) b.remove();
+}
+
+// Hook all relevant inputs to trigger autosave
+function hookAutosave(){
+  const allIds = [...AUTOSAVE_WT_FIELDS, ...AUTOSAVE_AR_FIELDS, ...AUTOSAVE_FIN_FIELDS, ...AUTOSAVE_CHECKBOXES];
+  allIds.forEach(id=>{
+    const el=document.getElementById(id);
+    if(!el) return;
+    const evt = el.type==='checkbox'||el.tagName==='SELECT'?'change':'input';
+    el.addEventListener(evt, scheduleAutosave);
+  });
+  // Also hook fin spec inputs via mutation observer on fin rows container
+  const finC = document.getElementById('fin_rows_container');
+  if(finC) new MutationObserver(scheduleAutosave).observe(finC, {childList:true, subtree:true, characterData:true});
+}
 
 init();
 </script>
