@@ -284,23 +284,18 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
     <div class="login-footer">DFI — 報價及成本計算系統 · © 2026</div>
   </div>
 </div>
-
 <div id="admin-modal">
   <div class="admin-box">
     <h3>🔑 管理員設定 — 修改密碼</h3>
-    <div class="admin-field"><label>新的業務員密碼 / Password Sales Baru</label><input type="password" id="adm-new-sales" placeholder="輸入新密碼"></div>
+    <div class="admin-field"><label>新的業務員密碼</label><input type="password" id="adm-new-sales" placeholder="輸入新密碼"></div>
     <div class="admin-field"><label>確認業務員密碼</label><input type="password" id="adm-confirm-sales" placeholder="再次確認"></div>
     <hr style="border:none;border-top:1px solid var(--border);margin:14px 0">
-    <div class="admin-field"><label>新的管理員密碼（留空則不更改）</label><input type="password" id="adm-new-admin" placeholder="輸入新密碼"></div>
+    <div class="admin-field"><label>新的管理員密碼（留空不更改）</label><input type="password" id="adm-new-admin" placeholder="輸入新密碼"></div>
     <div class="admin-field"><label>確認管理員密碼</label><input type="password" id="adm-confirm-admin" placeholder="再次確認"></div>
-    <div class="admin-btns">
-      <button class="admin-save-btn" onclick="saveAdminPw()">💾 儲存</button>
-      <button class="admin-close-btn" onclick="closeAdminModal()">✕ 關閉</button>
-    </div>
+    <div class="admin-btns"><button class="admin-save-btn" onclick="saveAdminPw()">💾 儲存</button><button class="admin-close-btn" onclick="closeAdminModal()">✕ 關閉</button></div>
     <div class="admin-msg" id="adm-msg"></div>
   </div>
 </div>
-
 <div class="hdr">
   <div>
     <h1 id="hdr_title">⚡ DFI 噴漆報價成本計算系統</h1>
@@ -1983,7 +1978,6 @@ const WT_PRE={
 };
 
 function init(){
-  sessionStorage.removeItem('dfi_role');
   currentRole=null;
   document.getElementById('login-overlay').classList.remove('hidden');
   $('hdr_date').textContent=new Date().toLocaleDateString('zh-Hant',{year:'numeric',month:'2-digit',day:'2-digit'});
@@ -2908,15 +2902,15 @@ let currentRole=null,loginSelectedRole='sales';
 function getPw(r){return localStorage.getItem('dfi_pw_'+r)||PW_DEFAULTS[r];}
 function selectRole(role){loginSelectedRole=role;document.getElementById('tab-sales').classList.toggle('active',role==='sales');document.getElementById('tab-admin').classList.toggle('active',role==='admin');document.getElementById('login-role-label').textContent=role==='admin'?'管理員密碼 / Password Admin':'業務員密碼 / Password Sales';document.getElementById('login-pw').value='';document.getElementById('login-err').classList.remove('show');}
 function doLogin(){const pw=document.getElementById('login-pw').value;if(pw===getPw(loginSelectedRole)){currentRole=loginSelectedRole;document.getElementById('login-overlay').classList.add('hidden');const b=document.getElementById('role-badge');if(currentRole==='admin'){b.textContent='🔑 管理員';b.className='role-badge admin';}else{b.textContent='👤 業務員';b.className='role-badge sales';}document.getElementById('login-err').classList.remove('show');}else{document.getElementById('login-err').classList.add('show');document.getElementById('login-pw').value='';document.getElementById('login-pw').focus();}}
-function doLogout(){if(!confirm('確定要登出嗎？/ Yakin ingin keluar?'))return;currentRole=null;document.getElementById('login-pw').value='';selectRole('sales');document.getElementById('login-overlay').classList.remove('hidden');}
+function doLogout(){if(!confirm('確定要登出嗎？'))return;currentRole=null;document.getElementById('login-pw').value='';selectRole('sales');document.getElementById('login-overlay').classList.remove('hidden');}
 function onRoleBadgeClick(){if(currentRole==='admin')openAdminModal();}
 function openAdminModal(){['adm-new-sales','adm-confirm-sales','adm-new-admin','adm-confirm-admin'].forEach(id=>document.getElementById(id).value='');const m=document.getElementById('adm-msg');m.className='admin-msg';m.textContent='';document.getElementById('admin-modal').classList.add('show');}
 function closeAdminModal(){document.getElementById('admin-modal').classList.remove('show');}
-function saveAdminPw(){const msgEl=document.getElementById('adm-msg');const ns=document.getElementById('adm-new-sales').value;const cs=document.getElementById('adm-confirm-sales').value;const na=document.getElementById('adm-new-admin').value;const ca=document.getElementById('adm-confirm-admin').value;if(!ns){msgEl.textContent='❌ 業務員新密碼不可空白';msgEl.className='admin-msg err';return;}if(ns!==cs){msgEl.textContent='❌ 業務員兩次密碼不相符';msgEl.className='admin-msg err';return;}if(na&&na!==ca){msgEl.textContent='❌ 管理員兩次密碼不相符';msgEl.className='admin-msg err';return;}if(ns.length<6){msgEl.textContent='❌ 密碼至少需6個字元';msgEl.className='admin-msg err';return;}localStorage.setItem('dfi_pw_sales',ns);if(na)localStorage.setItem('dfi_pw_admin',na);msgEl.textContent='✅ 密碼已成功更新！';msgEl.className='admin-msg ok';setTimeout(closeAdminModal,1500);}
-// ── GOOGLE SHEETS SYNC ──
+function saveAdminPw(){const msgEl=document.getElementById('adm-msg');const ns=document.getElementById('adm-new-sales').value;const cs=document.getElementById('adm-confirm-sales').value;const na=document.getElementById('adm-new-admin').value;const ca=document.getElementById('adm-confirm-admin').value;if(!ns){msgEl.textContent='❌ 業務員新密碼不可空白';msgEl.className='admin-msg err';return;}if(ns!==cs){msgEl.textContent='❌ 兩次密碼不相符';msgEl.className='admin-msg err';return;}if(na&&na!==ca){msgEl.textContent='❌ 管理員密碼不相符';msgEl.className='admin-msg err';return;}if(ns.length<6){msgEl.textContent='❌ 密碼至少6個字元';msgEl.className='admin-msg err';return;}localStorage.setItem('dfi_pw_sales',ns);if(na)localStorage.setItem('dfi_pw_admin',na);msgEl.textContent='✅ 密碼已更新！';msgEl.className='admin-msg ok';setTimeout(closeAdminModal,1500);}
+// ── SHEETS SYNC ──
 const GS_URL='https://script.google.com/macros/s/AKfycbzRLjgDywzsxuZW7xRbCVq9P88GugcalYR2atKIiXncR1Xwlr2ZuP2fIsbMx2OiUyLk/exec';
 function gsPost(payload,statusId){const st=statusId?document.getElementById(statusId):null;if(st){st.textContent='⏳ 同步中...';st.style.color='var(--orange)';}const fn='gs_'+Date.now();const ifr=document.createElement('iframe');ifr.name=fn;ifr.style.display='none';document.body.appendChild(ifr);const frm=document.createElement('form');frm.method='GET';frm.action=GS_URL;frm.target=fn;frm.style.display='none';const inp=document.createElement('input');inp.type='hidden';inp.name='data';inp.value=JSON.stringify(payload);frm.appendChild(inp);document.body.appendChild(frm);frm.submit();setTimeout(()=>{try{document.body.removeChild(frm);document.body.removeChild(ifr);}catch(e){}if(st){st.textContent='✅ 已同步 Google Sheets';st.style.color='var(--green)';}setTimeout(()=>{if(st)st.textContent='';},5000);},3000);}
-function recToRow(r){return{date:r.date,type:r.mode==='wt'?'⚖️ 變壓器（按重量）':'📐 鐵箱/充電殼（按面積）',cust:r.cust||'',model:r.model||'',size:r.size||'',qty:r.qty||1,unit_cost:r.unit_cost!=null?r.unit_cost:'',unit_quote:r.unit_quote!=null?r.unit_quote:'',unit_label:r.unit_label||'',cost:r.cost||0,quote:r.quote||0,margin:r.margin!=null?r.margin:0,note:r.note||''};}
+function recToRow(r){return{date:r.date,type:r.mode==='wt'?'變壓器（按重量）':'鐵箱/充電殼（按面積）',cust:r.cust||'',model:r.model||'',size:r.size||'',qty:r.qty||1,unit_cost:r.unit_cost!=null?r.unit_cost:'',unit_quote:r.unit_quote!=null?r.unit_quote:'',unit_label:r.unit_label||'',cost:r.cost||0,quote:r.quote||0,margin:r.margin!=null?r.margin:0,note:r.note||''};}
 function syncAllToSheet(){if(!records.length){alert('目前無記錄可同步');return;}if(!confirm('確定將所有記錄（'+records.length+'筆）全量同步到 Google Sheets？'))return;gsPost({action:'sync_all',records:records.map(recToRow)},'gs-status');}
 function saveRec(mode){
   let rec;
@@ -2994,19 +2988,20 @@ function xlsxDownload(wb, fname) {
     document.body.appendChild(a); a.click();
     setTimeout(()=>{try{document.body.removeChild(a);}catch(e){}URL.revokeObjectURL(url);},1500);
   } catch(e) {
-    alert('下載失敗：'+e.message);
-    console.error('xlsxDownload error:', e);
+    alert('Excel 下載失敗：'+e.message);
+    console.error(e);
   }
 }
 function exportXLSX(){
   if(!records.length){alert('目前無報價記錄可匯出');return;}
 
-  const headers = ['日期','類型','客戶','型號/物件','重量/面積','數量',
-    '成本單價','報價單價','單位','成本總計(Rp)','報價總計(Rp)','毛利率(%)','備註'];
+  // ── Build data rows ──
+  const headers = ['日期','類型','客戶','型號 / 物件','重量 / 面積','數量',
+    '成本單價','報價單價','單位','成本總計 (Rp)','報價總計 (Rp)','毛利率 (%)','備註'];
 
   const rows = records.map(r => [
     r.date,
-    r.mode==='wt' ? '變壓器（按重量）' : '鐵箱/充電殼（按面積）',
+    r.mode==='wt' ? '⚖️ 變壓器（按重量）' : '📐 鐵箱/充電殼（按面積）',
     r.cust || '',
     r.model || '',
     r.size || '',
@@ -3020,19 +3015,72 @@ function exportXLSX(){
     r.note || ''
   ]);
 
+  // ── Create workbook ──
   const wb = XLSX.utils.book_new();
-  const ws = XLSX.utils.aoa_to_sheet([headers, ...rows]);
+  const wsData = [headers, ...rows];
+  const ws = XLSX.utils.aoa_to_sheet(wsData);
+
+  // ── Column widths ──
   ws['!cols'] = [
-    {wch:13},{wch:22},{wch:28},{wch:22},{wch:14},{wch:8},
-    {wch:14},{wch:14},{wch:10},{wch:16},{wch:16},{wch:10},{wch:20}
+    {wch:13},{wch:22},{wch:30},{wch:24},{wch:14},{wch:8},
+    {wch:16},{wch:16},{wch:10},{wch:18},{wch:18},{wch:12},{wch:20}
   ];
 
+  // ── Style header row (row 1) ──
+  const headerRange = XLSX.utils.decode_range(ws['!ref']);
+  for(let c = headerRange.s.c; c <= headerRange.e.c; c++){
+    const cellAddr = XLSX.utils.encode_cell({r:0, c});
+    if(!ws[cellAddr]) continue;
+    ws[cellAddr].s = {
+      fill:{fgColor:{rgb:'1A4F7A'}},
+      font:{color:{rgb:'FFFFFF'}, bold:true, sz:11},
+      alignment:{horizontal:'center', vertical:'center', wrapText:true},
+      border:{bottom:{style:'medium',color:{rgb:'FFFFFF'}}}
+    };
+  }
+
+  // ── Style data rows ──
+  for(let r = 1; r < wsData.length; r++){
+    const isEven = r % 2 === 0;
+    const rec = records[r-1];
+    const isWt = rec?.mode === 'wt';
+    for(let c = 0; c < headers.length; c++){
+      const cellAddr = XLSX.utils.encode_cell({r, c});
+      if(!ws[cellAddr]) ws[cellAddr] = {t:'s', v:''};
+      const bg = isEven ? 'F0F4F8' : 'FFFFFF';
+      ws[cellAddr].s = {
+        fill:{fgColor:{rgb:bg}},
+        font:{sz:10},
+        alignment:{vertical:'center', wrapText:false}
+      };
+      // Margin colour coding
+      if(c === 11 && rec){
+        const m = rec.margin || 0;
+        ws[cellAddr].s.font = {
+          sz:10, bold:true,
+          color:{rgb: m>=20?'1E6B3C': m>=10?'D4770A':'B02828'}
+        };
+      }
+      // Amount columns right-align
+      if([5,6,7,9,10,11].includes(c)){
+        ws[cellAddr].s.alignment = {horizontal:'right', vertical:'center'};
+      }
+      // Type column colour
+      if(c === 1){
+        ws[cellAddr].s.font = {sz:10, bold:true,
+          color:{rgb: isWt?'1A4F7A':'D4770A'}};
+      }
+    }
+  }
+
+  // ── Add summary sheet ──
   const total = records.length;
   const wtCount = records.filter(r=>r.mode==='wt').length;
   const arCount = records.filter(r=>r.mode==='ar').length;
   const avgMargin = total ? (records.reduce((s,r)=>s+(r.margin||0),0)/total) : 0;
   const totalRevenue = records.reduce((s,r)=>s+(r.quote||0),0);
   const totalCost = records.reduce((s,r)=>s+(r.cost||0),0);
+  const totalProfit = totalRevenue - totalCost;
 
   const wsSummary = XLSX.utils.aoa_to_sheet([
     ['DFI 噴漆報價系統 — 統計摘要'],
@@ -3040,14 +3088,14 @@ function exportXLSX(){
     [''],
     ['項目','數值'],
     ['總記錄筆數', total],
-    ['變壓器記錄', wtCount],
-    ['鐵箱/充電殼記錄', arCount],
+    ['變壓器記錄（按重量）', wtCount],
+    ['鐵箱/充電殼記錄（按面積）', arCount],
     ['平均毛利率', avgMargin.toFixed(1)+'%'],
-    ['報價總金額(Rp)', totalRevenue],
-    ['成本總金額(Rp)', totalCost],
-    ['毛利總金額(Rp)', totalRevenue - totalCost],
+    ['報價總金額 (Rp)', totalRevenue],
+    ['成本總金額 (Rp)', totalCost],
+    ['毛利總金額 (Rp)', totalProfit],
   ]);
-  wsSummary['!cols'] = [{wch:28},{wch:20}];
+  wsSummary['!cols'] = [{wch:30},{wch:22}];
 
   XLSX.utils.book_append_sheet(wb, wsSummary, '統計摘要');
   XLSX.utils.book_append_sheet(wb, ws, '報價記錄');
@@ -3366,6 +3414,15 @@ function downloadQuoteXLSX(mode) {
     const ws = XLSX.utils.aoa_to_sheet(rows);
     ws['!cols'] = [{wch:28},{wch:18},{wch:18},{wch:18},{wch:18},{wch:14},{wch:16}];
 
+    // Style title
+    if(ws['A1']) ws['A1'].s = {font:{bold:true,sz:14,color:{rgb:'1A4F7A'}},alignment:{horizontal:'left'}};
+    // Style section headers
+    ['A5','A9','A19','A28'].forEach(addr=>{ if(ws[addr]) ws[addr].s={font:{bold:true,sz:11,color:{rgb:'FFFFFF'}},fill:{fgColor:{rgb:'1A4F7A'}}}; });
+    // Style column headers
+    ['A10','B10','C10','D10','E10','A6','B6','C6','D6','E6','F6','G6'].forEach(addr=>{
+      if(ws[addr]) ws[addr].s={font:{bold:true,sz:10,color:{rgb:'FFFFFF'}},fill:{fgColor:{rgb:'2772AA'}},alignment:{horizontal:'center'}};
+    });
+
     XLSX.utils.book_append_sheet(wb, ws, '變壓器成本報價單');
     addAttachmentsToWorkbook(wb, 'wt');
     const fname = 'DFI_變壓器報價單_' + (cust||'').replace(/[\/\\?%*:|"<>]/g,'').slice(0,15) + '_' + new Date().toISOString().slice(0,10) + '.xlsx';
@@ -3431,6 +3488,7 @@ function downloadQuoteXLSX(mode) {
 
     const ws = XLSX.utils.aoa_to_sheet(rows);
     ws['!cols'] = [{wch:26},{wch:20},{wch:22},{wch:22},{wch:12},{wch:18},{wch:18}];
+    if(ws['A1']) ws['A1'].s = {font:{bold:true,sz:14,color:{rgb:'D4770A'}},alignment:{horizontal:'left'}};
 
     XLSX.utils.book_append_sheet(wb, ws, '面積成本報價單');
     addAttachmentsToWorkbook(wb, 'ar');
@@ -3783,7 +3841,7 @@ function addAttachmentsToWorkbook(wb, mode) {
   ];
   const wsInfo = XLSX.utils.aoa_to_sheet(listRows);
   wsInfo['!cols'] = [{wch:5},{wch:35},{wch:15},{wch:20}];
-  // wsInfo['A1'].s removed (style not supported in free SheetJS)
+  if (wsInfo['A1']) wsInfo['A1'].s = {font:{bold:true,sz:13,color:{rgb:'1A4F7A'}}};
   XLSX.utils.book_append_sheet(wb, wsInfo, '附件清單');
 
   // Sheet per file
@@ -3823,6 +3881,7 @@ function addAttachmentsToWorkbook(wb, mode) {
         ['檔案名稱:', f.name],
       ]);
       ws['!cols'] = [{wch:50},{wch:40}];
+      if (ws['A1']) ws['A1'].s = {font:{bold:true,sz:12,color:{rgb:'B02828'}}};
       XLSX.utils.book_append_sheet(wb, ws, sheetName);
     }
   });
