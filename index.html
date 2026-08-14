@@ -2984,6 +2984,15 @@ function exportCSV(){
   a.click();
 }
 
+function xlsxDownload(wb, fname) {
+  const wbout = XLSX.write(wb, {bookType:'xlsx', type:'array'});
+  const blob = new Blob([wbout], {type:'application/octet-stream'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = fname;
+  document.body.appendChild(a); a.click();
+  setTimeout(()=>{document.body.removeChild(a);URL.revokeObjectURL(url);},1000);
+}
 function exportXLSX(){
   if(!records.length){alert('目前無報價記錄可匯出');return;}
 
@@ -3093,7 +3102,13 @@ function exportXLSX(){
   XLSX.utils.book_append_sheet(wb, ws, '報價記錄');
 
   const fname = 'DFI_報價記錄_' + new Date().toISOString().slice(0,10) + '.xlsx';
-  XLSX.writeFile(wb, fname);
+  const wbout = XLSX.write(wb, {bookType:'xlsx', type:'array'});
+  const blob = new Blob([wbout], {type:'application/octet-stream'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = fname;
+  document.body.appendChild(a); a.click();
+  setTimeout(()=>{document.body.removeChild(a);URL.revokeObjectURL(url);},1000);
 }
 
 function renderCustDrops(){const o="<option value=''>"+ T('-- 選擇客戶 --','-- Pilih Pelanggan --') +"</option>"+customers.map(c=>`<option value="${c.name}">${c.no?c.no+'. ':''}${c.name}</option>`).join('');$('w_cust').innerHTML=o;$('a_cust').innerHTML=o;}
@@ -3418,7 +3433,7 @@ function downloadQuoteXLSX(mode) {
     XLSX.utils.book_append_sheet(wb, ws, '變壓器成本報價單');
     addAttachmentsToWorkbook(wb, 'wt');
     const fname = 'DFI_變壓器報價單_' + (cust||'').replace(/[\/\\?%*:|"<>]/g,'').slice(0,15) + '_' + new Date().toISOString().slice(0,10) + '.xlsx';
-    XLSX.writeFile(wb, fname);
+    xlsxDownload(wb, fname);
 
   } else {
     // ── AR mode ──
@@ -3485,7 +3500,7 @@ function downloadQuoteXLSX(mode) {
     XLSX.utils.book_append_sheet(wb, ws, '面積成本報價單');
     addAttachmentsToWorkbook(wb, 'ar');
     const fname = 'DFI_鐵箱報價單_' + (cust||'').replace(/[\/\\?%*:|"<>]/g,'').slice(0,15) + '_' + new Date().toISOString().slice(0,10) + '.xlsx';
-    XLSX.writeFile(wb, fname);
+    xlsxDownload(wb, fname);
   }
 }
 
