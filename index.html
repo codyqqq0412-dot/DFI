@@ -3131,14 +3131,16 @@ function removeFinRow(i) {
 
 function renderFinRows() {
   const cont = document.getElementById('fin_rows_container');
-  cont.innerHTML = finRows.map((r, i) => `
+  cont.innerHTML = finRows.map((r, i) => {
+    const spec = `${r.t||''}*${r.L||''}*${r.W||''}*${r.P||''}P`;
+    return `
     <div class="fin-row" id="finrow_${i}">
-      <div>
-        <input type="text" class="spec-input" value="${r.spec||''}"
-          placeholder="1.0*600*190*14P"
-          oninput="parseFinSpec(${i},this.value)"
-          style="width:100%" autocomplete="off">
-        <div class="fin-parse-hint" id="fin_hint_${i}"></div>
+      <!-- 規格字串：唯讀自動生成 -->
+      <div style="display:flex;align-items:center">
+        <span style="font-family:'Courier New',monospace;font-size:12.5px;font-weight:700;color:var(--blue2);
+          background:var(--blue3);border:1px solid var(--blue4);border-radius:5px;
+          padding:5px 9px;white-space:nowrap;min-width:120px"
+          id="fin_spec_label_${i}">${spec}</span>
       </div>
       <div><input type="number" value="${r.t}" step="0.1" min="0.1"
         oninput="updateFinField(${i},'t',this.value)" style="width:100%" autocomplete="off"></div>
@@ -3153,17 +3155,17 @@ function renderFinRows() {
           oninput="updateFinField(${i},'sets',this.value)" style="width:100%" autocomplete="off">
       </div>
       <div>
-        <button class="btn btn-sm btn-red" onclick="removeFinRow(${i})" 
+        <button class="btn btn-sm btn-red" onclick="removeFinRow(${i})"
           title="刪除" ${finRows.length<=1?'disabled':''}>✕</button>
       </div>
     </div>
-    <div style="font-size:11px;color:var(--muted);padding:2px 10px 6px;background:var(--gray);margin-top:-8px;border-radius:0 0 7px 7px;border:1px solid var(--border);border-top:none">
+    <div style="font-size:11px;color:var(--muted);padding:3px 10px 7px;background:var(--gray);margin-top:-8px;border-radius:0 0 7px 7px;border:1px solid var(--border);border-top:none">
       單組重量：<strong id="fin_row_wt_${i}">—</strong> kg　|　
       合計重量：<strong id="fin_row_total_${i}">—</strong> kg
       （<span id="fin_row_sets_${i}">${r.sets||1}</span>組 × <span id="fin_row_p_${i}">${r.P}</span>片）
       <span id="fin_row_formula_${i}" style="color:var(--blue2);font-family:monospace;font-size:10.5px"></span>
     </div>
-  `).join('');
+  `}).join('');
   updateFinTotals();
 }
 
@@ -3190,10 +3192,13 @@ function parseFinSpec(i, val) {
 function updateFinField(i, field, val) {
   finRows[i][field] = field === 'sets' || field === 'P' || field === 'L' || field === 'W'
     ? parseInt(val) : parseFloat(val);
-  // rebuild spec string
   const r = finRows[i];
   finRows[i].spec = r.t + '*' + r.L + '*' + r.W + '*' + r.P + 'P';
+  // Update the spec label display (no full re-render to preserve focus)
+  const specLbl = document.getElementById('fin_spec_label_' + i);
+  if(specLbl) specLbl.textContent = finRows[i].spec;
   updateFinTotals();
+  scheduleAutosave();
 }
 
 // DFI 實際生產公式 / Formula Produksi DFI (dari XLS SINTRA):
@@ -3341,7 +3346,16 @@ function downloadQuoteXLSX(mode) {
       ['人工費用', ck('ck_labor'), pf('w_hr')+'hr × '+pf('w_ppl')+'人',
         ck('ck_labor')?($('cs_labor').textContent.split('→')[1]||'').trim(): T('停用','Nonaktif')],
       ['包裝', ck('ck_pkg'), '—', ck('ck_pkg')?'Rp '+pf('w_pkg_rp').toLocaleString('en-US'): T('停用','Nonaktif')],
-      ['運輸', ck('ck_ship'), '見計算明細', ck('ck_ship')?($('cs_ship').textContent||'停用'): T('停用','Nonaktif')],
+      (()=>{
+        if(!ck('ck_ship')) return ['運輸', false, '—', T('停用','Nonaktif')];
+        const oilRp=pf('w_ship_oil_rp'), dist=pf('w_ship_dist'), fuel=pf('w_ship_fuel');
+        const cap=pf('w_ship_cap')||3000, share=pf('w_ship_self_wt')||300, drv=pf('w_ship_driver')||0;
+        const fuelCost=dist*2*fuel/100*oilRp;
+        const total=fuelCost+drv;
+        const perUnit=Math.round(total*(share/(cap+share)||1));
+        const detail=`來回${dist*2}km × ${fuel}L/100km × Rp${oilRp.toLocaleString('en-US')} + 司機Rp${drv.toLocaleString('en-US')} = Rp${total.toLocaleString('en-US')}；分攤(${share}kg÷${cap+share}kg) = Rp${perUnit.toLocaleString('en-US')}/台`;
+        return ['運輸', true, detail, 'Rp '+perUnit.toLocaleString('en-US')];
+      })(),
     ];
 
     // ── Build worksheet data ──
@@ -3988,6 +4002,7 @@ const AUTOSAVE_FIN_FIELDS = [
   'fp_quote_kg','fp_mat_cost','fp_profit',
   'fin_B1','fin_B2','fin_C','fin_d',
 ];
+let _autosaveTimer = null;
 function scheduleAutosave(){
   clearTimeout(_autosaveTimer);
   _autosaveTimer = setTimeout(doAutosave, 800);
