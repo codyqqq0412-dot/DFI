@@ -270,11 +270,7 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
 
 <div id="login-overlay">
   <div class="login-box">
-    <div class="login-logo">
-      <div class="logo-icon">🏭</div>
-      <h2>DFI 噴漆報價系統</h2>
-      <p>Sistem Penawaran Pengecatan DFI</p>
-    </div>
+    <div class="login-logo"><div class="logo-icon">🏭</div><h2>DFI 噴漆報價系統</h2><p>Sistem Penawaran Pengecatan DFI</p></div>
     <div class="login-role-tabs">
       <div class="login-role-tab active" id="tab-sales" onclick="selectRole('sales')">👤 業務 / Sales</div>
       <div class="login-role-tab" id="tab-admin" onclick="selectRole('admin')">🔑 管理員 / Admin</div>
@@ -285,7 +281,7 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
     </div>
     <button class="login-btn" onclick="doLogin()">🔓 登入 / Masuk</button>
     <div class="login-err" id="login-err">❌ 密碼錯誤 / Password salah</div>
-    <div class="login-footer">DFI — 報價及成本計算系統 ·&nbsp;© 2026</div>
+    <div class="login-footer">DFI — 報價及成本計算系統 · © 2026</div>
   </div>
 </div>
 
@@ -357,7 +353,7 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
           <div class="g2">
             <div class="fg"><label><span class="i18n" data-zh="客戶名稱" data-id="Nama Pelanggan">客戶名稱</span></label><select id="w_cust" autocomplete="off"><option value="">-- 選擇客戶 --</option></select></div>
             <div class="fg">
-              <label>變壓器型號</label>
+              <label><span class="i18n" data-zh="變壓器型號" data-id="Tipe Trafo">變壓器型號</span></label>
               <select id="w_model" onchange="loadWtPreset();toggleCustomModel()" autocomplete="off">
                 <option value="">-- 選擇 / 自訂 --</option>
                 <option value="50">50 KVA</option>
@@ -376,10 +372,10 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
                 oninput="calcWt()" autocomplete="off" name="dfi_5541b221">
             </div>
           </div>
-          <div class="sec" style="margin-top:4px">各部件重量 (kg / 台)</div>
+          <div class="sec" style="margin-top:4px"><span class="i18n" data-zh="各部件重量 (kg / 台)" data-id="Berat Komponen (kg / unit)">各部件重量 (kg / 台)</span></div>
           <div class="g4">
-            <div class="fg"><label>🛢️ 桶子 Tank</label><input type="number" id="w_wt_tank" value="100" oninput="recalcWeight()" autocomplete="off"></div>
-            <div class="fg"><label>🔲 蓋子 Cover</label><input type="number" id="w_wt_cover" value="25" oninput="recalcWeight()" autocomplete="off"></div>
+            <div class="fg"><label><span class="i18n" data-zh="🛢️ 桶子 Tank" data-id="Tangki / Tank">🛢️ 桶子 Tank</span></label><input type="number" id="w_wt_tank" value="100" oninput="recalcWeight()" autocomplete="off"></div>
+            <div class="fg"><label><span class="i18n" data-zh="🔲 蓋子 Cover" data-id="Tutup / Cover">🔲 蓋子 Cover</span></label><input type="number" id="w_wt_cover" value="25" oninput="recalcWeight()" autocomplete="off"></div>
             <div class="fg">
               <label>🌡️ 散熱片 Fin
                 <span style="color:var(--light);font-size:10px" id="fin_src_hint">從散熱片計算器</span>
@@ -396,7 +392,7 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
               </div>
               <div class="hint" id="fin_hint">從散熱片頁計算後自動帶入；無散熱片請按「✕ 無」或直接填 0</div>
             </div>
-            <div class="fg"><label>🔧 繞線芯夾 Clamp</label><input type="number" id="w_wt_clamp2" value="10" oninput="recalcWeight()" autocomplete="off"></div>
+            <div class="fg"><label><span class="i18n" data-zh="🔧 繞線芯夾 Clamp" data-id="Core Clamp">🔧 繞線芯夾 Clamp</span></label><input type="number" id="w_wt_clamp2" value="10" oninput="recalcWeight()" autocomplete="off"></div>
           </div>
           <div class="g3" style="margin-top:2px">
             <div class="fg">
@@ -573,7 +569,7 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
                 <!-- Buy mode -->
                 <div id="fin_buy_panel">
                   <div class="fg" style="margin-bottom:0">
-                    <label style="font-size:11px">散熱片外購報價 / Harga Beli (Rp / kg)</label>
+                    <label style="font-size:11px"><span class="i18n" data-zh="散熱片外購報價 / Harga Beli (Rp / kg)" data-id="Harga Beli Radiator (Rp / kg)">散熱片外購報價 / Harga Beli (Rp / kg)</span></label>
                     <input type="number" id="w_fin_kg" value="26000" oninput="calcWt()" style="width:100%;padding:5px 8px;border:1.5px solid var(--border);border-radius:5px" autocomplete="off">
                     <div style="font-size:10px;color:var(--muted);margin-top:2px">目前市場：Rp 26,000/kg（參考值）</div>
                   </div>
@@ -671,7 +667,7 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
         <div class="cost-item" id="ci_clear">
           <div class="cost-item-header" onclick="toggleCI('ci_clear')">
             <input type="checkbox" id="ck_clear" onchange="calcWt()" onclick="event.stopPropagation()">
-            <span class="cost-item-label">💧 桶內透明漆（防潮 40µm）</span>
+            <span class="cost-item-label"><span class="i18n" data-zh="💧 桶內透明漆（防潮 40µm）" data-id="Cat Bening Anti-lembab dalam Tangki (40µm)">💧 桶內透明漆（防潮 40µm）</span></span>
             <span class="cost-item-summary" id="cs_clear">停用</span>
             <span class="cost-item-toggle-icon">▼</span>
           </div>
@@ -713,7 +709,7 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
         <div class="cost-item open" id="ci_clamp">
           <div class="cost-item-header" onclick="toggleCI('ci_clamp')">
             <input type="checkbox" id="ck_clamp" checked onchange="calcWt()" onclick="event.stopPropagation()">
-            <span class="cost-item-label">🔧 Core Clamp 繞線芯夾</span>
+            <span class="cost-item-label"><span class="i18n" data-zh="🔧 Core Clamp 繞線芯夾" data-id="Core Clamp (Penjepit Inti)">🔧 Core Clamp 繞線芯夾</span></span>
             <span class="cost-item-summary" id="cs_clamp">—</span>
             <span class="cost-item-toggle-icon">▼</span>
           </div>
@@ -737,7 +733,7 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
         <div class="cost-item open" id="ci_lpg">
           <div class="cost-item-header" onclick="toggleCI('ci_lpg')">
             <input type="checkbox" id="ck_lpg" checked onchange="calcWt()" onclick="event.stopPropagation()">
-            <span class="cost-item-label">🔥 LPG 烤漆瓦斯</span>
+            <span class="cost-item-label"><span class="i18n" data-zh="🔥 LPG 烤漆瓦斯" data-id="LPG Oven / Gas">🔥 LPG 烤漆瓦斯</span></span>
             <span class="cost-item-summary" id="cs_lpg">—</span>
             <span class="cost-item-toggle-icon">▼</span>
           </div>
@@ -758,7 +754,7 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
         <div class="cost-item open" id="ci_labor">
           <div class="cost-item-header" onclick="toggleCI('ci_labor')">
             <input type="checkbox" id="ck_labor" checked onchange="calcWt()" onclick="event.stopPropagation()">
-            <span class="cost-item-label">👷 人工費用</span>
+            <span class="cost-item-label"><span class="i18n" data-zh="👷 人工費用" data-id="Biaya Tenaga Kerja">👷 人工費用</span></span>
             <span class="cost-item-summary" id="cs_labor">—</span>
             <span class="cost-item-toggle-icon">▼</span>
           </div>
@@ -766,7 +762,7 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
             <div class="g3">
               <div class="fg"><label class="i18n" data-zh="噴漆工時 (hr / 台)" data-id="Jam Kerja Pengecatan (hr / unit)">噴漆工時 (hr / 台)</label><input type="number" id="w_hr" value="8" step="0.5" oninput="calcWt()" autocomplete="off"></div>
               <div class="fg"><label class="i18n" data-zh="操作人數" data-id="Jumlah Operator">操作人數</label><input type="number" id="w_ppl" value="2" min="1" oninput="calcWt()" autocomplete="off"></div>
-              <div class="fg"><label class="i18n" data-zh="工人月薪 (Rp)" data-id="Gaji Bulanan Pekerja (Rp)">工人月薪 (Rp)</label><input type="number" id="w_salary" value="5558515" oninput="calcWt()" autocomplete="off"></div>
+              <div class="fg"><label class="i18n" data-zh="工人月薪 (Rp)" data-id="Gaji Bulanan Pekerja (Rp)">工人月薪 (Rp) <span style="color:var(--light);font-size:10px" class="i18n" data-zh="從基本參數同步" data-id="Dari Parameter Dasar">從基本參數同步</span></label><input class="ro" type="text" id="w_salary" readonly style="background:var(--blue3);color:var(--blue2)" autocomplete="off"></div>
             </div>
           </div>
         </div>
@@ -794,14 +790,14 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
           </div>
           <div class="cost-item-body">
             <div class="g3">
-              <div class="fg"><label>汽油單價 (Rp / L)</label><input type="number" id="w_ship_oil_rp" value="10000" oninput="calcWt();updateShipCalc()" autocomplete="off"></div>
+              <div class="fg"><label><span class="i18n" data-zh="汽油單價 (Rp / L)" data-id="Harga Bensin (Rp / L)">汽油單價 (Rp / L)</span></label><input type="number" id="w_ship_oil_rp" value="10000" oninput="calcWt();updateShipCalc()" autocomplete="off"></div>
               <div class="fg"><label><span class="i18n" data-zh="客戶" data-id="Pelanggan">客戶</span>距離 (km, 單程)</label><input type="number" id="w_ship_dist" value="50" oninput="calcWt();updateShipCalc()" autocomplete="off"></div>
-              <div class="fg"><label>貨車油耗 (L / 100km)</label><input type="number" id="w_ship_fuel" value="15" step="0.5" oninput="calcWt();updateShipCalc()" autocomplete="off"></div>
+              <div class="fg"><label><span class="i18n" data-zh="貨車油耗 (L / 100km)" data-id="Konsumsi BBM Truk (L / 100km)">貨車油耗 (L / 100km)</span></label><input type="number" id="w_ship_fuel" value="15" step="0.5" oninput="calcWt();updateShipCalc()" autocomplete="off"></div>
             </div>
             <div class="g3">
-              <div class="fg"><label>貨車滿載重量 (kg)</label><input type="number" id="w_ship_load" value="3000" oninput="calcWt();updateShipCalc()" autocomplete="off"></div>
-              <div class="fg"><label>此訂單分攤重量 (kg)</label><input type="number" id="w_ship_share" value="200" oninput="calcWt();updateShipCalc()" autocomplete="off"></div>
-              <div class="fg"><label>司機日薪 (Rp)</label><input type="number" id="w_ship_driver" value="300000" oninput="calcWt();updateShipCalc()" autocomplete="off"></div>
+              <div class="fg"><label><span class="i18n" data-zh="貨車滿載重量 (kg)" data-id="Kapasitas Muat Truk (kg)">貨車滿載重量 (kg)</span></label><input type="number" id="w_ship_load" value="3000" oninput="calcWt();updateShipCalc()" autocomplete="off"></div>
+              <div class="fg"><label><span class="i18n" data-zh="此訂單分攤重量 (kg)" data-id="Berat Alokasi Pesanan Ini (kg)">此訂單分攤重量 (kg)</span></label><input type="number" id="w_ship_share" value="200" oninput="calcWt();updateShipCalc()" autocomplete="off"></div>
+              <div class="fg"><label><span class="i18n" data-zh="司機日薪 (Rp)" data-id="Upah Harian Sopir (Rp)">司機日薪 (Rp)</span></label><input type="number" id="w_ship_driver" value="300000" oninput="calcWt();updateShipCalc()" autocomplete="off"></div>
             </div>
             <div class="formula-box" style="margin-top:8px">
               <div class="f-title">運費計算明細</div>
@@ -814,14 +810,14 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
 
         <!-- Cost breakdown -->
         <div class="card" style="margin-top:14px">
-          <div class="card-title">📊 每公斤成本拆分 (Rp / kg)</div>
+          <div class="card-title"><span class="i18n" data-zh="📊 每公斤成本拆分 (Rp / kg)" data-id="Rincian Biaya per kg">📊 每公斤成本拆分 (Rp / kg)</span></div>
           <div class="breakdown">
             <div class="brow" id="brow_shell"><span class="lbl i18n" data-zh="🏗️ 外殼外包" data-id="🏗️ Outsourcing Cangkang">🏗️ 外殼外包</span><span class="amt" id="wb_shell">—</span></div>
             <div class="brow" id="brow_fin"><span class="lbl i18n" data-zh="🌡️ 散熱片" data-id="🌡️ Sirip Pendingin">🌡️ 散熱片</span><span class="amt" id="wb_fin">—</span></div>
             <div class="brow" id="brow_weld"><span class="lbl i18n" data-zh="🔩 焊接外殼" data-id="🔩 Las Cangkang">🔩 焊接外殼</span><span class="amt" id="wb_weld">—</span></div>
             <div class="brow" id="brow_pr"><span class="lbl i18n" data-zh="🎨 底漆" data-id="🎨 Cat Dasar">🎨 底漆</span><span class="amt" id="wb_pr">—</span></div>
             <div class="brow" id="brow_tc"><span class="lbl i18n" data-zh="✨ 表漆" data-id="✨ Cat Atas">✨ 表漆</span><span class="amt" id="wb_tc">—</span></div>
-            <div class="brow" id="brow_sp"><span class="lbl">💧 特殊塗料</span><span class="amt" id="wb_sp">—</span></div>
+            <div class="brow" id="brow_sp"><span class="lbl"><span class="i18n" data-zh="💧 特殊塗料" data-id="Cat Khusus">💧 特殊塗料</span></span><span class="amt" id="wb_sp">—</span></div>
             <div class="brow" id="brow_clamp"><span class="lbl i18n" data-zh="🔧 Core Clamp" data-id="🔧 Core Clamp">🔧 Core Clamp</span><span class="amt" id="wb_clamp">—</span></div>
             <div class="brow" id="brow_lpg"><span class="lbl i18n" data-zh="🔥 LPG 烤漆" data-id="🔥 LPG Oven">🔥 LPG 烤漆</span><span class="amt" id="wb_lpg">—</span></div>
             <div class="brow" id="brow_labor"><span class="lbl i18n" data-zh="👷 人工費用" data-id="👷 Tenaga Kerja">👷 人工費用</span><span class="amt" id="wb_labor">—</span></div>
@@ -1004,9 +1000,9 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
                 <input type="number" id="pw_pr_um" value="60" oninput="calcPowder()" style="border-color:var(--blue)" autocomplete="off">
               </div>
               <div class="fg" style="margin-bottom:0">
-                <label>漆粉密度 (g/cm³)</label>
+                <label><span class="i18n" data-zh="漆粉密度 (g/cm³)" data-id="Densitas Bubuk Cat (g/cm³)">漆粉密度 (g/cm³)</span></label>
                 <input type="number" id="pw_pr_den" value="1.2" step="0.01" oninput="calcPowder()" autocomplete="off">
-                <div class="hint">粉末塗料通常 1.1~1.4</div>
+                <div class="hint"><span class="i18n" data-zh="粉末塗料通常 1.1~1.4" data-id="Cat serbuk biasanya 1.1~1.4 g/cm³">粉末塗料通常 1.1~1.4</span></div>
               </div>
               <div class="fg" style="margin-bottom:0">
                 <label class="i18n" data-zh="底漆單價 (Rp/kg)" data-id="Harga Satuan Cat Dasar (Rp/kg)">底漆單價 (Rp/kg)</label>
@@ -1035,7 +1031,7 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
                 <input type="number" id="pw_tc_um" value="80" oninput="calcPowder()" style="border-color:var(--purple)" autocomplete="off">
               </div>
               <div class="fg" style="margin-bottom:0">
-                <label>漆粉密度 (g/cm³)</label>
+                <label><span class="i18n" data-zh="漆粉密度 (g/cm³)" data-id="Densitas Bubuk Cat (g/cm³)">漆粉密度 (g/cm³)</span></label>
                 <input type="number" id="pw_tc_den" value="1.2" step="0.01" oninput="calcPowder()" autocomplete="off">
               </div>
               <div class="fg" style="margin-bottom:0">
@@ -1202,7 +1198,7 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
               ⚠️ <span>此項計算因換色（尤其深色→淺色）造成的<strong>額外漆粉損耗</strong>。只有本訂單需要換色時才啟用。</span>
             </div>
             <div class="fg">
-              <label>換色情境</label>
+              <label><span class="i18n" data-zh="換色情境" data-id="Skenario Ganti Warna">換色情境</span></label>
               <select id="a_cc_type" onchange="setCcType()" autocomplete="off">
                 <option value="dark2light">深色 → 淺色（最高損耗，建議+25%）</option>
                 <option value="med2light" selected>中色 → 淺色（建議+15%）</option>
@@ -1213,7 +1209,7 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
             </div>
             <div class="g2">
               <div class="fg">
-                <label>換色額外損耗率 (%)</label>
+                <label><span class="i18n" data-zh="換色額外損耗率 (%)" data-id="Losses Tambahan Ganti Warna (%)">換色額外損耗率 (%)</span></label>
                 <div class="sl-row">
                   <input type="range" id="a_cc_loss" min="2" max="60" value="15" step="1" oninput="calcCcLoss()">
                   <div class="sl-val" id="a_cc_loss_v" style="background:var(--orange2);color:var(--orange)">15%</div>
@@ -1221,7 +1217,7 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
                 <div class="hint" id="a_cc_hint">中色→淺色：管路殘留+補噴，建議15~25%</div>
               </div>
               <div class="fg">
-                <label>適用漆層</label>
+                <label><span class="i18n" data-zh="適用漆層" data-id="Lapisan yang Berlaku">適用漆層</span></label>
                 <select id="a_cc_layer" onchange="calcCcLoss()" autocomplete="off">
                   <option value="tc">表漆（Top Coat，通常只表漆換色）</option>
                   <option value="both">底漆+表漆均換色</option>
@@ -1281,7 +1277,7 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
             <div class="fg">
               <label><span class="i18n" data-zh="批次噴漆面積 (cm²)" data-id="Luas Pengecatan Batch (cm²)">批次噴漆面積 (cm²)</span> <span style="color:var(--light);font-size:10px">留空=自動用N件合計</span></label>
               <input type="number" id="a_lpg_batch_area" placeholder="留空則自動帶入本批N件合計面積" oninput="calcLpgAuto()" autocomplete="off">
-              <div class="hint">可填全月或全批次總面積，做更精準的分攤計算</div>
+              <div class="hint"><span class="i18n" data-zh="可填全月或全批次總面積，做更精準的分攤計算" data-id="Isi total luas batch untuk alokasi lebih akurat">可填全月或全批次總面積，做更精準的分攤計算</span></div>
             </div>
 
             <div class="g3" style="margin-top:6px">
@@ -1456,9 +1452,9 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
 
         <!-- 快速參考表 -->
         <div style="margin-top:10px">
-          <div class="sec">快速參考：漆膜厚度 vs 成本 / Referensi Cepat: Tebal vs Biaya</div>
+          <div class="sec"><span class="i18n" data-zh="快速參考：漆膜厚度 vs 成本 / Referensi Cepat: Tebal vs Biaya" data-id="Referensi Cepat: Tebal vs Biaya">快速參考：漆膜厚度 vs 成本 / Referensi Cepat: Tebal vs Biaya</span></div>
           <table>
-            <tr><th>漆膜厚度 / Tebal Film</th><th>成本 Min / Biaya Min</th><th>成本 Max / Biaya Max</th><th>建議報價 / Harga Anjuran</th></tr>
+            <tr><th><span class="i18n" data-zh="漆膜厚度 / Tebal Film" data-id="Tebal Film">漆膜厚度 / Tebal Film</span></th><th><span class="i18n" data-zh="成本 Min / Biaya Min" data-id="Biaya Min">成本 Min / Biaya Min</span></th><th><span class="i18n" data-zh="成本 Max / Biaya Max" data-id="Biaya Max">成本 Max / Biaya Max</span></th><th><span class="i18n" data-zh="建議報價 / Harga Anjuran" data-id="Harga Anjuran">建議報價 / Harga Anjuran</span></th></tr>
             <tr><td>&lt; 100µm</td><td>Rp 8/cm²</td><td>Rp 10/cm²</td><td>Rp 12~15</td></tr>
             <tr><td>100~200µm</td><td>Rp 12.5/cm²</td><td>Rp 15/cm²</td><td>Rp 18~22</td></tr>
             <tr><td>&gt; 200µm</td><td>Rp 17/cm²</td><td>Rp 24/cm²</td><td>Rp 25~35</td></tr>
@@ -1467,9 +1463,9 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
 
         <!-- 多物件清單 -->
         <div class="multi-list-section" style="margin-top:10px">
-          <div class="sec">多物件合計清單 / Daftar Multi Item</div>
+          <div class="sec"><span class="i18n" data-zh="多物件合計清單 / Daftar Multi Item" data-id="Daftar Multi Item">多物件合計清單 / Daftar Multi Item</span></div>
           <table>
-            <tr><th>物件 / Barang</th><th>面積(cm²) / Luas</th><th>件數 / Qty</th><th>成本(Rp) / Biaya</th><th>報價(Rp) / Harga</th><th></th></tr>
+            <tr><th><span class="i18n" data-zh="物件 / Barang" data-id="Barang">物件 / Barang</span></th><th><span class="i18n" data-zh="面積(cm²) / Luas" data-id="Luas (cm²)">面積(cm²) / Luas</span></th><th><span class="i18n" data-zh="件數 / Qty" data-id="Qty">件數 / Qty</span></th><th><span class="i18n" data-zh="成本(Rp) / Biaya" data-id="Biaya (Rp)">成本(Rp) / Biaya</span></th><th><span class="i18n" data-zh="報價(Rp) / Harga" data-id="Harga (Rp)">報價(Rp) / Harga</span></th><th></th></tr>
             <tbody id="multi_tbody"><tr><td colspan="6" style="color:var(--light);text-align:center;padding:10px">點擊「加入清單」/ Klik "Tambah"</td></tr></tbody>
             <tfoot id="multi_foot" style="display:none">
               <tr style="background:var(--gray2);font-weight:700"><td colspan="3">合計 / Total</td><td id="multi_ctot">—</td><td id="multi_qtot">—</td><td></td></tr>
@@ -1508,41 +1504,41 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
     <div>
       <!-- SPCC 鐵板母材 -->
       <div class="card">
-        <div class="card-title">🔩 SPCC-SD 鐵板母材價格 / Harga Bahan Baku Plat SPCC-SD</div>
+        <div class="card-title"><span class="i18n" data-zh="🔩 SPCC-SD 鐵板母材價格 / Harga Bahan Baku Plat SPCC-SD" data-id="Harga Bahan Baku Plat SPCC-SD">🔩 SPCC-SD 鐵板母材價格 / Harga Bahan Baku Plat SPCC-SD</span></div>
         <div class="g2">
           <div class="fg">
-            <label>SPCC 含稅價 (Rp / kg)</label>
+            <label><span class="i18n" data-zh="SPCC 含稅價 (Rp / kg)" data-id="Harga SPCC inkl. pajak (Rp / kg)">SPCC 含稅價 (Rp / kg)</span></label>
             <input type="number" id="fp_spcc_tax" value="16000" oninput="calcFinCost()" autocomplete="off">
-            <div class="hint">目前漲至 Rp 16,000/kg（含稅） / Sekarang naik Rp 16,000/kg (termasuk PPN)</div>
+            <div class="hint"><span class="i18n" data-zh="目前漲至 Rp 16,000/kg（含稅） / Sekarang naik Rp 16,000/kg (termasuk PPN)" data-id="Sekarang naik Rp 16,000/kg (termasuk PPN)">目前漲至 Rp 16,000/kg（含稅） / Sekarang naik Rp 16,000/kg (termasuk PPN)</span></div>
           </div>
           <div class="fg">
             <label>SPCC 未稅價 (Rp / kg) <span style="color:var(--light);font-size:10px"><span class="i18n" data-zh="自動" data-id="Otomatis">自動</span></span></label>
             <input class="ro" type="text" id="fp_spcc_notax" readonly autocomplete="off" name="dfi_dbf043f7">
-            <div class="hint">含稅 ÷ 1.11 / Termasuk pajak ÷ 1.11</div>
+            <div class="hint"><span class="i18n" data-zh="含稅 ÷ 1.11 / Termasuk pajak ÷ 1.11" data-id="Harga inkl. pajak ÷ 1.11">含稅 ÷ 1.11 / Termasuk pajak ÷ 1.11</span></div>
           </div>
         </div>
         <div class="g2">
           <div class="fg">
-            <label>生產損失率 / Tingkat Losses Produksi (%)</label>
+            <label><span class="i18n" data-zh="生產損失率 / Tingkat Losses Produksi (%)" data-id="Tingkat Losses Produksi (%)">生產損失率 / Tingkat Losses Produksi (%)</span></label>
             <input type="number" id="fp_loss_pct" value="5" step="0.5" oninput="calcFinCost()" autocomplete="off">
-            <div class="hint">折波沖壓損失（通常5%）/ Losses press corrugated (biasanya 5%)</div>
+            <div class="hint"><span class="i18n" data-zh="折波沖壓損失（通常5%）/ Losses press corrugated (biasanya 5%)" data-id="Losses press corrugated (biasanya 5%)">折波沖壓損失（通常5%）/ Losses press corrugated (biasanya 5%)</span></div>
           </div>
           <div class="fg">
             <label>散熱片材料成本 (Rp / kg) <span style="color:var(--light);font-size:10px"><span class="i18n" data-zh="自動" data-id="Otomatis">自動</span></span></label>
             <input class="ro" type="text" id="fp_mat_cost" readonly style="background:var(--blue3);color:var(--blue2);font-weight:700" autocomplete="off" name="dfi_5bd4d75c">
-            <div class="hint">未稅 × (1 + 損失率) / Harga blm pajak × (1 + losses)</div>
+            <div class="hint"><span class="i18n" data-zh="未稅 × (1 + 損失率) / Harga blm pajak × (1 + losses)" data-id="Harga blm pajak × (1 + losses)">未稅 × (1 + 損失率) / Harga blm pajak × (1 + losses)</span></div>
           </div>
         </div>
       </div>
 
       <!-- 鐵條(ROD)價格 -->
       <div class="card">
-        <div class="card-title">🔧 鐵條(ROD)母材價格 / Harga Bahan Baku Besi AS (ROD)</div>
+        <div class="card-title"><span class="i18n" data-zh="🔧 鐵條(ROD)母材價格 / Harga Bahan Baku Besi AS (ROD)" data-id="Harga Bahan Baku Besi AS (ROD)">🔧 鐵條(ROD)母材價格 / Harga Bahan Baku Besi AS (ROD)</span></div>
         <div class="alert alert-orange" style="font-size:11.5px">
           最新報價 2026/04 | 連接桿直徑 d 決定使用哪種鐵條
         </div>
         <table>
-          <tr><th>直徑 / Diameter</th><th>含稅價 (Rp/kg)</th><th>未稅價 (自動)</th><th>使用場合</th></tr>
+          <tr><th><span class="i18n" data-zh="直徑 / Diameter" data-id="Diameter">直徑 / Diameter</span></th><th><span class="i18n" data-zh="含稅價 (Rp/kg)" data-id="Harga inkl. pajak (Rp/kg)">含稅價 (Rp/kg)</span></th><th><span class="i18n" data-zh="未稅價 (自動)" data-id="Harga belum pajak (Otomatis)">未稅價 (自動)</span></th><th><span class="i18n" data-zh="使用場合" data-id="Jenis Penggunaan">使用場合</span></th></tr>
           <tr>
             <td><strong>5 mm</strong></td>
             <td><input type="number" id="fp_rod5_tax" value="15000" oninput="calcFinCost()" style="width:100px;padding:4px 6px;border:1px solid var(--border);border-radius:4px;font-size:12px" autocomplete="off"></td>
@@ -1567,24 +1563,24 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
 
       <!-- 加工費用 -->
       <div class="card">
-        <div class="card-title">⚙️ 加工費用 / Ongkos Kerja</div>
+        <div class="card-title"><span class="i18n" data-zh="⚙️ 加工費用 / Ongkos Kerja" data-id="Ongkos Kerja">⚙️ 加工費用 / Ongkos Kerja</span></div>
         <div class="g2">
           <div class="fg">
-            <label>加工資 1.0mm (Rp / kg)</label>
+            <label><span class="i18n" data-zh="加工資 1.0mm (Rp / kg)" data-id="Ongkos Kerja 1.0mm (Rp / kg)">加工資 1.0mm (Rp / kg)</span></label>
             <input type="number" id="fp_labor10" value="9500" oninput="calcFinCost()" autocomplete="off">
           </div>
           <div class="fg">
-            <label>加工資 1.2mm (Rp / kg)</label>
+            <label><span class="i18n" data-zh="加工資 1.2mm (Rp / kg)" data-id="Ongkos Kerja 1.2mm (Rp / kg)">加工資 1.2mm (Rp / kg)</span></label>
             <input type="number" id="fp_labor12" value="9000" oninput="calcFinCost()" autocomplete="off">
           </div>
         </div>
         <div class="g2">
           <div class="fg">
-            <label>運費 / Ongkir (Rp / kg)</label>
+            <label><span class="i18n" data-zh="運費 / Ongkir (Rp / kg)" data-id="Biaya Pengiriman (Rp / kg)">運費 / Ongkir (Rp / kg)</span></label>
             <input type="number" id="fp_ship" value="1500" oninput="calcFinCost()" autocomplete="off">
           </div>
           <div class="fg">
-            <label>利潤 / Laba (Rp / kg)</label>
+            <label><span class="i18n" data-zh="利潤 / Laba (Rp / kg)" data-id="Laba (Rp / kg)">利潤 / Laba (Rp / kg)</span></label>
             <input type="number" id="fp_profit" value="1000" oninput="calcFinCost()" autocomplete="off">
           </div>
         </div>
@@ -1595,7 +1591,7 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
     <div>
       <!-- 規格輸入 -->
       <div class="card">
-        <div class="card-title">📐 散熱片規格輸入 / Input Spesifikasi Radiator</div>
+        <div class="card-title"><span class="i18n" data-zh="📐 散熱片規格輸入 / Input Spesifikasi Radiator" data-id="Input Spesifikasi Radiator">📐 散熱片規格輸入 / Input Spesifikasi Radiator</span></div>
         <div class="g2">
           <div class="fg">
             <label><span class="i18n" data-zh="客戶名稱" data-id="Nama Pelanggan">客戶名稱</span></label>
@@ -1625,20 +1621,20 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
           </div>
         </div>
         <div class="g2">
-          <div class="fg"><label>組數 / Jumlah Set</label><input type="number" id="fp_sets" value="1" min="1" oninput="calcFinCost()" autocomplete="off"></div>
+          <div class="fg"><label><span class="i18n" data-zh="組數 / Jumlah Set" data-id="Jumlah Set">組數 / Jumlah Set</span></label><input type="number" id="fp_sets" value="1" min="1" oninput="calcFinCost()" autocomplete="off"></div>
           <div class="fg"><label>訂單<span class="i18n" data-zh="數量" data-id="Jumlah">數量</span> / Qty Order (台)</label><input type="number" id="fp_qty" value="1" min="1" oninput="calcFinCost()" autocomplete="off"></div>
         </div>
       </div>
 
       <!-- 重量計算結果 -->
       <div class="card">
-        <div class="card-title">⚖️ 重量計算 / Perhitungan Berat</div>
+        <div class="card-title"><span class="i18n" data-zh="⚖️ 重量計算 / Perhitungan Berat" data-id="Perhitungan Berat">⚖️ 重量計算 / Perhitungan Berat</span></div>
         <div class="breakdown" id="fp_wt_breakdown">
           <div class="brow"><span class="lbl i18n" data-zh="A 組裝展開長度" data-id="A Panjang Bentangan Rakitan">A 組裝展開長度</span><span class="amt" id="fp_A">—</span></div>
           <div class="brow"><span class="lbl i18n" data-zh="FINWALL 折波片重量" data-id="FINWALL Berat Sirip Gelombang">FINWALL 折波片重量</span><span class="amt" id="fp_fw_wt">—</span></div>
           <div class="brow"><span class="lbl i18n" data-zh="ROD 連接桿重量" data-id="ROD Berat Batang Penghubung">ROD 連接桿重量</span><span class="amt" id="fp_rod_wt">—</span></div>
           <div class="brow"><span class="lbl i18n" data-zh="STRIP 邊條重量" data-id="STRIP Berat Tepi">STRIP 邊條重量</span><span class="amt" id="fp_strip_wt">—</span></div>
-          <div class="brow total"><span class="lbl">一組總重量 / Berat per Set</span><span class="amt" id="fp_set_wt">—</span></div>
+          <div class="brow total"><span class="lbl"><span class="i18n" data-zh="一組總重量 / Berat per Set" data-id="Berat per Set">一組總重量 / Berat per Set</span></span><span class="amt" id="fp_set_wt">—</span></div>
         </div>
         <div class="g4" style="margin-top:10px">
           <div class="metric bl"><div class="v" id="fp_m_set">—</div><div class="l i18n" data-zh="一組重量 (kg)" data-id="Berat per Set (kg)">一組重量 (kg)</div></div>
@@ -1650,15 +1646,15 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
 
       <!-- 成本計算結果 -->
       <div class="card">
-        <div class="card-title">💰 成本計算結果 / Hasil Perhitungan Biaya</div>
+        <div class="card-title"><span class="i18n" data-zh="💰 成本計算結果 / Hasil Perhitungan Biaya" data-id="Hasil Perhitungan Biaya">💰 成本計算結果 / Hasil Perhitungan Biaya</span></div>
         <div class="breakdown">
           <div class="brow"><span class="lbl i18n" data-zh="FINWALL 鐵板材料費" data-id="FINWALL Biaya Material Plat">FINWALL 鐵板材料費</span><span class="amt" id="fp_c_fw">—</span></div>
-          <div class="brow"><span class="lbl">ROD 鐵條材料費</span><span class="amt" id="fp_c_rod">—</span></div>
+          <div class="brow"><span class="lbl"><span class="i18n" data-zh="ROD 鐵條材料費" data-id="Biaya Material ROD Besi">ROD 鐵條材料費</span></span><span class="amt" id="fp_c_rod">—</span></div>
           <div class="brow"><span class="lbl i18n" data-zh="STRIP 邊條材料費" data-id="STRIP Biaya Material Tepi">STRIP 邊條材料費</span><span class="amt" id="fp_c_strip">—</span></div>
-          <div class="brow"><span class="lbl">加工資 / Ongkos Kerja</span><span class="amt" id="fp_c_labor">—</span></div>
-          <div class="brow"><span class="lbl">運費 / Ongkir</span><span class="amt" id="fp_c_ship">—</span></div>
-          <div class="brow"><span class="lbl">利潤 / Laba</span><span class="amt" id="fp_c_profit">—</span></div>
-          <div class="brow total"><span class="lbl">🔷 總成本 / Total Biaya (Rp)</span><span class="amt" id="fp_c_total">—</span></div>
+          <div class="brow"><span class="lbl"><span class="i18n" data-zh="加工資 / Ongkos Kerja" data-id="Ongkos Kerja">加工資 / Ongkos Kerja</span></span><span class="amt" id="fp_c_labor">—</span></div>
+          <div class="brow"><span class="lbl"><span class="i18n" data-zh="運費 / Ongkir" data-id="Biaya Pengiriman">運費 / Ongkir</span></span><span class="amt" id="fp_c_ship">—</span></div>
+          <div class="brow"><span class="lbl"><span class="i18n" data-zh="利潤 / Laba" data-id="Laba">利潤 / Laba</span></span><span class="amt" id="fp_c_profit">—</span></div>
+          <div class="brow total"><span class="lbl"><span class="i18n" data-zh="🔷 總成本 / Total Biaya (Rp)" data-id="Total Biaya (Rp)">🔷 總成本 / Total Biaya (Rp)</span></span><span class="amt" id="fp_c_total">—</span></div>
         </div>
 
         <div class="g4" style="margin-top:10px">
@@ -1668,7 +1664,7 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
           <div class="metric ok"><div class="v" id="fp_rorder">—</div><div class="l">全單成本 (Rp)</div></div>
         </div>
 
-        <div class="sec" style="margin-top:12px">📈 報價計算 / Perhitungan Harga Jual</div>
+        <div class="sec" style="margin-top:12px"><span class="i18n" data-zh="📈 報價計算 / Perhitungan Harga Jual" data-id="Perhitungan Harga Jual">📈 報價計算 / Perhitungan Harga Jual</span></div>
         <div class="g2">
           <div class="fg">
             <label><span class="i18n" data-zh="目標毛利率 %" data-id="Target Margin %">目標毛利率 %</span></label>
@@ -1678,18 +1674,18 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
             </div>
           </div>
           <div class="fg">
-            <label>直接輸入報價 (Rp/kg) 反查毛利</label>
+            <label><span class="i18n" data-zh="直接輸入報價 (Rp/kg) 反查毛利" data-id="Input harga jual (Rp/kg) → cek margin">直接輸入報價 (Rp/kg) 反查毛利</span></label>
             <input type="number" id="fp_quote_kg" placeholder="輸入報價 Rp/kg" oninput="calcFinBack()" autocomplete="off">
           </div>
         </div>
 
         <div class="result-hero">
           <div class="rh-top">
-            <div class="rh-block"><div class="lbl">建議報價 / Harga Jual Anjuran</div><div class="val" id="fp_q_kg">—</div><div class="sub" id="fp_q_set">—</div></div>
+            <div class="rh-block"><div class="lbl"><span class="i18n" data-zh="建議報價 / Harga Jual Anjuran" data-id="Harga Jual Anjuran">建議報價 / Harga Jual Anjuran</span></div><div class="val" id="fp_q_kg">—</div><div class="sub" id="fp_q_set">—</div></div>
             <div class="rh-div"></div>
-            <div class="rh-block"><div class="lbl">毛利率 / Margin</div><div class="val" id="fp_q_margin">15%</div><div class="sub" id="fp_q_profit">—</div></div>
+            <div class="rh-block"><div class="lbl"><span class="i18n" data-zh="毛利率 / Margin" data-id="Margin">毛利率 / Margin</span></div><div class="val" id="fp_q_margin">15%</div><div class="sub" id="fp_q_profit">—</div></div>
             <div class="rh-div"></div>
-            <div class="rh-block"><div class="lbl">全單報價合計</div><div class="val" id="fp_q_order">—</div><div class="sub" id="fp_q_label">—</div></div>
+            <div class="rh-block"><div class="lbl"><span class="i18n" data-zh="全單報價合計" data-id="Total Penawaran Keseluruhan">全單報價合計</span></div><div class="val" id="fp_q_order">—</div><div class="sub" id="fp_q_label">—</div></div>
           </div>
           <div class="pbar"><div class="pbar-fill" id="fp_pbar" style="width:15%"></div></div>
           <div class="pbar-label"><span>0%</span><span>20%</span><span>40%</span><span>60%</span></div>
@@ -1853,7 +1849,7 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
           </div>
         </div>
 
-        <div class="sec">📐 面積計算公式</div>
+        <div class="sec"><span class="i18n" data-zh="📐 面積計算公式" data-id="Rumus Kalkulasi Luas">📐 面積計算公式</span></div>
         <div class="formula-box" style="margin-top:0">
           <div class="f-title">鐵箱 Box（外噴 5面）</div>
           <div class="f-line">面積 = 2×(長×高) + 2×(寬×高) + (長×寬)  [單位 mm²]</div>
@@ -1864,14 +1860,14 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
           <div class="f-result">= 690,300 ÷ 100 = <strong>6,903 cm²</strong></div>
         </div>
 
-        <div class="sec" style="margin-top:14px">🧮 漆粉用量計算公式</div>
+        <div class="sec" style="margin-top:14px"><span class="i18n" data-zh="🧮 漆粉用量計算公式" data-id="Rumus Konsumsi Bubuk Cat">🧮 漆粉用量計算公式</span></div>
         <div class="formula-box">
           <div class="f-title">公式</div>
           <div class="f-line">漆粉重量(kg/cm²) = 厚度(µm) × 10⁻⁴ × 密度(g/cm³) ÷ 效率 ÷ 1000</div>
           <div class="f-line">漆粉成本(Rp/cm²) = 漆粉重量(kg/cm²) × 單價(Rp/kg)</div>
         </div>
 
-        <div class="sec" style="margin-top:14px">📋 計算範例（依目前參數）</div>
+        <div class="sec" style="margin-top:14px"><span class="i18n" data-zh="📋 計算範例（依目前參數）" data-id="Contoh Kalkulasi (Berdasarkan Parameter Saat Ini)">📋 計算範例（依目前參數）</span></div>
         <div class="example-box" id="paint_example_box">
           <div class="e-title">範例：表漆 80µm、Rp 65,000/kg</div>
           <div class="e-line" id="pe_line1">—</div>
@@ -2016,7 +2012,7 @@ function init(){
     const restored = restoreAutosave();
     hookAutosave();
     // Trigger recalc after restore
-    if(restored){ recalcWeight(); calcWt(); calcArea(); calcFinCost(); }
+    if(restored){ recalcWeight(); calcWt(); calcArea(); calcFinCost(); updateFinTotals(); }
   }, 100);
 }
 
@@ -2156,7 +2152,11 @@ function updateDerived(){
   const lpgShow   = document.getElementById('w_lpg_rp_show');
   if(lpgHidden){ lpgHidden.value = lpgKgPrice; }
   if(lpgShow)  { lpgShow.value   = 'Rp ' + lpgKgPrice.toLocaleString('en-US') + ' / kg  （' + p.toLocaleString('en-US') + ' ÷ ' + w + 'kg）'; }
-  const s=pf('cfg_salary'),d=pf('cfg_days')||22,h=pf('cfg_hrs')||8; $('cfg_hrrate').value=(s/(d*h)).toFixed(0);
+  const s=pf('cfg_salary'),d=pf('cfg_days')||22,h=pf('cfg_hrs')||8;
+  $('cfg_hrrate').value=(s/(d*h)).toFixed(0);
+  // Sync w_salary (weight page) from basic params
+  const wSalEl=document.getElementById('w_salary');
+  if(wSalEl) wSalEl.value='Rp '+Math.round(s).toLocaleString('en-US');
   updatePaintExample();
   calcWt();
 }
@@ -2318,7 +2318,7 @@ function calcWt(){
   $('cs_oil').textContent   = ck('ck_oil')?(Rp(pf('w_oil_rp'))+'/kg  →  '+Rp(c_oil)+'/台'): T('停用','Nonaktif');
   $('cs_clamp').textContent = ck('ck_clamp')?(Rp(pf('w_clamp_rp'))+'/kg  →  '+Rp(c_clamp)+'/台'): T('停用','Nonaktif');
   $('cs_lpg').textContent   = ck('ck_lpg')?(Rp(pf('w_lpg_rp'))+'/kg  →  '+Rp(c_lpg)+'/台'): T('停用','Nonaktif');
-  const hrRateShow = Math.round(pf('w_salary')/(( pf('cfg_days')||22)*(pf('cfg_hrs')||8)));
+  const hrRateShow = Math.round(pf('cfg_salary')/(( pf('cfg_days')||22)*(pf('cfg_hrs')||8)));
   $('cs_labor').textContent = ck('ck_labor')?(Rp(hrRateShow)+'/hr  →  '+Rp(c_labor)+'/台'): T('停用','Nonaktif');
   $('cs_pkg').textContent   = ck('ck_pkg')?(Rp(c_pkg)+'/台'): T('停用','Nonaktif');
   $('cs_ship').textContent  = ck('ck_ship')?(Rp(Math.round(c_ship))+'/台'): T('停用','Nonaktif');
@@ -2902,84 +2902,22 @@ function renderMulti(){
 
 function setPbar(id,pct){const el=$(id);el.style.width=Math.min(100,Math.max(0,pct))+'%';el.style.background=pct>=25?'#22c55e':pct>=15?'#f59e0b':'#ef4444';}
 
-// ── LOGIN SYSTEM ──
+// ── LOGIN ──
 const PW_DEFAULTS={sales:'TCMW2026',admin:'TCMW@cody202688'};
 let currentRole=null,loginSelectedRole='sales';
 function getPw(r){return localStorage.getItem('dfi_pw_'+r)||PW_DEFAULTS[r];}
-function selectRole(role){
-  loginSelectedRole=role;
-  document.getElementById('tab-sales').classList.toggle('active',role==='sales');
-  document.getElementById('tab-admin').classList.toggle('active',role==='admin');
-  document.getElementById('login-role-label').textContent=role==='admin'?'管理員密碼 / Password Admin':'業務員密碼 / Password Sales';
-  document.getElementById('login-pw').value='';
-  document.getElementById('login-err').classList.remove('show');
-}
-function doLogin(){
-  const pw=document.getElementById('login-pw').value;
-  if(pw===getPw(loginSelectedRole)){
-    currentRole=loginSelectedRole;
-    document.getElementById('login-overlay').classList.add('hidden');
-    const b=document.getElementById('role-badge');
-    if(currentRole==='admin'){b.textContent='🔑 管理員';b.className='role-badge admin';}
-    else{b.textContent='👤 業務員';b.className='role-badge sales';}
-    document.getElementById('login-err').classList.remove('show');
-  } else {
-    document.getElementById('login-err').classList.add('show');
-    document.getElementById('login-pw').value='';
-    document.getElementById('login-pw').focus();
-  }
-}
-function doLogout(){
-  if(!confirm('確定要登出嗎？/ Yakin ingin keluar?'))return;
-  currentRole=null;
-  document.getElementById('login-pw').value='';
-  selectRole('sales');
-  document.getElementById('login-overlay').classList.remove('hidden');
-}
+function selectRole(role){loginSelectedRole=role;document.getElementById('tab-sales').classList.toggle('active',role==='sales');document.getElementById('tab-admin').classList.toggle('active',role==='admin');document.getElementById('login-role-label').textContent=role==='admin'?'管理員密碼 / Password Admin':'業務員密碼 / Password Sales';document.getElementById('login-pw').value='';document.getElementById('login-err').classList.remove('show');}
+function doLogin(){const pw=document.getElementById('login-pw').value;if(pw===getPw(loginSelectedRole)){currentRole=loginSelectedRole;document.getElementById('login-overlay').classList.add('hidden');const b=document.getElementById('role-badge');if(currentRole==='admin'){b.textContent='🔑 管理員';b.className='role-badge admin';}else{b.textContent='👤 業務員';b.className='role-badge sales';}document.getElementById('login-err').classList.remove('show');}else{document.getElementById('login-err').classList.add('show');document.getElementById('login-pw').value='';document.getElementById('login-pw').focus();}}
+function doLogout(){if(!confirm('確定要登出嗎？/ Yakin ingin keluar?'))return;currentRole=null;document.getElementById('login-pw').value='';selectRole('sales');document.getElementById('login-overlay').classList.remove('hidden');}
 function onRoleBadgeClick(){if(currentRole==='admin')openAdminModal();}
-function openAdminModal(){
-  ['adm-new-sales','adm-confirm-sales','adm-new-admin','adm-confirm-admin'].forEach(id=>document.getElementById(id).value='');
-  const m=document.getElementById('adm-msg');m.className='admin-msg';m.textContent='';
-  document.getElementById('admin-modal').classList.add('show');
-}
+function openAdminModal(){['adm-new-sales','adm-confirm-sales','adm-new-admin','adm-confirm-admin'].forEach(id=>document.getElementById(id).value='');const m=document.getElementById('adm-msg');m.className='admin-msg';m.textContent='';document.getElementById('admin-modal').classList.add('show');}
 function closeAdminModal(){document.getElementById('admin-modal').classList.remove('show');}
-function saveAdminPw(){
-  const msgEl=document.getElementById('adm-msg');
-  const ns=document.getElementById('adm-new-sales').value;
-  const cs=document.getElementById('adm-confirm-sales').value;
-  const na=document.getElementById('adm-new-admin').value;
-  const ca=document.getElementById('adm-confirm-admin').value;
-  if(!ns){msgEl.textContent='❌ 業務員新密碼不可空白';msgEl.className='admin-msg err';return;}
-  if(ns!==cs){msgEl.textContent='❌ 業務員兩次密碼不相符';msgEl.className='admin-msg err';return;}
-  if(na&&na!==ca){msgEl.textContent='❌ 管理員兩次密碼不相符';msgEl.className='admin-msg err';return;}
-  if(ns.length<6){msgEl.textContent='❌ 密碼至少需6個字元';msgEl.className='admin-msg err';return;}
-  localStorage.setItem('dfi_pw_sales',ns);
-  if(na)localStorage.setItem('dfi_pw_admin',na);
-  msgEl.textContent='✅ 密碼已成功更新！';msgEl.className='admin-msg ok';
-  setTimeout(closeAdminModal,1500);
-}
+function saveAdminPw(){const msgEl=document.getElementById('adm-msg');const ns=document.getElementById('adm-new-sales').value;const cs=document.getElementById('adm-confirm-sales').value;const na=document.getElementById('adm-new-admin').value;const ca=document.getElementById('adm-confirm-admin').value;if(!ns){msgEl.textContent='❌ 業務員新密碼不可空白';msgEl.className='admin-msg err';return;}if(ns!==cs){msgEl.textContent='❌ 業務員兩次密碼不相符';msgEl.className='admin-msg err';return;}if(na&&na!==ca){msgEl.textContent='❌ 管理員兩次密碼不相符';msgEl.className='admin-msg err';return;}if(ns.length<6){msgEl.textContent='❌ 密碼至少需6個字元';msgEl.className='admin-msg err';return;}localStorage.setItem('dfi_pw_sales',ns);if(na)localStorage.setItem('dfi_pw_admin',na);msgEl.textContent='✅ 密碼已成功更新！';msgEl.className='admin-msg ok';setTimeout(closeAdminModal,1500);}
 // ── GOOGLE SHEETS SYNC ──
 const GS_URL='https://script.google.com/macros/s/AKfycbzRLjgDywzsxuZW7xRbCVq9P88GugcalYR2atKIiXncR1Xwlr2ZuP2fIsbMx2OiUyLk/exec';
-function gsPost(payload,statusId){
-  const st=statusId?document.getElementById(statusId):null;
-  if(st){st.textContent='⏳ 同步中...';st.style.color='var(--orange)';}
-  const fn='gs_'+Date.now();
-  const ifr=document.createElement('iframe');ifr.name=fn;ifr.style.display='none';document.body.appendChild(ifr);
-  const frm=document.createElement('form');frm.method='GET';frm.action=GS_URL;frm.target=fn;frm.style.display='none';
-  const inp=document.createElement('input');inp.type='hidden';inp.name='data';inp.value=JSON.stringify(payload);
-  frm.appendChild(inp);document.body.appendChild(frm);frm.submit();
-  setTimeout(()=>{
-    try{document.body.removeChild(frm);document.body.removeChild(ifr);}catch(e){}
-    if(st){st.textContent='✅ 已同步 Google Sheets';st.style.color='var(--green)';}
-    setTimeout(()=>{if(st)st.textContent='';},5000);
-  },3000);
-}
+function gsPost(payload,statusId){const st=statusId?document.getElementById(statusId):null;if(st){st.textContent='⏳ 同步中...';st.style.color='var(--orange)';}const fn='gs_'+Date.now();const ifr=document.createElement('iframe');ifr.name=fn;ifr.style.display='none';document.body.appendChild(ifr);const frm=document.createElement('form');frm.method='GET';frm.action=GS_URL;frm.target=fn;frm.style.display='none';const inp=document.createElement('input');inp.type='hidden';inp.name='data';inp.value=JSON.stringify(payload);frm.appendChild(inp);document.body.appendChild(frm);frm.submit();setTimeout(()=>{try{document.body.removeChild(frm);document.body.removeChild(ifr);}catch(e){}if(st){st.textContent='✅ 已同步 Google Sheets';st.style.color='var(--green)';}setTimeout(()=>{if(st)st.textContent='';},5000);},3000);}
 function recToRow(r){return{date:r.date,type:r.mode==='wt'?'⚖️ 變壓器（按重量）':'📐 鐵箱/充電殼（按面積）',cust:r.cust||'',model:r.model||'',size:r.size||'',qty:r.qty||1,unit_cost:r.unit_cost!=null?r.unit_cost:'',unit_quote:r.unit_quote!=null?r.unit_quote:'',unit_label:r.unit_label||'',cost:r.cost||0,quote:r.quote||0,margin:r.margin!=null?r.margin:0,note:r.note||''};}
-function syncAllToSheet(){
-  if(!records.length){alert('目前無記錄可同步');return;}
-  if(!confirm('確定將所有記錄（'+records.length+'筆）全量同步到 Google Sheets？'))return;
-  gsPost({action:'sync_all',records:records.map(recToRow)},'gs-status');
-}
+function syncAllToSheet(){if(!records.length){alert('目前無記錄可同步');return;}if(!confirm('確定將所有記錄（'+records.length+'筆）全量同步到 Google Sheets？'))return;gsPost({action:'sync_all',records:records.map(recToRow)},'gs-status');}
 function saveRec(mode){
   let rec;
   if(mode==='wt'&&window._wt){
@@ -3421,10 +3359,20 @@ function downloadQuoteXLSX(mode) {
       ...items.map(it => [it[0], it[1] ? '✅ 啟用' : '— 停用', it[2], it[3], '']),
       [''],
       ['═══ 散熱片規格 ═══'],
-      ['組別', '規格字串', '板厚(mm)', '長(mm)', '寬(mm)', '片數(P)', '組數', '單組重(kg)', '合計重(kg)'],
+      ['DFI結構參數', `B1=${getFinParams().B1}mm  B2=${getFinParams().B2}mm  C=${getFinParams().C}mm  d=${getFinParams().d}mm`],
+      ['組別', '規格字串', '板厚(mm)', '長(mm)', '寬(mm)', '片數(P)', '組數', '單組重(kg)', '合計重(kg)', 'A展開(mm)', 'FINWALL(kg)', 'ROD(kg)', 'STRIP(kg)'],
       ...finRows.map((r,i) => {
-        const w = r.t*r.L*r.W*r.P*7.85/1000000;
-        return [i+1, r.spec||'—', r.t, r.L, r.W, r.P, r.sets||1, w.toFixed(3), (w*(r.sets||1)).toFixed(3)];
+        const res = calcFinWeight(r);   // 使用正確的 DFI 公式（含展開長度A）
+        const sets = r.sets || 1;
+        return [
+          i+1, r.spec||'—', r.t, r.L, r.W, r.P, sets,
+          res.total.toFixed(3),
+          (res.total * sets).toFixed(3),
+          Math.round(res.A),
+          res.finwall.toFixed(3),
+          res.rod.toFixed(3),
+          res.strip.toFixed(3),
+        ];
       }),
       [''],
       ['═══ 報價結果 ═══'],
@@ -3982,7 +3930,8 @@ function switchLang(lang){
 
   document.documentElement.lang=lang==='zh'?'zh-Hant':'id';
   try{localStorage.setItem('dfi_lang',lang);}catch(e){}
-  calcWt(); calcArea();
+  // Refresh summaries and dropdowns that have translated text
+  calcWt(); calcArea(); calcFinCost();
 }
 
 function getLang(){return currentLang;}
@@ -3991,19 +3940,20 @@ function T(zh,id){return currentLang==='id'?id:zh;}
 // ─── AUTO-SAVE / AUTO-RESTORE FORM FIELDS ───
 const AUTOSAVE_KEY = 'dfi_form_state';
 const AUTOSAVE_WT_FIELDS = [
-  'w_cust','w_model','w_note','w_qty',
+  'w_cust','w_model','w_model_custom','w_note','w_qty',
   'w_wt_tank','w_wt_cover','w_wt_fin2','w_wt_clamp2',
   'w_shell_vendor','w_shell_kg','w_oil_tube_rp','w_oil_tube_qty',
   'w_pr_code','w_pr_vendor','w_pr_kg','w_pr_um',
   'w_tc_code','w_tc_vendor','w_tc_kg','w_tc_um',
-  'w_cl_en','w_cl_kg','w_cl_um','w_cl_rp',
-  'w_oil_en','w_oil_code','w_oil_vendor','w_oil_kg','w_oil_um','w_oil_rp',
-  'w_clamp_en','w_clamp_code','w_clamp_vendor','w_clamp_kg','w_clamp_um','w_clamp_rp',
-  'w_lpg_kg','w_hr','w_ppl','w_salary',
-  'w_pkg_en','w_pkg_rp',
-  'w_ship_en','w_ship_oil_rp','w_ship_dist','w_ship_fuel','w_ship_cap','w_ship_self_wt','w_ship_driver',
+  'w_cl_code','w_cl_vendor','w_cl_kg','w_cl_um','w_cl_rp',
+  'w_oil_code','w_oil_vendor','w_oil_kg','w_oil_um','w_oil_rp',
+  'w_clamp_code','w_clamp_vendor','w_clamp_kg','w_clamp_um','w_clamp_rp',
+  'w_lpg_kg','w_hr','w_ppl',
+  'w_pkg_rp',
+  'w_ship_oil_rp','w_ship_dist','w_ship_fuel','w_ship_cap','w_ship_self_wt','w_ship_driver',
+  'w_weld_kg','w_weld_rp','w_weld_note',
   'w_margin','w_interest','w_qkg',
-  'w_fin_b1','w_fin_b2','w_fin_c','w_fin_d',
+  'fin_B1','fin_B2','fin_C','fin_d',
 ];
 const AUTOSAVE_AR_FIELDS = [
   'a_cust','a_model','a_otype','a_qty','a_note',
@@ -4018,14 +3968,16 @@ const AUTOSAVE_AR_FIELDS = [
   'a_labor_ppl','a_labor_days','a_labor_cm2',
   'a_pkg_rp','a_ship_rp','a_ship_mode',
   'a_margin','a_interest','a_qcm2',
+  'a_cc_type','a_cc_loss','a_cc_layer',
 ];
 const AUTOSAVE_CHECKBOXES = [
   'ck_shell','ck_fin','ck_weld','ck_pr','ck_tc','ck_clear','ck_oil','ck_clamp','ck_lpg','ck_labor','ck_pkg','ck_ship',
   'ak_pr','ak_tc','ak_clear','ak_oil','ak_cc','ak_lpg','ak_labor','ak_pkg','ak_ship',
+  'fp_d',
 ];
 
 const AUTOSAVE_FIN_FIELDS = [
-  'fp_cust','fp_spec','fp_sets',
+  'fp_cust','fp_spec','fp_sets','fp_qty',
   'fp_T','fp_L','fp_D','fp_N1','fp_B1','fp_B2','fp_C','fp_d',
   'fp_spcc_notax','fp_spcc_tax',
   'fp_rod5_notax','fp_rod5_tax',
@@ -4033,7 +3985,8 @@ const AUTOSAVE_FIN_FIELDS = [
   'fp_rod10_notax','fp_rod10_tax',
   'fp_labor10','fp_labor12',
   'fp_loss_pct','fp_ship','fp_margin',
-  'fp_quote_kg',
+  'fp_quote_kg','fp_mat_cost','fp_profit',
+  'fin_B1','fin_B2','fin_C','fin_d',
 ];
 function scheduleAutosave(){
   clearTimeout(_autosaveTimer);
