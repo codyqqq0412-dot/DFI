@@ -2994,23 +2994,87 @@ function exportCSV(){
   if(!records.length){alert('目前無報價記錄可匯出');return;}
   const h='日期,類型,客戶,型號/物件,重量/面積,數量,成本單價,報價單價,單位,成本總(Rp),報價總(Rp),毛利率(%),備註\n';
   const b=records.map(r=>`${r.date},"${r.mode==='wt'?'變壓器重量':'面積噴漆'}","${r.cust}","${r.model}","${r.size}",${r.qty},${r.unit_cost||''},${r.unit_quote||''},"${r.unit_label||''}",${r.cost},${r.quote},${r.margin},"${r.note||''}"`).join('\n');
+  const blob = new Blob(['\ufeff'+h+b], {type:'text/csv;charset=utf-8'});
+  const url = URL.createObjectURL(blob);
+  const fname = 'DFI_報價記錄_'+new Date().toISOString().slice(0,10)+'.csv';
+
+  if (typeof navigator !== 'undefined' && navigator.msSaveOrOpenBlob) {
+    navigator.msSaveOrOpenBlob(blob, fname);
+    return;
+  }
+
   const a=document.createElement('a');
-  a.href=URL.createObjectURL(new Blob(['\ufeff'+h+b],{type:'text/csv;charset=utf-8'}));
-  a.download='DFI_報價記錄_'+new Date().toISOString().slice(0,10)+'.csv';
+  a.href = url;
+  a.download = fname;
+  a.rel = 'noopener';
+  a.style.display = 'none';
+  document.body.appendChild(a);
   a.click();
+
+  const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+  if (isSafari) {
+    setTimeout(function () { try { window.open(url, '_blank'); } catch (e) {} }, 150);
+  }
+  setTimeout(function () {
+    try { document.body.removeChild(a); } catch (e) {}
+    URL.revokeObjectURL(url);
+  }, 4000);
 }
 
 function xlsxDownload(wb, fname) {
   try {
     var wbout = XLSX.write(wb, {bookType:'xlsx', type:'array'});
-    var blob = new Blob([wbout], {type:'application/octet-stream'});
+    // 使用正確的 Excel MIME type，而非通用的 application/octet-stream。
+    // Safari 對不明類型的容錯較差，容易誤判為「開啟預覽」而非「下載」。
+    var xlsxType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+    var blob = new Blob([wbout], {type: xlsxType});
+
+    // 舊版 Edge / IE 專用下載 API（若存在）
+    if (typeof navigator !== 'undefined' && navigator.msSaveOrOpenBlob) {
+      navigator.msSaveOrOpenBlob(blob, fname);
+      return;
+    }
+
     var url = URL.createObjectURL(blob);
     var a = document.createElement('a');
-    a.href = url; a.download = fname;
-    document.body.appendChild(a); a.click();
-    setTimeout(function(){try{document.body.removeChild(a);}catch(e){}URL.revokeObjectURL(url);},2000);
-  } catch(err) {
-    alert('下載失敗：' + err.message);
+    a.href = url;
+    a.download = fname;
+    a.rel = 'noopener';
+    a.style.display = 'none';
+    document.body.appendChild(a);
+
+    var clicked = false;
+    try {
+      a.click();
+      clicked = true;
+    } catch (clickErr) {
+      clicked = false;
+    }
+
+    // Safari（尤其 iOS）有時會忽略 download 屬性、直接開啟預覽而非存檔；
+    // 這種情況下改用開新分頁的方式，讓使用者自行「共享」或「另存」檔案。
+    var isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+    if (isSafari) {
+      setTimeout(function () {
+        try {
+          var win = window.open(url, '_blank');
+          if (!win) {
+            alert('請允許此網站的下載/彈出視窗權限後再試一次\n（Safari 設定 → 網站 → 彈出式視窗 / 下載）');
+          }
+        } catch (e) { /* ignore */ }
+      }, 150);
+    }
+
+    setTimeout(function () {
+      try { document.body.removeChild(a); } catch (e) {}
+      URL.revokeObjectURL(url);
+    }, 4000);
+
+    if (!clicked) {
+      throw new Error('無法自動觸發下載，請改用瀏覽器選單另存新檔');
+    }
+  } catch (err) {
+    alert('下載失敗：' + err.message + '\n\n若使用 Safari，請確認：\nSafari 設定 → 一般 → 檔案下載位置\nSafari 設定 → 網站 → 下載 → 允許此網站');
     console.error('xlsxDownload error:', err);
   }
 }
