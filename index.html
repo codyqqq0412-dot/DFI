@@ -3011,10 +3011,6 @@ function exportCSV(){
   document.body.appendChild(a);
   a.click();
 
-  const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
-  if (isSafari) {
-    setTimeout(function () { try { window.open(url, '_blank'); } catch (e) {} }, 150);
-  }
   setTimeout(function () {
     try { document.body.removeChild(a); } catch (e) {}
     URL.revokeObjectURL(url);
@@ -3042,39 +3038,14 @@ function xlsxDownload(wb, fname) {
     a.rel = 'noopener';
     a.style.display = 'none';
     document.body.appendChild(a);
-
-    var clicked = false;
-    try {
-      a.click();
-      clicked = true;
-    } catch (clickErr) {
-      clicked = false;
-    }
-
-    // Safari（尤其 iOS）有時會忽略 download 屬性、直接開啟預覽而非存檔；
-    // 這種情況下改用開新分頁的方式，讓使用者自行「共享」或「另存」檔案。
-    var isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
-    if (isSafari) {
-      setTimeout(function () {
-        try {
-          var win = window.open(url, '_blank');
-          if (!win) {
-            alert('請允許此網站的下載/彈出視窗權限後再試一次\n（Safari 設定 → 網站 → 彈出式視窗 / 下載）');
-          }
-        } catch (e) { /* ignore */ }
-      }, 150);
-    }
+    a.click();
 
     setTimeout(function () {
       try { document.body.removeChild(a); } catch (e) {}
       URL.revokeObjectURL(url);
     }, 4000);
-
-    if (!clicked) {
-      throw new Error('無法自動觸發下載，請改用瀏覽器選單另存新檔');
-    }
   } catch (err) {
-    alert('下載失敗：' + err.message + '\n\n若使用 Safari，請確認：\nSafari 設定 → 一般 → 檔案下載位置\nSafari 設定 → 網站 → 下載 → 允許此網站');
+    alert('下載失敗：' + err.message + '\n\n若使用 Safari，請確認：\nSafari 設定 → 一般 → 檔案下載位置\nSafari 設定 → 網站 → 下載 → 允許此網站\n\n若仍無法下載，可嘗試清除瀏覽記錄後重試。');
     console.error('xlsxDownload error:', err);
   }
 }
