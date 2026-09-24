@@ -828,6 +828,7 @@ var o=[];var l=Array.isArray(e);for(f=n.s.c;f<=n.e.c;++f)s[f]=ya(f);for(var c=n.
           <div class="btn-row">
             <button class="btn btn-blue" onclick="saveRec('wt')"><span class="i18n" data-zh="💾 儲存報價記錄" data-id="💾 Simpan Catatan Penawaran">💾 儲存報價記錄</span></button>
             <button class="btn btn-ghost" onclick="downloadQuoteXLSX('wt')" style="border-color:var(--green);color:var(--green)">📊 下載成本報價單 (Excel)</button>
+            <button class="btn btn-ghost" onclick="downloadPagePDF()" style="border-color:#b02828;color:#b02828">📄 下載PDF / Unduh PDF</button>
             <button class="btn btn-ghost" onclick="resetWt()"><span class="i18n" data-zh="🔄 重新填寫" data-id="🔄 Isi Ulang">🔄 重新填寫</span></button>
             <button class="btn btn-ghost" onclick="clearAllWeights()" style="border-color:var(--orange);color:var(--orange)"><span class="i18n" data-zh="⬜ 全部歸零" data-id="⬜ Reset Semua">⬜ 全部歸零</span></button>
           </div>
@@ -1443,6 +1444,7 @@ var o=[];var l=Array.isArray(e);for(f=n.s.c;f<=n.e.c;++f)s[f]=ya(f);for(var c=n.
         <div class="btn-row" style="margin-top:10px">
           <button class="btn btn-blue" onclick="saveRec('ar')">💾 儲存記錄 / Simpan</button>
           <button class="btn btn-ghost" onclick="downloadQuoteXLSX('ar')" style="border-color:var(--green);color:var(--green)">📊 下載Excel / Unduh Excel</button>
+            <button class="btn btn-ghost" onclick="downloadPagePDF()" style="border-color:#b02828;color:#b02828">📄 下載PDF / Unduh PDF</button>
           <button class="print-btn" onclick="window.print()">🖨️ 列印 / Cetak</button>
           <button class="btn btn-ghost" onclick="resetAr()">🔄 重填 / Reset</button>
         </div>
@@ -4050,5 +4052,108 @@ function hookAutosave(){
 
 init();
 </script>
+<!-- ═══ PDF 下載按鈕（html2canvas + jsPDF，所見即所得） ═══ -->
+<style>
+#pdf_fab{position:fixed;right:22px;bottom:22px;z-index:9999;background:#b02828;color:#fff;border:none;border-radius:30px;padding:12px 20px;font-size:13.5px;font-weight:700;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.25);display:flex;align-items:center;gap:6px;font-family:inherit}
+#pdf_fab:hover{opacity:.9}
+#pdf_fab:disabled{background:#8fa0b0;cursor:wait}
+@media print{#pdf_fab{display:none!important}}
+</style>
+<button id="pdf_fab" onclick="downloadPagePDF()" title="將目前畫面原樣輸出成 PDF / Unduh tampilan ini sebagai PDF">📄 下載PDF / Unduh PDF</button>
+<script>
+(function(){
+  const LIBS=[
+    ['html2canvas','https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js'],
+    ['jspdf','https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js']
+  ];
+  function loadScript(src){
+    return new Promise((res,rej)=>{const s=document.createElement('script');s.src=src;s.onload=res;s.onerror=()=>rej(new Error('load fail: '+src));document.head.appendChild(s);});
+  }
+  async function ensureLibs(){
+    if(!window.html2canvas) await loadScript(LIBS[0][1]);
+    if(!(window.jspdf&&window.jspdf.jsPDF)) await loadScript(LIBS[1][1]);
+  }
+  function selText(id){const el=document.getElementById(id);if(!el)return '';if(el.tagName==='SELECT'){const o=el.options[el.selectedIndex];return (o&&el.value)?o.text:'';}return el.value||'';}
+  function buildFileName(){
+    const d=new Date(),p=n=>String(n).padStart(2,'0');
+    const date=d.getFullYear()+p(d.getMonth()+1)+p(d.getDate())+'_'+p(d.getHours())+p(d.getMinutes());
+    let tag='';
+    const onPg=document.querySelector('.pg.on');
+    if(onPg&&onPg.id==='pg_calc'){
+      const ar=document.getElementById('mode_ar'),isAr=ar&&ar.style.display!=='none';
+      tag=isAr?selText('a_cust'):[selText('w_cust'),selText('w_model')].filter(Boolean).join('_');
+    }else if(onPg&&onPg.id==='pg_fin'){tag='散熱片_'+selText('fp_cust');}
+    else if(onPg){tag=({pg_rec:'報價記錄',pg_cfg:'基本參數',pg_cust:'客戶管理'})[onPg.id]||'';}
+    tag=tag.replace(/^\d+\.\s*/,'').replace(/[\\\/:*?"<>|]+/g,'').replace(/\s+/g,'_').slice(0,60);
+    return 'DFI_報價_'+(tag?tag+'_':'')+date+'.pdf';
+  }
+  // 找「整列都是背景色」的位置當分頁點，避免把卡片切一半
+  function findBreak(ctx,w,target,minY){
+    const band=target-minY; if(band<=0) return target;
+    const data=ctx.getImageData(0,minY,w,band).data;
+    const bg=[244,246,249], step=Math.max(1,Math.floor(w/400));
+    for(let y=band-1;y>=0;y--){
+      let ok=true;
+      for(let x=0;x<w;x+=step){
+        const i=(y*w+x)*4;
+        if(Math.abs(data[i]-bg[0])>6||Math.abs(data[i+1]-bg[1])>6||Math.abs(data[i+2]-bg[2])>6){ok=false;break;}
+      }
+      if(ok) return minY+y+1;
+    }
+    return target;
+  }
+  window.downloadPagePDF=async function(){
+    const btn=document.getElementById('pdf_fab'),old=btn.innerHTML;
+    btn.disabled=true;btn.innerHTML='⏳ 產生中… / Memproses…';
+    const sx=window.scrollX,sy=window.scrollY;
+    try{
+      await ensureLibs();
+      window.scrollTo(0,0);
+      await new Promise(r=>setTimeout(r,80));
+      const root=document.body;
+      const W=document.documentElement.scrollWidth, H=root.scrollHeight;
+      // Safari 畫布上限約 16.7M 像素，自動調整解析度
+      const scale=Math.max(1,Math.min(2,Math.sqrt(16000000/(W*H))));
+      const canvas=await html2canvas(root,{
+        scale:scale,useCORS:true,backgroundColor:'#f4f6f9',
+        width:W,height:H,windowWidth:W,windowHeight:H,scrollX:0,scrollY:0,
+        ignoreElements:el=>el.id==='pdf_fab'
+      });
+      const {jsPDF}=window.jspdf;
+      const pdf=new jsPDF({orientation:'portrait',unit:'mm',format:'a4',compress:true});
+      const pw=pdf.internal.pageSize.getWidth(),ph=pdf.internal.pageSize.getHeight(),m=5;
+      const imgW=pw-m*2, pxPerMm=canvas.width/imgW;
+      const pageHpx=Math.floor((ph-m*2-4)*pxPerMm);
+      const ctx=canvas.getContext('2d');
+      const cuts=[0];let y=0;
+      while(canvas.height-y>pageHpx){
+        const target=y+pageHpx;
+        const cut=findBreak(ctx,canvas.width,target,y+Math.floor(pageHpx*0.7));
+        cuts.push(cut);y=cut;
+      }
+      cuts.push(canvas.height);
+      const total=cuts.length-1;
+      for(let i=0;i<total;i++){
+        const h=cuts[i+1]-cuts[i];
+        const part=document.createElement('canvas');part.width=canvas.width;part.height=h;
+        const pc=part.getContext('2d');pc.fillStyle='#f4f6f9';pc.fillRect(0,0,part.width,h);
+        pc.drawImage(canvas,0,cuts[i],canvas.width,h,0,0,canvas.width,h);
+        if(i>0) pdf.addPage();
+        pdf.addImage(part.toDataURL('image/jpeg',0.93),'JPEG',m,m,imgW,h/pxPerMm);
+        pdf.setFontSize(8);pdf.setTextColor(140);
+        pdf.text((i+1)+' / '+total,pw-m,ph-2,{align:'right'});
+      }
+      pdf.save(buildFileName());
+    }catch(e){
+      console.error(e);
+      alert('PDF 產生失敗（請確認網路連線可載入外部元件）\nGagal membuat PDF, periksa koneksi internet.\n\n'+e.message);
+    }finally{
+      window.scrollTo(sx,sy);
+      btn.disabled=false;btn.innerHTML=old;
+    }
+  };
+})();
+</script>
+
 </body>
 </html>
