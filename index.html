@@ -4067,7 +4067,26 @@ init();
     'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js'
   ];
   const BG=[244,246,249];
-  const FONT_STACK="'Segoe UI','Helvetica Neue',Helvetica,'PingFang TC','Heiti TC','Microsoft JhengHei',Arial,sans-serif";
+  const BASE_STACK="'Segoe UI','Helvetica Neue',Helvetica,'PingFang TC','Heiti TC','Microsoft JhengHei',Arial,sans-serif,'Apple Color Emoji','Segoe UI Emoji'";
+  // PDF 專用字型：畫面與 PDF 使用同一套字型（Noto Sans TC），數字、逗點、小數點間距才會完全一致
+  const WEBFONT_CSS='https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap';
+  const WEBFONT='Noto Sans TC';
+  let FONT_STACK=BASE_STACK;
+  async function ensureWebFont(){
+    try{
+      if(!document.getElementById('pdf_font_css')){
+        await new Promise((res,rej)=>{const l=document.createElement('link');l.id='pdf_font_css';l.rel='stylesheet';l.href=WEBFONT_CSS;l.onload=res;l.onerror=rej;document.head.appendChild(l);});
+      }
+      // 收集畫面上所有用到的字，只下載需要的字型分塊
+      let txt=document.body.innerText+'0123456789.,:/%()+-×÷→RpkgKVA';
+      document.querySelectorAll('input,select,textarea').forEach(e=>{txt+=(e.value||'')+(e.placeholder||'');if(e.tagName==='SELECT'&&e.selectedIndex>=0)txt+=e.options[e.selectedIndex].text;});
+      const uniq=[...new Set(txt)].join('');
+      const loads=[400,500,700,900].map(w=>document.fonts.load(w+' 16px "'+WEBFONT+'"',uniq));
+      await Promise.race([Promise.all(loads),new Promise((_,rej)=>setTimeout(()=>rej(new Error('font timeout')),10000))]);
+      if(document.fonts.check('700 16px "'+WEBFONT+'"','Rp 1,234.5')){FONT_STACK="'"+WEBFONT+"',"+BASE_STACK;return true;}
+    }catch(e){console.warn('PDF 字型載入失敗，改用系統字型',e);}
+    FONT_STACK=BASE_STACK;return false;
+  }
   function loadScript(src){
     return new Promise((res,rej)=>{const s=document.createElement('script');s.src=src;s.onload=res;s.onerror=()=>rej(new Error('load fail: '+src));document.head.appendChild(s);});
   }
@@ -4205,6 +4224,7 @@ init();
     const opened=[...document.querySelectorAll('.pg.on .cost-item:not(.disabled):not(.open)')];
     try{
       await ensureLibs();
+      await ensureWebFont();
       opened.forEach(el=>el.classList.add('open'));
       window.scrollTo(0,0);
       await new Promise(r=>setTimeout(r,120));
@@ -4218,7 +4238,7 @@ init();
         ignoreElements:el=>el.id==='pdf_fab'||(el.parentNode===document.body&&el.nodeType===1&&getComputedStyle(el).position==='fixed'),
         onclone:(cdoc)=>{
           const s=cdoc.createElement('style');
-          s.textContent='body,body *{font-family:'+FONT_STACK+';letter-spacing:0.02px!important;font-variant-ligatures:none!important;font-kerning:none!important}'+
+          s.textContent='body,body *{font-family:'+FONT_STACK+';letter-spacing:0.02px!important;font-kerning:none!important}'+
             'code,code *,.formula-box .f-line,.example-box .e-line,[style*="monospace"]{font-family:Menlo,"Courier New",monospace!important}';
           cdoc.head.appendChild(s);
           replaceFields(document,cdoc);
