@@ -4115,19 +4115,29 @@ init();
       st.boxSizing='border-box';
       st.width=el.offsetWidth+'px';st.height=el.offsetHeight+'px';
       st.flexBasis=el.offsetWidth+'px';
-      st.display=cs.display==='block'?'flex':'inline-flex';
-      st.alignItems=el.tagName==='TEXTAREA'?'flex-start':'center';
-      st.justifyContent=cs.textAlign==='right'?'flex-end':(cs.textAlign==='center'?'center':'flex-start');
-      st.overflow='hidden';st.lineHeight='1.3';
+      // 注意：html2canvas 遇到 inline-flex 會把文字蓋掉，所以只用 flex / inline-block
+      const pd=getComputedStyle(el.parentNode).display;
+      const useFlex=cs.display==='block'||/flex|grid/.test(pd)||el.tagName==='TEXTAREA';
+      if(useFlex){
+        st.display='flex';
+        st.alignItems=el.tagName==='TEXTAREA'?'flex-start':'center';
+        st.justifyContent=cs.textAlign==='right'?'flex-end':(cs.textAlign==='center'?'center':'flex-start');
+        st.lineHeight='1.3';
+      }else{
+        st.display='inline-block';
+        const inner=el.offsetHeight-parseFloat(cs.paddingTop)-parseFloat(cs.paddingBottom)-parseFloat(cs.borderTopWidth)-parseFloat(cs.borderBottomWidth);
+        st.lineHeight=Math.max(10,inner)+'px';
+      }
+      st.overflow='hidden';
       st.whiteSpace=el.tagName==='TEXTAREA'?'pre-wrap':'nowrap';
       st.verticalAlign='middle';
       if(isPh) st.color='#a0adba';
       const span=cloneDoc.createElement('span');
-      span.textContent=txt;span.style.overflow='hidden';span.style.textOverflow='clip';
+      span.textContent=txt;span.style.whiteSpace=st.whiteSpace;
       d.appendChild(span);
       if(el.tagName==='SELECT'){
         const ar=cloneDoc.createElement('span');ar.textContent='▾';
-        ar.style.cssText='margin-left:auto;padding-left:6px;color:#8fa0b0;font-size:11px';
+        ar.style.cssText=useFlex?'margin-left:auto;padding-left:6px;color:#8fa0b0;font-size:11px':'float:right;padding-left:6px;color:#8fa0b0;font-size:11px';
         d.appendChild(ar);
       }
       cl.parentNode.replaceChild(d,cl);
@@ -4192,6 +4202,7 @@ init();
             'code,code *,.formula-box .f-line,.example-box .e-line,[style*="monospace"]{font-family:Menlo,"Courier New",monospace!important}';
           cdoc.head.appendChild(s);
           replaceFields(document,cdoc);
+          cdoc.querySelectorAll('[onclick="downloadPagePDF()"]').forEach((b,i)=>{b.disabled=false;b.innerHTML=olds[i];});
         }
       });
       const {jsPDF}=window.jspdf;
