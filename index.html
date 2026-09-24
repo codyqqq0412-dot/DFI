@@ -4214,7 +4214,8 @@ init();
       const canvas=await html2canvas(root,{
         scale:scale,useCORS:true,backgroundColor:'#f4f6f9',
         width:W,height:H,windowWidth:W,windowHeight:H,scrollX:0,scrollY:0,
-        ignoreElements:el=>el.id==='pdf_fab',
+        // 不印浮動元件（PDF按鈕、「已還原上次資料」提示等）
+        ignoreElements:el=>el.id==='pdf_fab'||(el.parentNode===document.body&&el.nodeType===1&&getComputedStyle(el).position==='fixed'),
         onclone:(cdoc)=>{
           const s=cdoc.createElement('style');
           s.textContent='body,body *{font-family:'+FONT_STACK+';letter-spacing:0.02px!important;font-variant-ligatures:none!important;font-kerning:none!important}'+
@@ -4228,16 +4229,25 @@ init();
       const {jsPDF}=window.jspdf;
       const pdf=new jsPDF({orientation:'portrait',unit:'mm',format:'a4',compress:true});
       const pw=pdf.internal.pageSize.getWidth(),ph=pdf.internal.pageSize.getHeight(),m=5;
-      const imgW=pw-m*2, pxPerMm=canvas.width/imgW;
-      const pageHpx=Math.floor((ph-m*2-4)*pxPerMm);
       const ctx=canvas.getContext('2d');
       const bottom=contentBottom(ctx,canvas.width,canvas.height);
-      const cuts=[0];let y=0;
-      while(bottom-y>pageHpx){
-        const cut=findBreak(ctx,canvas.width,y+pageHpx,y+Math.floor(pageHpx*0.65));
-        cuts.push(cut);y=cut;
+      function plan(f){
+        const iw=(pw-m*2)*f, ppm=canvas.width/iw, php=Math.floor((ph-m*2-4)*ppm);
+        const cuts=[0];let y=0;
+        while(bottom-y>php){
+          const cut=findBreak(ctx,canvas.width,y+php,y+Math.floor(php*0.65));
+          cuts.push(cut);y=cut;
+        }
+        cuts.push(bottom);
+        return {f,iw,ppm,cuts};
       }
-      cuts.push(bottom);
+      // 最後一頁只剩一點點時，自動微縮（最多縮到 85%）讓頁數變少
+      let best=plan(1);
+      for(let f=0.97;f>=0.85&&best.cuts.length>2;f-=0.03){
+        const t=plan(f);
+        if(t.cuts.length<best.cuts.length){best=t;break;}
+      }
+      const cuts=best.cuts, imgW=best.iw, pxPerMm=best.ppm, offX=(pw-imgW)/2;
       const total=cuts.length-1;
       for(let i=0;i<total;i++){
         const h=cuts[i+1]-cuts[i];
@@ -4245,7 +4255,7 @@ init();
         const pc=part.getContext('2d');pc.fillStyle='#f4f6f9';pc.fillRect(0,0,part.width,h);
         pc.drawImage(canvas,0,cuts[i],canvas.width,h,0,0,canvas.width,h);
         if(i>0) pdf.addPage();
-        pdf.addImage(part.toDataURL('image/jpeg',0.93),'JPEG',m,m,imgW,h/pxPerMm);
+        pdf.addImage(part.toDataURL('image/jpeg',0.93),'JPEG',offX,m,imgW,h/pxPerMm);
         pdf.setFontSize(8);pdf.setTextColor(140);
         pdf.text((i+1)+' / '+total,pw-m,ph-2,{align:'right'});
       }
