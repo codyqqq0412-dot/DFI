@@ -4144,6 +4144,25 @@ init();
     }
   }
 
+  // 滑桿（目標毛利率、利息）→ 換成畫出來的滑桿，避免被當成文字框
+  function replaceRanges(origDoc,cloneDoc){
+    const o=origDoc.querySelectorAll('input[type=range]'), c=cloneDoc.querySelectorAll('input[type=range]');
+    if(o.length!==c.length) return;
+    for(let i=0;i<o.length;i++){
+      const el=o[i], cl=c[i], cs=getComputedStyle(el);
+      if(cs.display==='none'||el.offsetWidth===0) continue;
+      const mn=parseFloat(el.min||0), mx=parseFloat(el.max||100), v=parseFloat(el.value);
+      const pct=Math.max(0,Math.min(1,(v-mn)/((mx-mn)||1)));
+      const W=el.offsetWidth, H=Math.max(el.offsetHeight,18), th=16;
+      const d=cloneDoc.createElement('div');
+      d.style.cssText='position:relative;box-sizing:border-box;flex:0 0 '+W+'px;width:'+W+'px;height:'+H+'px;margin:'+cs.margin+';align-self:center';
+      const left=Math.round(pct*(W-th));
+      d.innerHTML='<div style="position:absolute;left:0;right:0;top:'+(H/2-3)+'px;height:6px;border-radius:3px;background:#dfe5ec"></div>'+
+        '<div style="position:absolute;left:0;width:'+(left+th/2)+'px;top:'+(H/2-3)+'px;height:6px;border-radius:3px;background:#1a4f7a"></div>'+
+        '<div style="position:absolute;left:'+left+'px;top:'+(H/2-th/2)+'px;width:'+th+'px;height:'+th+'px;border-radius:50%;background:#fff;border:1px solid #c5cfdb;box-sizing:border-box"></div>';
+      cl.parentNode.replaceChild(d,cl);
+    }
+  }
   function px(data,w,x,y){const i=(y*w+x)*4;return [data[i],data[i+1],data[i+2]];}
   function near(a,b,t){return Math.abs(a[0]-b[0])<=t&&Math.abs(a[1]-b[1])<=t&&Math.abs(a[2]-b[2])<=t;}
   // 分頁點：優先找「整列背景色」，其次找「沒有文字/線條的空白列」
@@ -4198,10 +4217,11 @@ init();
         ignoreElements:el=>el.id==='pdf_fab',
         onclone:(cdoc)=>{
           const s=cdoc.createElement('style');
-          s.textContent='body,body *{font-family:'+FONT_STACK+';letter-spacing:normal!important;font-variant-ligatures:none!important}'+
+          s.textContent='body,body *{font-family:'+FONT_STACK+';letter-spacing:0.02px!important;font-variant-ligatures:none!important;font-kerning:none!important}'+
             'code,code *,.formula-box .f-line,.example-box .e-line,[style*="monospace"]{font-family:Menlo,"Courier New",monospace!important}';
           cdoc.head.appendChild(s);
           replaceFields(document,cdoc);
+          replaceRanges(document,cdoc);
           cdoc.querySelectorAll('[onclick="downloadPagePDF()"]').forEach((b,i)=>{b.disabled=false;b.innerHTML=olds[i];});
         }
       });
