@@ -4063,15 +4063,17 @@ init();
 <script>
 (function(){
   const LIBS=[
-    ['html2canvas','https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js'],
-    ['jspdf','https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js']
+    'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js',
+    'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js'
   ];
+  const BG=[244,246,249];
+  const FONT_STACK="'Segoe UI','Helvetica Neue',Helvetica,'PingFang TC','Heiti TC','Microsoft JhengHei',Arial,sans-serif";
   function loadScript(src){
     return new Promise((res,rej)=>{const s=document.createElement('script');s.src=src;s.onload=res;s.onerror=()=>rej(new Error('load fail: '+src));document.head.appendChild(s);});
   }
   async function ensureLibs(){
-    if(!window.html2canvas) await loadScript(LIBS[0][1]);
-    if(!(window.jspdf&&window.jspdf.jsPDF)) await loadScript(LIBS[1][1]);
+    if(!window.html2canvas) await loadScript(LIBS[0]);
+    if(!(window.jspdf&&window.jspdf.jsPDF)) await loadScript(LIBS[1]);
   }
   function selText(id){const el=document.getElementById(id);if(!el)return '';if(el.tagName==='SELECT'){const o=el.options[el.selectedIndex];return (o&&el.value)?o.text:'';}return el.value||'';}
   function buildFileName(){
@@ -4087,37 +4089,110 @@ init();
     tag=tag.replace(/^\d+\.\s*/,'').replace(/[\\\/:*?"<>|]+/g,'').replace(/\s+/g,'_').slice(0,60);
     return 'DFI_報價_'+(tag?tag+'_':'')+date+'.pdf';
   }
-  // 找「整列都是背景色」的位置當分頁點，避免把卡片切一半
+
+  // 輸入框、下拉選單 → 換成同尺寸的文字方塊（解決文字被切掉的問題）
+  const FIELD_SEL='input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=file]):not([type=hidden]):not([type=button]):not([type=submit]),select,textarea';
+  function replaceFields(origDoc,cloneDoc){
+    const o=origDoc.querySelectorAll(FIELD_SEL), c=cloneDoc.querySelectorAll(FIELD_SEL);
+    if(o.length!==c.length) return;
+    for(let i=0;i<o.length;i++){
+      const el=o[i], cl=c[i], cs=getComputedStyle(el);
+      if(cs.display==='none'||el.offsetWidth===0) continue;
+      let txt, isPh=false;
+      if(el.tagName==='SELECT'){const op=el.options[el.selectedIndex];txt=op?op.text:'';}
+      else{txt=el.value;if(!txt){txt=el.placeholder||'';isPh=true;}}
+      const d=cloneDoc.createElement('div');
+      const st=d.style;
+      ['paddingTop','paddingRight','paddingBottom','paddingLeft',
+       'borderTopWidth','borderRightWidth','borderBottomWidth','borderLeftWidth',
+       'borderTopStyle','borderRightStyle','borderBottomStyle','borderLeftStyle',
+       'borderTopColor','borderRightColor','borderBottomColor','borderLeftColor',
+       'borderTopLeftRadius','borderTopRightRadius','borderBottomLeftRadius','borderBottomRightRadius',
+       'backgroundColor','color','fontSize','fontWeight','fontStyle','textAlign',
+       'marginTop','marginRight','marginBottom','marginLeft','flexGrow','flexShrink','alignSelf','gridColumn','gridRow']
+       .forEach(k=>{st[k]=cs[k];});
+      st.fontFamily=(/mono|courier/i.test(cs.fontFamily))?"Menlo,'Courier New',monospace":FONT_STACK;
+      st.boxSizing='border-box';
+      st.width=el.offsetWidth+'px';st.height=el.offsetHeight+'px';
+      st.flexBasis=el.offsetWidth+'px';
+      st.display=cs.display==='block'?'flex':'inline-flex';
+      st.alignItems=el.tagName==='TEXTAREA'?'flex-start':'center';
+      st.justifyContent=cs.textAlign==='right'?'flex-end':(cs.textAlign==='center'?'center':'flex-start');
+      st.overflow='hidden';st.lineHeight='1.3';
+      st.whiteSpace=el.tagName==='TEXTAREA'?'pre-wrap':'nowrap';
+      st.verticalAlign='middle';
+      if(isPh) st.color='#a0adba';
+      const span=cloneDoc.createElement('span');
+      span.textContent=txt;span.style.overflow='hidden';span.style.textOverflow='clip';
+      d.appendChild(span);
+      if(el.tagName==='SELECT'){
+        const ar=cloneDoc.createElement('span');ar.textContent='▾';
+        ar.style.cssText='margin-left:auto;padding-left:6px;color:#8fa0b0;font-size:11px';
+        d.appendChild(ar);
+      }
+      cl.parentNode.replaceChild(d,cl);
+    }
+  }
+
+  function px(data,w,x,y){const i=(y*w+x)*4;return [data[i],data[i+1],data[i+2]];}
+  function near(a,b,t){return Math.abs(a[0]-b[0])<=t&&Math.abs(a[1]-b[1])<=t&&Math.abs(a[2]-b[2])<=t;}
+  // 分頁點：優先找「整列背景色」，其次找「沒有文字/線條的空白列」
   function findBreak(ctx,w,target,minY){
-    const band=target-minY; if(band<=0) return target;
-    const data=ctx.getImageData(0,minY,w,band).data;
-    const bg=[244,246,249], step=Math.max(1,Math.floor(w/400));
-    for(let y=band-1;y>=0;y--){
+    const top=Math.max(0,minY-4), band=target-top; if(band<=8) return target;
+    const data=ctx.getImageData(0,top,w,band).data, step=Math.max(1,Math.floor(w/500));
+    for(let y=band-1;y>=4;y--){
+      let ok=true;
+      for(let x=0;x<w;x+=step){if(!near(px(data,w,x,y),BG,6)){ok=false;break;}}
+      if(ok) return top+y;
+    }
+    for(let y=band-5;y>=4;y--){
       let ok=true;
       for(let x=0;x<w;x+=step){
-        const i=(y*w+x)*4;
-        if(Math.abs(data[i]-bg[0])>6||Math.abs(data[i+1]-bg[1])>6||Math.abs(data[i+2]-bg[2])>6){ok=false;break;}
+        const p=px(data,w,x,y);
+        if(!near(p,px(data,w,x,y-4),5)||!near(p,px(data,w,x,y+4),5)){ok=false;break;}
       }
-      if(ok) return minY+y+1;
+      if(ok) return top+y;
     }
     return target;
   }
+  // 找到內容真正的底部，避免最後多一頁空白
+  function contentBottom(ctx,w,h){
+    const chunk=200, step=Math.max(1,Math.floor(w/500));
+    for(let end=h;end>0;end-=chunk){
+      const start=Math.max(0,end-chunk), data=ctx.getImageData(0,start,w,end-start).data;
+      for(let y=end-start-1;y>=0;y--){
+        for(let x=0;x<w;x+=step){if(!near(px(data,w,x,y),BG,8)) return Math.min(h,start+y+30);}
+      }
+    }
+    return h;
+  }
+
   window.downloadPagePDF=async function(){
-    const btn=document.getElementById('pdf_fab'),old=btn.innerHTML;
-    btn.disabled=true;btn.innerHTML='⏳ 產生中… / Memproses…';
+    const btns=[...document.querySelectorAll('[onclick="downloadPagePDF()"]')];
+    const olds=btns.map(b=>b.innerHTML);
+    btns.forEach(b=>{b.disabled=true;b.innerHTML='⏳ 產生中… / Memproses…';});
     const sx=window.scrollX,sy=window.scrollY;
+    // 暫時展開所有「已勾選啟用」但收合的成本項目
+    const opened=[...document.querySelectorAll('.pg.on .cost-item:not(.disabled):not(.open)')];
     try{
       await ensureLibs();
+      opened.forEach(el=>el.classList.add('open'));
       window.scrollTo(0,0);
-      await new Promise(r=>setTimeout(r,80));
+      await new Promise(r=>setTimeout(r,120));
       const root=document.body;
       const W=document.documentElement.scrollWidth, H=root.scrollHeight;
-      // Safari 畫布上限約 16.7M 像素，自動調整解析度
       const scale=Math.max(1,Math.min(2,Math.sqrt(16000000/(W*H))));
       const canvas=await html2canvas(root,{
         scale:scale,useCORS:true,backgroundColor:'#f4f6f9',
         width:W,height:H,windowWidth:W,windowHeight:H,scrollX:0,scrollY:0,
-        ignoreElements:el=>el.id==='pdf_fab'
+        ignoreElements:el=>el.id==='pdf_fab',
+        onclone:(cdoc)=>{
+          const s=cdoc.createElement('style');
+          s.textContent='body,body *{font-family:'+FONT_STACK+';letter-spacing:normal!important;font-variant-ligatures:none!important}'+
+            'code,code *,.formula-box .f-line,.example-box .e-line,[style*="monospace"]{font-family:Menlo,"Courier New",monospace!important}';
+          cdoc.head.appendChild(s);
+          replaceFields(document,cdoc);
+        }
       });
       const {jsPDF}=window.jspdf;
       const pdf=new jsPDF({orientation:'portrait',unit:'mm',format:'a4',compress:true});
@@ -4125,13 +4200,13 @@ init();
       const imgW=pw-m*2, pxPerMm=canvas.width/imgW;
       const pageHpx=Math.floor((ph-m*2-4)*pxPerMm);
       const ctx=canvas.getContext('2d');
+      const bottom=contentBottom(ctx,canvas.width,canvas.height);
       const cuts=[0];let y=0;
-      while(canvas.height-y>pageHpx){
-        const target=y+pageHpx;
-        const cut=findBreak(ctx,canvas.width,target,y+Math.floor(pageHpx*0.7));
+      while(bottom-y>pageHpx){
+        const cut=findBreak(ctx,canvas.width,y+pageHpx,y+Math.floor(pageHpx*0.65));
         cuts.push(cut);y=cut;
       }
-      cuts.push(canvas.height);
+      cuts.push(bottom);
       const total=cuts.length-1;
       for(let i=0;i<total;i++){
         const h=cuts[i+1]-cuts[i];
@@ -4148,8 +4223,9 @@ init();
       console.error(e);
       alert('PDF 產生失敗（請確認網路連線可載入外部元件）\nGagal membuat PDF, periksa koneksi internet.\n\n'+e.message);
     }finally{
+      opened.forEach(el=>el.classList.remove('open'));
       window.scrollTo(sx,sy);
-      btn.disabled=false;btn.innerHTML=old;
+      btns.forEach((b,i)=>{b.disabled=false;b.innerHTML=olds[i];});
     }
   };
 })();
